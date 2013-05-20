@@ -48,8 +48,17 @@ window.onload = function() {
 	var circ = Math.PI*2;			// complete circle
 	
 	// make everything go the same speed
+	// Marios: This is where I'm dumping any new parameters
 	var speed = 4.0;
-	var radius = 5.0;
+	var radius = 1;
+	var ali = 0.1; // alignment parameter - between 0 and 1	
+	var directionIndicatorLength = radius;
+	var perceptionRange = 20;
+	var perceptionRangeSquared = perceptionRange*perceptionRange;
+	
+	// note - am assuming canvas won't change size!!
+	var pigeonholeWidth = Math.ceil(theCanvas.width/perceptionRange);
+	var pigeonholeHeight = Math.ceil(theCanvas.height/perceptionRange);
 	
 	// create a prototype ball
 	// this is a slightly weird way to make an object, but it's very
@@ -66,7 +75,7 @@ window.onload = function() {
 			theContext.beginPath();
 			theContext.arc(this.x,this.y,radius,0,circ,true);
 			theContext.moveTo(this.x,this.y);
-			theContext.lineTo(this.x + 4*this.vX, this.y + 4*this.vY);
+			theContext.lineTo(this.x + directionIndicatorLength*this.vX, this.y + directionIndicatorLength*this.vY);
 			theContext.closePath();
 			theContext.stroke();
 			theContext.fill();			
@@ -82,25 +91,39 @@ window.onload = function() {
 			// Marios: Wouldn't need to check velocity if you could *only* hit the wall when moving in that direction
 			
 			// Marios: Could remove wall issues by using toroidal space 
-			if (this.x > theCanvas.width) {
-				if (this.vX > 0) {
-					this.vX = -this.vX;
-				}
+			
+			// Marios: My modifications implicitly assume you won't *appear* in the wall
+			
+			var penetration = this.x + radius - theCanvas.width;
+			if (penetration > 0) {
+			//	if (this.vX > 0) {
+				this.vX = -this.vX;
+				this.x -= 2*penetration;
+			//	}
 			}
-			if (this.y > theCanvas.height) {
-				if (this.vY > 0) {
-					this.vY = -this.vY;
-				}
+			
+			penetration = this.y + radius - theCanvas.height;
+			if (penetration > 0) {			
+//				if (this.vY > 0) {
+				this.vY = -this.vY;
+				this.y -= 2*penetration;
+//				}
 			}
-			if (this.x < 0) {
-				if (this.vX < 0) {
-					this.vX = -this.vX;
-				}
+			
+			penetration = radius - this.x;
+			if (penetration > 0) {
+//				if (this.vX < 0) {
+				this.vX = -this.vX;
+				this.x += 2*penetration;
+//				}
 			}
-			if (this.y < 0) {
-				if (this.vY < 0) {
-					this.vY = -this.vY;
-				}
+			
+			penetration = radius - this.y;		
+			if (penetration > 0) {
+//				if (this.vY < 0) {
+				this.vY = -this.vY;
+				this.y += 2*penetration;
+//				}
 			}
 		},
 		
@@ -110,9 +133,17 @@ window.onload = function() {
 		// Marios: Horrible!
 			var z = Math.sqrt(this.vX * this.vX + this.vY * this.vY );
 			if (z<.001) {
-				this.vX = (Math.random() - .5) * speed;
-				this.vY = (Math.random() - .5) * speed;
-				this.norm();
+				//Marios: Morally wrong!
+				//this.vX = (Math.random() - .5) * speed;
+				//this.vY = (Math.random() - .5) * speed;
+				//this.norm();
+				//Marios: Note - very unlikely to enter this loop ... but still
+				
+				var randomAngleInRadians = Math.random()*Math.PI*2;
+				this.vX = Math.cos(randomAngleInRadians) * speed;
+				this.vY = Math.sin(randomAngleInRadians) * speed;
+				
+				
 			} else {
 				z = speed / z;
 				this.vX *= z;
@@ -126,20 +157,43 @@ window.onload = function() {
 	// and set its prototype to be the first ball
 	// (we probably could use create as well)
 	// then we set some other stuff if we want
-	function makeBall(x,y) {
+	function makeBall(x,y, vX, vY) {
+
+	
 		Empty = function () {};
 		Empty.prototype = aBall;	// don't ask why not ball.prototype=aBall;
 		ball = new Empty();
+		
+		x = Math.min( Math.max(x , radius) , theCanvas.width-radius);
+		y = Math.min( Math.max(y , radius) , theCanvas.height-radius);
+		
 		ball.x = x;
 		ball.y = y;
+		ball.vX = vX;
+		ball.vY = vY;
+		
 		return ball;
 	}
 	
 	// make an array of balls
 	theBalls = [];
+	
+	// Marios: Create clean set of pigeonholes
+	PigeonHoles = new Array();
+	for (var i=0; i<pigeonholeWidth*pigeonholeHeight; i++) {
+		PigeonHoles[i] = new Array();
+	}
+	
 	for (var i=0; i<40; i++) {
-		b = makeBall( 50+Math.random()*500, 50+Math.random()*300 );
+	
+		var randomAngleInRadians = Math.random()*Math.PI*2;
+
+		b = makeBall( 50+Math.random()*500, 50+Math.random()*300, Math.cos(randomAngleInRadians) * speed, Math.sin(randomAngleInRadians) * speed );
 		theBalls.push(b)
+		
+		pigeonIndex = Math.ceil(b.x/perceptionRange)+Math.floor(b.y/perceptionRange)*pigeonholeWidth;
+		PigeonHoles[pigeonIndex].push(i);
+		
 	}
 	
 	// this function will do the drawing
@@ -188,7 +242,7 @@ window.onload = function() {
 	function align(ballList)
 	{
 	// Marios: Some pretty terrible purpose commenting here!
-		var ali = 0.6; // alignment parameter - between 0 and 1
+		//var ali = 0.6; // alignment parameter - between 0 and 1
 		
 		// make temp arrays to store results
 		// this is inefficient, but the goal here is to make it work first
@@ -200,8 +254,8 @@ window.onload = function() {
 			var bi = ballList[i];
 			var bix = bi.x;
 			var biy = bi.y;
-			newVX[i] = bi.vX/(ali+.001);
-			newVY[i] = bi.vY/(ali+.001);
+			newVX[i] = bi.vX;
+			newVY[i] = bi.vY;
 			
 			// Marios: This section right here is why it crashes if
 			// the alignment parameter (ali) is set to 0 (as you can later on)
@@ -215,10 +269,12 @@ window.onload = function() {
 					// compute the distance for falloff
 					var dx = bj.x - bix;
 					var dy = bj.y - biy;
-					var d = Math.sqrt(dx*dx+dy*dy);
+//					var d = Math.sqrt(dx*dx+dy*dy);
+					if ( (dx*dx + dy*dy) <= perceptionRangeSquared ) {
 					// add to the weighted sum
-					newVX[i] += (bj.vX / (d+ali+.001));
-					newVY[i] += (bj.vY / (d+ali+.001));			
+						newVX[i] += bj.vX *ali;
+						newVY[i] += bj.vY *ali;			
+					}
 				}
 			}
 		}
@@ -227,16 +283,35 @@ window.onload = function() {
 			ballList[i].vY = newVY[i];
 		}		
 	}
+	
+	
+	function updatePigeonholes() {
+		PigeonHoles = new Array();
+		for (var i=0; i<pigeonholeWidth*pigeonholeHeight; i++) {
+			PigeonHoles[i] = new Array();
+		}	
+		
+		for (var i=0; i<theBalls.length; i++) {
+			pigeonIndex = Math.floor(theBalls[i].x/perceptionRange)+Math.floor(theBalls[i].y/perceptionRange)*pigeonholeWidth;
+			PigeonHoles[pigeonIndex].push(i);	
+		}		
 
+	
+	}
 	
 	// move the balls
 	function moveBalls() {
+
 		align(theBalls);
-		bounce(theBalls);
+		bounce(theBalls);	
+	
 		for (var i=0; i<theBalls.length; i++) {
 			theBalls[i].norm();
 			theBalls[i].move();
 		}
+	
+		//updatePigeonholes()	
+	
 	}
 	
 	// what to do when things get clicked
@@ -244,10 +319,14 @@ window.onload = function() {
 		// a catch - we need to adjust for where the canvas is!
 		// this is quite ugly without some degree of support from
 		// a library
+		var randomAngleInRadians = Math.random()*Math.PI*2;
 		theBalls.push( makeBall(evt.pageX - theCanvas.offsetLeft,
-								evt.pageY - theCanvas.offsetTop) );
+								evt.pageY - theCanvas.offsetTop,
+								Math.cos(randomAngleInRadians) * speed,
+								Math.sin(randomAngleInRadians) * speed 
+								) );
 	}
-	theCanvas.addEventListener("click",doClick,false);
+	theCanvas.addEventListener("mousemove",doClick,false);
 	
 	// what we need to do is define a function that updates the position
 	// draws, then schedules another iteration in the future
@@ -256,6 +335,20 @@ window.onload = function() {
 		moveBalls();	// new position
 		drawBalls();	// show things
 		reqFrame(drawLoop);	// call us again in 20ms
+		// print number of Balls
+		
+		
+		// Jquery code!
+		var x = document.getElementById("canvas_info");
+		if ( !x)
+		{
+			var div = '<div id = "canvas_info"></div>';
+			$("body").append(div);
+		}		
+		$("#canvas_info").html(theBalls.length);
+
+		
+		
 	}
 	drawLoop();
 }
