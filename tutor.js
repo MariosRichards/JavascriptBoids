@@ -68,6 +68,7 @@ window.onload = function() {
 		"y" : 100,
 		"vX" : 10,
 		"vY" : 10,
+		"pigeon" : 0, // pigeonhole
 		
 		draw : function() {
 			theContext.strokeStyle = ballstroke;
@@ -171,6 +172,9 @@ window.onload = function() {
 		ball.y = y;
 		ball.vX = vX;
 		ball.vY = vY;
+		
+		// put ball in correct pigeonhole
+		ball.pigeon = Math.ceil(ball.x/perceptionRange)+Math.floor(ball.y/perceptionRange)*pigeonholeWidth;
 		
 		return ball;
 	}
@@ -287,13 +291,16 @@ window.onload = function() {
 	
 	function updatePigeonholes() {
 		PigeonHoles = new Array();
+		// 600 array positions
 		for (var i=0; i<pigeonholeWidth*pigeonholeHeight; i++) {
 			PigeonHoles[i] = new Array();
 		}	
 		
+		// N cycles in length
 		for (var i=0; i<theBalls.length; i++) {
 			pigeonIndex = Math.floor(theBalls[i].x/perceptionRange)+Math.floor(theBalls[i].y/perceptionRange)*pigeonholeWidth;
 			PigeonHoles[pigeonIndex].push(i);	
+			theBalls.pigeon = pigeonIndex
 		}		
 
 	
@@ -310,7 +317,7 @@ window.onload = function() {
 			theBalls[i].move();
 		}
 	
-		//updatePigeonholes()	
+		updatePigeonholes()	
 	
 	}
 	
