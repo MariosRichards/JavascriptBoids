@@ -42,7 +42,7 @@ window.onload = function() {
 	var directionIndicatorLength = genericRadius;
 	var perceptionRange = 20;
 	var perceptionRangeSquared = perceptionRange*perceptionRange;
-	var initialPopulation = 400;
+	var initialPopulation = 2000;
 	
 	// note - am assuming canvas won't change size!!
 	var pigeonholeWidth = Math.ceil(theCanvas.width/perceptionRange);
@@ -393,7 +393,6 @@ window.onload = function() {
 				}
 			}
 		}		
-
 	}
 	
 	
@@ -401,21 +400,12 @@ window.onload = function() {
 	function align(ballList,InteractionList)	
 	{
 
-	
-
-		// create and zero arrays
-		
-		// var newVX = [];
-		// var newVY = [];
 		
 		for(var interactor1 = ballList.length-1; interactor1>=0; interactor1--) {	
 		
 			// add your own velocity
 			var bi = ballList[interactor1];		
 
-			// // initialises the new array!
-			// newVX[interactor1] = bi.vX*ali;
-			// newVY[interactor1] = bi.vY*ali;			
 
 			for(var j = InteractionList[interactor1].length-1; j>=0; j--) {	
 
@@ -424,8 +414,17 @@ window.onload = function() {
 
 				// Separation: steer to avoid crowding local flockmates
 				
-				
-				
+				var bxs = bi.x - bj.x;
+				var bys = bi.y - bj.y;
+				var distsq = (1 + bxs*bxs + bys*bys)/4;
+				bxs/=distsq;
+				bys/=distsq;
+
+				newVX[interactor1] += bxs;
+				newVY[interactor1] += bys;
+
+				newVX[interactor2] -= bxs;
+				newVY[interactor2] -= bys;					
 				
 				// Alignment: steer towards the average heading of local flockmates
 				// add to the sum
@@ -445,11 +444,7 @@ window.onload = function() {
 		}		
 
 		
-		// // confirms update!
-		// for(var i=ballList.length-1; i>=0; i--) {
-			// ballList[i].vX = newVX[i];
-			// ballList[i].vY = newVY[i];
-		// }		
+
 
 
 	}
@@ -479,8 +474,11 @@ window.onload = function() {
 	
 		// confirms update!
 		for(var i=theBalls.length-1; i>=0; i--) {
-			theBalls[i].vX = newVX[i];
-			theBalls[i].vY = newVY[i];
+			var nvx = newVX[i];
+			var nvy = newVY[i];
+			normalisingCoefficient = theBalls[i].speed/Math.sqrt(nvx*nvx + nvy*nvy);
+			theBalls[i].vX = nvx*normalisingCoefficient;
+			theBalls[i].vY = nvy*normalisingCoefficient;
 		}				
 	
 		// clean array
@@ -492,7 +490,7 @@ window.onload = function() {
 	
 	
 		for (var i=0; i<theBalls.length; i++) {
-			theBalls[i].norm();
+			//theBalls[i].norm();
 			theBalls[i].move();
 			pigeonIndex = Math.floor(theBalls[i].x/perceptionRange)+Math.floor(theBalls[i].y/perceptionRange)*pigeonholeWidth;
 			PigeonHoles[pigeonIndex].push(i);	
