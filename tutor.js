@@ -3,19 +3,6 @@
 //	this file will "evolve" as you check out different versions
 //	(it starts with revision 3, since HG numbers all versions of the project)
 
-// phase 3 - draws a yellow circle in the canvas
-// phase 4 - code re-organized
-// phase 5 - animation
-// phase 6 - reqAnimFrame
-// phase 7 - objectness
-// phase 8 - object creation
-// phase 9 - multiple objects
-// phase 10 - click to add
-// phase 11 - bouncing
-// phase 12 - bouncing off of each other
-// phase 13 - with alignment
-
-// phase 14 - Marios initialising
 
 // note: I am choosing to do this as an "onload" function for the
 // window (so it gets run when the window is done loading), rather 
@@ -183,25 +170,7 @@ window.onload = function() {
 	}
 	
 	
-	// CONFUSING IMPLICIT MAIN FUNCTION!
-	// make an array of balls
-	theBalls = [];
-	// create an array of pigeonholes
-	PigeonHoles = [];
-	for (var i=0; i<pigeonholeWidth*pigeonholeHeight; i++) {
-	// 0 : pigeonholeWidth*pigeonholeHeight-1	
-		PigeonHoles[i] = new Array();
-	}
-	
-	// create initialPopulation Balls
-	for (var i=0; i<initialPopulation; i++) {
-	
-		var randomAngleInRadians = Math.random()*Math.PI*2;
 
-		b = makeBall( 50+Math.random()*500, 50+Math.random()*300, Math.cos(randomAngleInRadians) * speed, Math.sin(randomAngleInRadians) * speed );
-		theBalls.push(b);
-		
-	}
 	
 	
 	// this function will do the drawing
@@ -375,7 +344,7 @@ window.onload = function() {
 		addAgentY = evt.pageY - theCanvas.offsetTop;
 						
 	}
-	theCanvas.addEventListener("mousemove",doClick,false);
+
 	
 	// what we need to do is define a function that updates the position
 	// draws, then schedules another iteration in the future
@@ -396,5 +365,31 @@ window.onload = function() {
 		$("#canvas_info").html(theBalls.length);
 
 	}
+	
+	
+	
+	
+	
+	// CONFUSING IMPLICIT MAIN FUNCTION!
+	// make an array of balls
+	theBalls = [];
+	// create an array of pigeonholes
+	PigeonHoles = [];
+	for (var i=0; i<pigeonholeWidth*pigeonholeHeight; i++) {
+	// 0 : pigeonholeWidth*pigeonholeHeight-1	
+		PigeonHoles[i] = new Array();
+	}
+	
+	// create initialPopulation Balls
+	for (var i=0; i<initialPopulation; i++) {
+	
+		var randomAngleInRadians = Math.random()*Math.PI*2;
+
+		b = makeBall( 50+Math.random()*500, 50+Math.random()*300, Math.cos(randomAngleInRadians) * speed, Math.sin(randomAngleInRadians) * speed );
+		theBalls.push(b);
+		
+	}
+
+	theCanvas.addEventListener("mousemove",doClick,false);	
 	drawLoop();
 }
