@@ -61,6 +61,11 @@ window.onload = function() {
 	var pigeonholeWidth = Math.ceil(theCanvas.width/perceptionRange);
 	var pigeonholeHeight = Math.ceil(theCanvas.height/perceptionRange);
 	
+	// Semaphore variable to add agent
+	var addAgent = false;
+	var addAgentX = 0;
+	var addAgentY = 0;
+	
 	// create a prototype ball
 	// this is a slightly weird way to make an object, but it's very
 	// javascripty
@@ -129,10 +134,6 @@ window.onload = function() {
 		// Marios: Horrible!
 			var z = Math.sqrt(this.vX * this.vX + this.vY * this.vY );
 			if (z<.001) {
-				//Marios: Morally wrong!
-				//this.vX = (Math.random() - .5) * speed;
-				//this.vY = (Math.random() - .5) * speed;
-				//this.norm();
 				//Marios: Note - very unlikely to enter this loop ... but still
 				
 				var randomAngleInRadians = Math.random()*Math.PI*2;
@@ -174,7 +175,6 @@ window.onload = function() {
 		// 0 : pigeonholeWidth*pigeonholeHeight-1
 		
 		// add ball to pigeonhole
-//		pigeonIndex = Math.floor(b.x/perceptionRange)+(Math.floor(b.y/perceptionRange))*pigeonholeWidth;
 		// 0 : pigeonholeWidth*pigeonholeHeight-1
 		// Assumes Balls are *always* added instantly after creation *and* that they are always added at the end
 		PigeonHoles[ball.pigeon].push(theBalls.length);			
@@ -182,6 +182,8 @@ window.onload = function() {
 		return ball;
 	}
 	
+	
+	// CONFUSING IMPLICIT MAIN FUNCTION!
 	// make an array of balls
 	theBalls = [];
 	// create an array of pigeonholes
@@ -196,15 +198,11 @@ window.onload = function() {
 	
 		var randomAngleInRadians = Math.random()*Math.PI*2;
 
-		
 		b = makeBall( 50+Math.random()*500, 50+Math.random()*300, Math.cos(randomAngleInRadians) * speed, Math.sin(randomAngleInRadians) * speed );
-		theBalls.push(b)
-		
-		// pigeonIndex = Math.floor(b.x/perceptionRange)+(Math.floor(b.y/perceptionRange))*pigeonholeWidth;
-		// // 0 : pigeonholeWidth*pigeonholeHeight-1
-		// PigeonHoles[pigeonIndex].push(i);
+		theBalls.push(b);
 		
 	}
+	
 	
 	// this function will do the drawing
 	function drawBalls() {
@@ -215,6 +213,7 @@ window.onload = function() {
 			theBalls[i].draw();
 		}
 	}
+	
 	
 	// bouncing behavior - if two balls are on top of each other,
 	// have them react in a simple way
@@ -259,21 +258,13 @@ window.onload = function() {
 		// var newVX = new Array(ballList.length);
 		// var newVY = new Array(ballList.length);
 		
-		var newVX = [], i = ballList.length;
+		var newVX = [];
+		var newVY = [];
+		i = ballList.length;
 		while (i--) {
 			newVX[i] = 0;
+			newVY[i] = 0;			
 		}
-		
-		var newVY = [], i = ballList.length;
-		while (i--) {
-			newVY[i] = 0;
-		}		
-
-		
-		
-		
-		var newVX2 = new Array(ballList.length);
-		var newVY2 = new Array(ballList.length);		
 		
 		// do the n^2 loop over all pairs, and sum up the contribution of each
 		for(var i=ballList.length-1; i>=0; i--) {
@@ -283,12 +274,8 @@ window.onload = function() {
 			
 			// changed ali to be a weighting parameter on self-contribution!
 			newVX[i] += bi.vX*ali;
-			newVY[i] += bi.vY*ali;
+			newVY[i] += bi.vY*ali;	
 			
-			newVX2[i] = bi.vX*ali;
-			newVY2[i] = bi.vY*ali;			
-			
-
 			// Marios: This section right here is why it crashes if
 			// the alignment parameter (ali) is set to 0 (as you can later on)
 			// The code should considers the contribution of the flight direction
@@ -296,11 +283,8 @@ window.onload = function() {
 			// but it actually includes itself (whem i==j) so if you set ali to 0
 			// you get a Divide By Zero error
 			
-			
 			pigeonX = bi.pigeon%pigeonholeWidth; // 0 : pigeonholeWidth - 1
 			pigeonY = Math.floor(bi.pigeon/pigeonholeWidth); // 0 : pigeonholeHeight -1??
-			
-			
 
 			// loop through the 9 tiles without trying access tiles that are outside of the canvas
 			for(var holeX = Math.min(pigeonX+1,pigeonholeWidth-1); holeX>= Math.max(pigeonX-1,0); holeX--) {
@@ -310,11 +294,10 @@ window.onload = function() {
 					pigeonhole = holeX + pigeonholeWidth*holeY;
 					// now iterate through the Balls in this pigeon if any
 					for(var interactant = PigeonHoles[pigeonhole].length-1; interactant>=0; interactant--) {
-		//				alert("random statement");
-	//					alert(interactant);
+
 						j = PigeonHoles[pigeonhole][interactant];
 						// here is where you'd add an if statement to cut work in half!
-						if(i>j) {
+						if(j>i) { //
 						// test if within perceptionRange
 							var bj = ballList[j];						
 							var dx = bj.x - bix;
@@ -329,96 +312,20 @@ window.onload = function() {
 								
 							}
 						}
-					
 					}
-				
 				}
-			
 			}
+		}		
 			
 			
 			
-			
-			
-			// for(var j=ballList.length-1; j>=0; j--) {
-				// if (i != j) {
-					// var bj = ballList[j];
-					// // compute the distance for falloff
-					// var dx = bj.x - bix;
-					// var dy = bj.y - biy;
-// //					var d = Math.sqrt(dx*dx+dy*dy);
-					// if ( (dx*dx + dy*dy) <= perceptionRangeSquared ) {
-					// // add to the weighted sum
-						// newVX2[i] += bj.vX;
-						// newVY2[i] += bj.vY;			
-					// }
-				// }
-			// }
-		}
-		
-		
-		// compare results to validate new code!
-		
-
-		
-		// var screwed = false;
-		
-
-		// if(newVX.length !== newVX2.length) {
-			// screwed = true;
-			// console.log("newVX.length !== newVX2.length");
-		// }
-		// for(var j = newVX.length; j--;) {
-			// if( (newVX[j] - newVX2[j]) > .001) {
-				// screwed = true;
-				// console.log(newVX[j] - newVX2[j]);
-				// console.log(j);
-			// }
-		// }
-
-		// if(newVY.length !== newVY2.length) {
-			// screwed = true;
-			// console.log("newVY.length !== newVY2.length");
-		// }
-		// for(var j = newVY.length; j--;) {
-			// if( (newVY[j] - newVY2[j]) > .001) {
-				// screwed = true;
-				// console.log(newVY[j] - newVY2[j]);
-				// console.log(j);
-			// }
-		// }
-		
-		// if (screwed) {
-    		// console.log(screwed);
-			// debugger;
-        // }    
-		
 		for(var i=ballList.length-1; i>=0; i--) {
 			ballList[i].vX = newVX[i];
 			ballList[i].vY = newVY[i];
 		}		
 		
-	//	debugger;
-		
 	}
 	
-	
-	// function updatePigeonholes(ballList) {
-		// PigeonHoles = new Array();
-		// // 600 array positions
-		// for (var i=0; i<pigeonholeWidth*pigeonholeHeight; i++) {
-			// PigeonHoles[i] = new Array();
-		// }	
-		
-		// // N cycles in length
-		// for (var i=0; i<ballList.length; i++) {
-			// pigeonIndex = Math.floor(ballList[i].x/perceptionRange)+Math.floor(ballList[i].y/perceptionRange)*pigeonholeWidth;
-			// PigeonHoles[pigeonIndex].push(i);	
-			// ballList.pigeon = pigeonIndex
-		// }		
-
-	
-	// }
 	
 	// move the balls
 	function moveBalls() {
@@ -426,6 +333,7 @@ window.onload = function() {
 		align(theBalls);
 	//	bounce(theBalls);	
 	
+		// clean array
 		PigeonHoles = new Array();
 		// 600 array positions
 		for (var i=0; i<pigeonholeWidth*pigeonholeHeight; i++) {
@@ -440,36 +348,34 @@ window.onload = function() {
 			PigeonHoles[pigeonIndex].push(i);	
 			theBalls[i].pigeon = pigeonIndex;		
 		}
-	
-		// updatePigeonholes(theBalls)	
 		
-		var randomAngleInRadians = Math.random()*Math.PI*2;
+		
+		// Note - this prevents new agent creation in the middle of a cycle
+		// Downside, reduces user agency noticeably (creation latency)!
+		
+		if (addAgent) {
+			
+			var randomAngleInRadians = Math.random()*Math.PI*2;
+			b = makeBall( addAgentX, addAgentY, Math.cos(randomAngleInRadians) * speed, Math.sin(randomAngleInRadians) * speed );
+			theBalls.push(b)
 
-		b = makeBall( 50+Math.random()*500, 50+Math.random()*300, Math.cos(randomAngleInRadians) * speed, Math.sin(randomAngleInRadians) * speed );
-		theBalls.push(b)
-		
-		// pigeonIndex = Math.floor(b.x/perceptionRange)+(Math.floor(b.y/perceptionRange))*pigeonholeWidth;
-		// // 0 : pigeonholeWidth*pigeonholeHeight-1
-		// // Assumes Balls only ever added to end!
-		// PigeonHoles[pigeonIndex].push(theBalls.length);		
-	
+			addAgent = false;
+		}
+
 	}
 	
 	// what to do when things get clicked
-	// function doClick(evt){
-		// // a catch - we need to adjust for where the canvas is!
-		// // this is quite ugly without some degree of support from
-		// // a library
-		// var randomAngleInRadians = Math.random()*Math.PI*2;
-		// theBalls.push( makeBall(evt.pageX - theCanvas.offsetLeft,
-								// evt.pageY - theCanvas.offsetTop,
-								// Math.cos(randomAngleInRadians) * speed,
-								// Math.sin(randomAngleInRadians) * speed 
-								// ) );								
+	function doClick(evt){
+		// a catch - we need to adjust for where the canvas is!
+		// this is quite ugly without some degree of support from
+		// a library
 								
-								
-	// }
-	// theCanvas.addEventListener("mousemove",doClick,false);
+		addAgent = true;
+		addAgentX = evt.pageX - theCanvas.offsetLeft;
+		addAgentY = evt.pageY - theCanvas.offsetTop;
+						
+	}
+	theCanvas.addEventListener("mousemove",doClick,false);
 	
 	// what we need to do is define a function that updates the position
 	// draws, then schedules another iteration in the future
@@ -479,9 +385,8 @@ window.onload = function() {
 		drawBalls();	// show things
 		reqFrame(drawLoop);	// call us again in 20ms
 		// print number of Balls
-		
-		
-		// Jquery code!
+
+		// Jquery code to display number of Balls beneath canvas
 		var x = document.getElementById("canvas_info");
 		if ( !x)
 		{
@@ -490,8 +395,6 @@ window.onload = function() {
 		}		
 		$("#canvas_info").html(theBalls.length);
 
-		
-		
 	}
 	drawLoop();
 }
