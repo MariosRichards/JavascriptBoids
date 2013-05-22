@@ -42,7 +42,7 @@ window.onload = function() {
 	var directionIndicatorLength = genericRadius;
 	var perceptionRange = 20;
 	var perceptionRangeSquared = perceptionRange*perceptionRange;
-	var initialPopulation = 40;
+	var initialPopulation = 400;
 	
 	// note - am assuming canvas won't change size!!
 	var pigeonholeWidth = Math.ceil(theCanvas.width/perceptionRange);
@@ -68,15 +68,15 @@ window.onload = function() {
 		"stroke" : genericStroke,
 		
 		draw : function() {
-			theContext.strokeStyle = this.stroke;
-			theContext.fillStyle = this.colour;
+			theContext.strokeStyle = "#728FCE";
+//			theContext.fillStyle = this.colour;
 			theContext.beginPath();
-			theContext.arc(this.x,this.y,this.radius,0,circ,true);
+			theContext.arc(this.x,this.y,perceptionRange,0,circ,true);
 			theContext.moveTo(this.x,this.y);
 			theContext.lineTo(this.x + directionIndicatorLength*this.vX, this.y + directionIndicatorLength*this.vY);
 			theContext.closePath();
 			theContext.stroke();
-			theContext.fill();			
+//			theContext.fill();			
 		},
 		
 		// make 'em "bounce" when they go over the edge
@@ -220,12 +220,14 @@ window.onload = function() {
 			}
 		}
 	}
-
+	
+	
+// TESTFUNCTION!!!!!!
 	// Reynold's like alignment
 	// each boid tries to make it's velocity to be similar to its neighbors
 	// recipricol falloff in weight (allignment parameter + d
 	// this assumes the velocities will be renormalized
-	function align(ballList)
+	function Oldalign(ballList)
 	{
 	// Marios: Some pretty terrible purpose commenting here!
 		//var ali = 0.6; // alignment parameter - between 0 and 1
@@ -235,12 +237,12 @@ window.onload = function() {
 		// var newVX = new Array(ballList.length);
 		// var newVY = new Array(ballList.length);
 		
-		var newVX = [];
-		var newVY = [];
+		var newVX2 = [];
+		var newVY2 = [];
 		i = ballList.length;
 		while (i--) {
-			newVX[i] = 0;
-			newVY[i] = 0;			
+			newVX2[i] = 0;
+			newVY2[i] = 0;			
 		}
 		
 		// do the n^2 loop over all pairs, and sum up the contribution of each
@@ -250,9 +252,9 @@ window.onload = function() {
 			var biy = bi.y;
 			
 			// changed ali to be a weighting parameter on self-contribution!
-			newVX[i] += bi.vX*ali;
-			newVY[i] += bi.vY*ali;	
-			
+			newVX2[i] += bi.vX*ali;
+			newVY2[i] += bi.vY*ali;
+
 			// Marios: This section right here is why it crashes if
 			// the alignment parameter (ali) is set to 0 (as you can later on)
 			// The code should considers the contribution of the flight direction
@@ -260,6 +262,108 @@ window.onload = function() {
 			// but it actually includes itself (whem i==j) so if you set ali to 0
 			// you get a Divide By Zero error
 			
+			pigeonX = bi.pigeon%pigeonholeWidth; // 0 : pigeonholeWidth - 1
+			pigeonY = Math.floor(bi.pigeon/pigeonholeWidth); // 0 : pigeonholeHeight -1??
+			
+			// loop through the 9 tiles without trying access tiles that are outside of the canvas
+			for(var holeX = Math.min(pigeonX+1,pigeonholeWidth-1); holeX>= Math.max(pigeonX-1,0); holeX--) {
+			
+				for(var holeY = Math.min(pigeonY+1,pigeonholeHeight-1); holeY>= Math.max(pigeonY-1,0); holeY--) {
+				
+					pigeonhole = holeX + pigeonholeWidth*holeY;
+					// now iterate through the Balls in this pigeon if any
+					for(var interactant = PigeonHoles[pigeonhole].length-1; interactant>=0; interactant--) {
+		//				alert("random statement");
+	//					alert(interactant);
+						j = PigeonHoles[pigeonhole][interactant];
+						// here is where you'd add an if statement to cut work in half!
+						if(i>j) {
+						// test if within perceptionRange
+							var bj = ballList[j];						
+							var dx = bj.x - bix;
+							var dy = bj.y - biy;
+							if ( (dx*dx + dy*dy) <= perceptionRangeSquared ) {
+							// add to the weighted sum
+								newVX2[i] += bj.vX;
+								newVY2[i] += bj.vY;			
+								// by symmetry
+								newVX2[j] += bi.vX;
+								newVY2[j] += bi.vY;	
+
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		
+		// compare results to validate new code!
+		
+
+		
+		// var screwed = false;
+		
+
+		// if(newVX.length !== newVX2.length) {
+			// screwed = true;
+			// console.log("newVX.length !== newVX2.length");
+		// }
+		// for(var j = newVX.length; j--;) {
+			// if( (newVX[j] - newVX2[j]) > .001) {
+				// screwed = true;
+				// console.log(newVX[j] - newVX2[j]);
+				// console.log(j);
+			// }
+		// }
+
+		// if(newVY.length !== newVY2.length) {
+			// screwed = true;
+			// console.log("newVY.length !== newVY2.length");
+		// }
+		// for(var j = newVY.length; j--;) {
+			// if( (newVY[j] - newVY2[j]) > .001) {
+				// screwed = true;
+				// console.log(newVY[j] - newVY2[j]);
+				// console.log(j);
+			// }
+		// }
+		
+		// if (screwed) {
+    		// console.log(screwed);
+			// debugger;
+        // }    
+		
+		for(var i=ballList.length-1; i>=0; i--) {
+			ballList[i].vX = newVX2[i];
+			ballList[i].vY = newVY2[i];
+		}		
+		
+	//	debugger;
+		
+	}	
+	
+
+	// Reynold's like alignment
+	// each boid tries to make it's velocity to be similar to its neighbors
+	// recipricol falloff in weight (allignment parameter + d
+	// this assumes the velocities will be renormalized
+	function createInteractionList(ballList)
+	{
+		
+		// clean InteractionList array of arrays!
+		InteractionList = new Array();
+		// 600 array positions
+		for (var i=0; i<ballList.length; i++) {
+			InteractionList[i] = new Array();
+		}			
+		
+
+		for(var i=ballList.length-1; i>=0; i--) {
+			var bi = ballList[i];
+			var bix = bi.x;
+			var biy = bi.y;
+					
 			pigeonX = bi.pigeon%pigeonholeWidth; // 0 : pigeonholeWidth - 1
 			pigeonY = Math.floor(bi.pigeon/pigeonholeWidth); // 0 : pigeonholeHeight -1??
 
@@ -280,12 +384,8 @@ window.onload = function() {
 							var dx = bj.x - bix;
 							var dy = bj.y - biy;
 							if ( (dx*dx + dy*dy) <= perceptionRangeSquared ) {
-							// add to the weighted sum
-								newVX[i] += bj.vX;
-								newVY[i] += bj.vY;			
-								// by symmetry
-								newVX[j] += bi.vX;
-								newVY[j] += bi.vY;	
+								
+								InteractionList[i].push(j);
 								
 							}
 						}
@@ -293,22 +393,95 @@ window.onload = function() {
 				}
 			}
 		}		
-			
-			
-			
-		for(var i=ballList.length-1; i>=0; i--) {
-			ballList[i].vX = newVX[i];
-			ballList[i].vY = newVY[i];
-		}		
-		
+
 	}
+	
+	
+	
+	function align(ballList,InteractionList)	
+	{
+
+	
+
+		// create and zero arrays
+		
+		// var newVX = [];
+		// var newVY = [];
+		
+		for(var interactor1 = ballList.length-1; interactor1>=0; interactor1--) {	
+		
+			// add your own velocity
+			var bi = ballList[interactor1];		
+
+			// // initialises the new array!
+			// newVX[interactor1] = bi.vX*ali;
+			// newVY[interactor1] = bi.vY*ali;			
+
+			for(var j = InteractionList[interactor1].length-1; j>=0; j--) {	
+
+				interactor2 = InteractionList[interactor1][j];
+				var bj = ballList[interactor2];
+
+				// Separation: steer to avoid crowding local flockmates
+				
+				
+				
+				
+				// Alignment: steer towards the average heading of local flockmates
+				// add to the sum
+				newVX[interactor1] += bj.vX;
+				newVY[interactor1] += bj.vY;			
+				// by symmetry
+				newVX[interactor2] += bi.vX;
+				newVY[interactor2] += bi.vY;			
+				
+				// Cohesion: steer to move toward the average position of local flockmates
+				
+				
+				
+				
+	
+			}
+		}		
+
+		
+		// // confirms update!
+		// for(var i=ballList.length-1; i>=0; i--) {
+			// ballList[i].vX = newVX[i];
+			// ballList[i].vY = newVY[i];
+		// }		
+
+
+	}
+	
+	
+	
+	
 	
 	
 	// move the balls
 	function moveBalls() {
 
-		align(theBalls);
+		// what can interact with what
+		createInteractionList(theBalls);
+
+		for(var i=theBalls.length-1; i>=0; i--) {		
+			var bi = theBalls[i];		
+
+			// initialises the new velocity array!
+			newVX[i] = bi.vX*ali;
+			newVY[i] = bi.vY*ali;		
+		}			
+		
+		// PUT YOUR RULE FUNCTIONS HERE
+		align(theBalls,InteractionList);
 	//	bounce(theBalls);	
+	
+		// confirms update!
+		for(var i=theBalls.length-1; i>=0; i--) {
+			theBalls[i].vX = newVX[i];
+			theBalls[i].vY = newVY[i];
+		}				
 	
 		// clean array
 		PigeonHoles = new Array();
@@ -383,6 +556,13 @@ window.onload = function() {
 	theBalls = [];
 	// create an array of pigeonholes
 	PigeonHoles = [];
+	// create the interaction list array;
+	InteractionList = [];
+
+	// temp veloctity variables
+	var newVX = [];
+	var newVY = [];	
+		
 	for (var i=0; i<pigeonholeWidth*pigeonholeHeight; i++) {
 	// 0 : pigeonholeWidth*pigeonholeHeight-1	
 		PigeonHoles[i] = new Array();
