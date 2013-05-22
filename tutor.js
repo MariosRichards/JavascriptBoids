@@ -36,10 +36,10 @@ window.onload = function() {
 	
 	// make everything go the same speed
 	// Marios: This is where I'm dumping any new parameters
-	var speed = 4.0;
-	var radius = 1;
+	var genericSpeed = 4.0; // this is just the speed at which I want to initialise all my Balls
+	var genericRadius = 1; // this is just the radius at which I want to initialise all my Balls
 	var ali = 10; // alignment parameter - between 0 and 1	
-	var directionIndicatorLength = radius;
+	var directionIndicatorLength = genericRadius;
 	var perceptionRange = 20;
 	var perceptionRangeSquared = perceptionRange*perceptionRange;
 	var initialPopulation = 40;
@@ -62,12 +62,14 @@ window.onload = function() {
 		"vX" : 10,
 		"vY" : 10,
 		"pigeon" : 0, // pigeonhole
+		"speed" : genericSpeed,
+		"radius" : genericRadius,
 		
 		draw : function() {
 			theContext.strokeStyle = ballstroke;
 			theContext.fillStyle = ballcolor;
 			theContext.beginPath();
-			theContext.arc(this.x,this.y,radius,0,circ,true);
+			theContext.arc(this.x,this.y,this.radius,0,circ,true);
 			theContext.moveTo(this.x,this.y);
 			theContext.lineTo(this.x + directionIndicatorLength*this.vX, this.y + directionIndicatorLength*this.vY);
 			theContext.closePath();
@@ -91,20 +93,21 @@ window.onload = function() {
 			// Marios: Minor unnecessary optimisation - only checks for Upper penetration in an axis
 			// if Lower penetration has not occurred
 			
-			var penetrationUpper = this.x + radius - theCanvas.width;
-			var penetrationLower = radius - this.x;			
+			var penetrationUpper = this.x + this.radius - theCanvas.width;
+			var penetrationLower = this.radius - this.x;			
 			if (penetrationUpper > 0) {
 				this.vX = -this.vX;
 				this.x -= 2*penetrationUpper;
-			} // mutually exclusive events
+			} // mutually exclusive events 
+			// ASSUMES RADIUS SMALLER THAN HALF THE SCREEN
 			else if	(penetrationLower > 0) {
 				this.vX = -this.vX;
 				this.x += 2*penetrationLower;
 			}			
 			
 			
-			penetrationUpper = this.y + radius - theCanvas.height;
-			penetrationLower = radius - this.y;	
+			penetrationUpper = this.y + this.radius - theCanvas.height;
+			penetrationLower = this.radius - this.y;	
 			if (penetrationUpper > 0) {			
 				this.vY = -this.vY;
 				this.y -= 2*penetrationUpper;
@@ -124,12 +127,12 @@ window.onload = function() {
 				//Marios: Note - very unlikely to enter this loop ... but still
 				
 				var randomAngleInRadians = Math.random()*Math.PI*2;
-				this.vX = Math.cos(randomAngleInRadians) * speed;
-				this.vY = Math.sin(randomAngleInRadians) * speed;
+				this.vX = Math.cos(randomAngleInRadians) * this.speed;
+				this.vY = Math.sin(randomAngleInRadians) * this.speed;
 				
 				
 			} else {
-				z = speed / z;
+				z = this.speed / z;
 				this.vX *= z;
 				this.vY *= z;
 			}
@@ -141,7 +144,7 @@ window.onload = function() {
 	// and set its prototype to be the first ball
 	// (we probably could use create as well)
 	// then we set some other stuff if we want
-	function makeBall(x,y, vX, vY) {
+	function makeBall(x,y, vX, vY, radius) {
 
 		// Ugly Javascript object instantiation
 		Empty = function () {};
@@ -156,6 +159,7 @@ window.onload = function() {
 		ball.y = y;
 		ball.vX = vX;
 		ball.vY = vY;
+		ball.radius = radius;
 		
 		// make Ball note which pigeonhole it is in
 		ball.pigeon = Math.floor(x/perceptionRange) + (Math.floor(y/perceptionRange))*pigeonholeWidth;
@@ -169,10 +173,7 @@ window.onload = function() {
 		return ball;
 	}
 	
-	
 
-	
-	
 	// this function will do the drawing
 	function drawBalls() {
 		// clear the window
@@ -188,8 +189,9 @@ window.onload = function() {
 	// have them react in a simple way
 	// this assumes that everything has the same radius as the prototype
 	function bounce(ballList) {	
-		var rad = 2 * radius;
-		rad = rad*rad;
+		var rad = 0;
+//		var rad = 2 * radius;
+		// rad = rad*rad;
 		
 		for(var i=ballList.length-1; i>=0; i--) {
 			var bi = ballList[i];
@@ -197,6 +199,8 @@ window.onload = function() {
 			var biy = bi.y;
 			// notice that we do the n^2 checks here, slightly painful
 			for(var j=i-1; j>=0; j--) {
+				rad = ballList[i].radius + ballList[j].radius;
+				rad *= rad;
 				var bj = ballList[j];
 				var bjx = bj.x;
 				var bjy = bj.y;
@@ -325,7 +329,7 @@ window.onload = function() {
 		if (addAgent) {
 			
 			var randomAngleInRadians = Math.random()*Math.PI*2;
-			b = makeBall( addAgentX, addAgentY, Math.cos(randomAngleInRadians) * speed, Math.sin(randomAngleInRadians) * speed );
+			b = makeBall( addAgentX, addAgentY, Math.cos(randomAngleInRadians) * genericSpeed, Math.sin(randomAngleInRadians) * genericSpeed, Math.random()*5+1 );
 			theBalls.push(b)
 
 			addAgent = false;
@@ -385,7 +389,7 @@ window.onload = function() {
 	
 		var randomAngleInRadians = Math.random()*Math.PI*2;
 
-		b = makeBall( 50+Math.random()*500, 50+Math.random()*300, Math.cos(randomAngleInRadians) * speed, Math.sin(randomAngleInRadians) * speed );
+		b = makeBall( 50+Math.random()*500, 50+Math.random()*300, Math.cos(randomAngleInRadians) * genericSpeed, Math.sin(randomAngleInRadians) * genericSpeed, Math.random()*5+1 );
 		theBalls.push(b);
 		
 	}
