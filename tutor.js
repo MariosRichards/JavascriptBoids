@@ -30,8 +30,8 @@ window.onload = function() {
 	var theCanvas = document.getElementById("mycanvas");
 	var theContext = theCanvas.getContext("2d");
 	// these are effectively the constants
-	var ballcolor = "#FFFF00";		// yellow fill
-	var ballstroke = "#000000";		// black outline
+	var genericColour = "#FFFF00";		// yellow fill
+	var genericStroke = "#000000";		// black outline
 	var circ = Math.PI*2;			// complete circle
 	
 	// make everything go the same speed
@@ -64,10 +64,12 @@ window.onload = function() {
 		"pigeon" : 0, // pigeonhole
 		"speed" : genericSpeed,
 		"radius" : genericRadius,
+		"colour" : genericColour,
+		"stroke" : genericStroke,
 		
 		draw : function() {
-			theContext.strokeStyle = ballstroke;
-			theContext.fillStyle = ballcolor;
+			theContext.strokeStyle = this.stroke;
+			theContext.fillStyle = this.colour;
 			theContext.beginPath();
 			theContext.arc(this.x,this.y,this.radius,0,circ,true);
 			theContext.moveTo(this.x,this.y);
@@ -144,7 +146,7 @@ window.onload = function() {
 	// and set its prototype to be the first ball
 	// (we probably could use create as well)
 	// then we set some other stuff if we want
-	function makeBall(x,y, vX, vY, radius) {
+	function makeBall(x,y, vX, vY, radius, colour, stroke) {
 
 		// Ugly Javascript object instantiation
 		Empty = function () {};
@@ -160,6 +162,8 @@ window.onload = function() {
 		ball.vX = vX;
 		ball.vY = vY;
 		ball.radius = radius;
+		ball.colour = colour;
+		ball.stroke = stroke;
 		
 		// make Ball note which pigeonhole it is in
 		ball.pigeon = Math.floor(x/perceptionRange) + (Math.floor(y/perceptionRange))*pigeonholeWidth;
@@ -329,7 +333,7 @@ window.onload = function() {
 		if (addAgent) {
 			
 			var randomAngleInRadians = Math.random()*Math.PI*2;
-			b = makeBall( addAgentX, addAgentY, Math.cos(randomAngleInRadians) * genericSpeed, Math.sin(randomAngleInRadians) * genericSpeed, Math.random()*5+1 );
+			b = makeBall( addAgentX, addAgentY, Math.cos(randomAngleInRadians) * genericSpeed, Math.sin(randomAngleInRadians) * genericSpeed, Math.random()*5+1, genericColour, genericStroke );
 			theBalls.push(b)
 
 			addAgent = false;
@@ -389,7 +393,7 @@ window.onload = function() {
 	
 		var randomAngleInRadians = Math.random()*Math.PI*2;
 
-		b = makeBall( 50+Math.random()*500, 50+Math.random()*300, Math.cos(randomAngleInRadians) * genericSpeed, Math.sin(randomAngleInRadians) * genericSpeed, Math.random()*5+1 );
+		b = makeBall( 50+Math.random()*500, 50+Math.random()*300, Math.cos(randomAngleInRadians) * genericSpeed, Math.sin(randomAngleInRadians) * genericSpeed, Math.random()*5+1, genericColour, genericStroke );
 		theBalls.push(b);
 		
 	}
