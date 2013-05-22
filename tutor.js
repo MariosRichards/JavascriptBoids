@@ -55,6 +55,7 @@ window.onload = function() {
 	var directionIndicatorLength = radius;
 	var perceptionRange = 20;
 	var perceptionRangeSquared = perceptionRange*perceptionRange;
+	var initialPopulation = 40;
 	
 	// note - am assuming canvas won't change size!!
 	var pigeonholeWidth = Math.ceil(theCanvas.width/perceptionRange);
@@ -95,36 +96,30 @@ window.onload = function() {
 			
 			// Marios: My modifications implicitly assume you won't *appear* in the wall
 			
-			var penetration = this.x + radius - theCanvas.width;
-			if (penetration > 0) {
-			//	if (this.vX > 0) {
+			// Marios: Minor unnecessary optimisation - only checks for Upper penetration in an axis
+			// if Lower penetration has not occurred
+			
+			var penetrationUpper = this.x + radius - theCanvas.width;
+			var penetrationLower = radius - this.x;			
+			if (penetrationUpper > 0) {
 				this.vX = -this.vX;
-				this.x -= 2*penetration;
-			//	}
-			}
-			
-			penetration = this.y + radius - theCanvas.height;
-			if (penetration > 0) {			
-//				if (this.vY > 0) {
-				this.vY = -this.vY;
-				this.y -= 2*penetration;
-//				}
-			}
-			
-			penetration = radius - this.x;
-			if (penetration > 0) {
-//				if (this.vX < 0) {
+				this.x -= 2*penetrationUpper;
+			} // mutually exclusive events
+			else if	(penetrationLower > 0) {
 				this.vX = -this.vX;
-				this.x += 2*penetration;
-//				}
-			}
+				this.x += 2*penetrationLower;
+			}			
 			
-			penetration = radius - this.y;		
-			if (penetration > 0) {
-//				if (this.vY < 0) {
+			
+			penetrationUpper = this.y + radius - theCanvas.height;
+			penetrationLower = radius - this.y;	
+			if (penetrationUpper > 0) {			
 				this.vY = -this.vY;
-				this.y += 2*penetration;
-//				}
+				this.y -= 2*penetrationUpper;
+			}
+			else if (penetrationLower > 0) {
+				this.vY = -this.vY;
+				this.y += 2*penetrationLower;
 			}
 		},
 		
@@ -160,11 +155,12 @@ window.onload = function() {
 	// then we set some other stuff if we want
 	function makeBall(x,y, vX, vY) {
 
-	
+		// Ugly Javascript object instantiation
 		Empty = function () {};
-		Empty.prototype = aBall;	// don't ask why not ball.prototype=aBall;
+		Empty.prototype = aBall;	
 		ball = new Empty();
 		
+		// Prevent balls from being created overlapping with walls
 		x = Math.min( Math.max(x , radius) , (theCanvas.width-radius));
 		y = Math.min( Math.max(y , radius) , (theCanvas.height-radius));
 		
@@ -173,33 +169,40 @@ window.onload = function() {
 		ball.vX = vX;
 		ball.vY = vY;
 		
-		// put ball in correct pigeonhole
+		// make Ball note which pigeonhole it is in
 		ball.pigeon = Math.floor(x/perceptionRange) + (Math.floor(y/perceptionRange))*pigeonholeWidth;
 		// 0 : pigeonholeWidth*pigeonholeHeight-1
+		
+		// add ball to pigeonhole
+//		pigeonIndex = Math.floor(b.x/perceptionRange)+(Math.floor(b.y/perceptionRange))*pigeonholeWidth;
+		// 0 : pigeonholeWidth*pigeonholeHeight-1
+		// Assumes Balls are *always* added instantly after creation *and* that they are always added at the end
+		PigeonHoles[ball.pigeon].push(theBalls.length);			
+		
 		return ball;
 	}
 	
 	// make an array of balls
 	theBalls = [];
+	// create an array of pigeonholes
 	PigeonHoles = [];
-	
-	// Marios: Create clean set of pigeonholes
-	//PigeonHoles = new Array();
 	for (var i=0; i<pigeonholeWidth*pigeonholeHeight; i++) {
 	// 0 : pigeonholeWidth*pigeonholeHeight-1	
 		PigeonHoles[i] = new Array();
 	}
 	
-	for (var i=0; i<2000; i++) {
+	// create initialPopulation Balls
+	for (var i=0; i<initialPopulation; i++) {
 	
 		var randomAngleInRadians = Math.random()*Math.PI*2;
 
+		
 		b = makeBall( 50+Math.random()*500, 50+Math.random()*300, Math.cos(randomAngleInRadians) * speed, Math.sin(randomAngleInRadians) * speed );
 		theBalls.push(b)
 		
-		pigeonIndex = Math.floor(b.x/perceptionRange)+(Math.floor(b.y/perceptionRange))*pigeonholeWidth;
-		// 0 : pigeonholeWidth*pigeonholeHeight-1
-		PigeonHoles[pigeonIndex].push(i);
+		// pigeonIndex = Math.floor(b.x/perceptionRange)+(Math.floor(b.y/perceptionRange))*pigeonholeWidth;
+		// // 0 : pigeonholeWidth*pigeonholeHeight-1
+		// PigeonHoles[pigeonIndex].push(i);
 		
 	}
 	
@@ -391,8 +394,8 @@ window.onload = function() {
         // }    
 		
 		for(var i=ballList.length-1; i>=0; i--) {
-			ballList[i].vX = newVX2[i];
-			ballList[i].vY = newVY2[i];
+			ballList[i].vX = newVX[i];
+			ballList[i].vY = newVY[i];
 		}		
 		
 	//	debugger;
@@ -445,9 +448,10 @@ window.onload = function() {
 		b = makeBall( 50+Math.random()*500, 50+Math.random()*300, Math.cos(randomAngleInRadians) * speed, Math.sin(randomAngleInRadians) * speed );
 		theBalls.push(b)
 		
-		pigeonIndex = Math.floor(b.x/perceptionRange)+(Math.floor(b.y/perceptionRange))*pigeonholeWidth;
-		// 0 : pigeonholeWidth*pigeonholeHeight-1
-		PigeonHoles[pigeonIndex].push(i);		
+		// pigeonIndex = Math.floor(b.x/perceptionRange)+(Math.floor(b.y/perceptionRange))*pigeonholeWidth;
+		// // 0 : pigeonholeWidth*pigeonholeHeight-1
+		// // Assumes Balls only ever added to end!
+		// PigeonHoles[pigeonIndex].push(theBalls.length);		
 	
 	}
 	
