@@ -1,6 +1,7 @@
 $(document).ready(function(){ 
 	$("#stopbutton").click(stopButtonCB);
-//	start(100);
+	c = new Boid.Agent();
+	c.start();
 				
 	makeSlider("Radius:",function(v){}, {value:10, min:2, max:30, step:1});
 	makeSlider("Align:",function(v){}, {value:.1, min:0, max:1, step:.05});
