@@ -28,20 +28,26 @@ Boid.Agent = function()
 		// these are effectively the constants
 	var theCanvas     = this.theCanvas;
 	var theContext  = this.theContext;
-	this.genericColour = "#FFFF00";        // yellow fill
-	this.genericStroke = "#000000";        // black outline
+//	this.genericColour = "#FFFF00";        // yellow fill
+	this.genericStroke = "#728FCE";        // black outline
 	this.circ = Math.PI*2;            // complete circle
 	var circ = this.circ;
 
 	this.genericSpeed = 4.0; // this is just the speed at which I want to initialise all my Balls
 	this.genericRadius = 1; // this is just the radius at which I want to initialise all my Balls
-	this.ali = 10; // alignment parameter - between 0 and 1
-	this.directionIndicatorLength = this.genericRadius;
-	var directionIndicatorLength = this.directionIndicatorLength;
+
+
 	this.perceptionRange = 20;
 	var perceptionRange = this.perceptionRange;
 	this.perceptionRangeSquared = this.perceptionRange*this.perceptionRange;
-	this.initialPopulation = 400;
+	this.initialPopulation = 40;
+	this.directionIndicatorLength = this.perceptionRange;
+	var directionIndicatorLength = this.directionIndicatorLength;	
+	
+	this.RepCoeff  = 1; // repulsion coefficient
+    this.AliCoeff  = 1;	// alignment coefficient
+	this.CohCoeff  = 0;	// cohesion coefficient
+	
 
     // note - am assuming canvas won't change size!!
     this.pigeonholeWidth = Math.ceil(this.theCanvas.width/this.perceptionRange);
@@ -70,7 +76,7 @@ Boid.Agent = function()
             theContext.beginPath();
             theContext.arc(this.x,this.y, perceptionRange,0, circ,true);
             theContext.moveTo(this.x,this.y);
-            theContext.lineTo(this.x + directionIndicatorLength*this.vX, this.y + directionIndicatorLength*this.vY);
+            theContext.lineTo(this.x + directionIndicatorLength*this.vX/this.speed, this.y + directionIndicatorLength*this.vY/this.speed);
             theContext.closePath();
             theContext.stroke();
 			
@@ -178,7 +184,7 @@ Boid.Agent = function()
 
         // 600 array positions
         for (var i=ballList.length-1; i>=0; i--) {
-            self.InteractionList[i] = new Array();
+            InteractionList[i] = new Array();
         }
 
         for(var i=ballList.length-1; i>=0; i--) {
@@ -220,9 +226,85 @@ Boid.Agent = function()
 
     this.align = function(ballList,InteractionList)
     {
-		var InteractionList     = self.InteractionList;
+		//var InteractionList     = self.InteractionList;
 		var interactor2;
+		var RepCoeff    = self.RepCoeff;
+        var AliCoeff   = self.AliCoeff;		
+		var CohCoeff   = self.CohCoeff;	
 
+
+		// for(var interactor1 = ballList.length-1; interactor1>=0; interactor1--) {	
+		
+			// // add your own velocity
+			// var bi = ballList[interactor1];		
+			
+			// // initialises the new velocity array!
+			// newVX[interactor1] = bi.vX;
+			// newVY[interactor1] = bi.vY;			
+
+			// // will probably remove this crude weighting!
+			
+			// AlignmentX = 0;
+			// AlignmentY = 0;
+			
+			// CohesionX = 0;
+			// CohesionY = 0;
+			
+			// RepulsionX = 0;
+			// RepulsionY = 0;
+			
+			// // TOO CLEVER - USING SYMMETRY MAKES OTHER STUFF HARDER!
+			
+			// Interactions = InteractionList[interactor1].length;
+
+			// if (Interactions > 0) {
+			
+				// for(var j = Interactions-1; j>=0; j--) {	
+
+					// interactor2 = InteractionList[interactor1][j];
+					// var bj = ballList[interactor2];
+
+					// // Repulsion: steer to avoid crowding local flockmates
+					
+					// var bxs = bi.x - bj.x;
+					// var bys = bi.y - bj.y;
+					// var invdistsq = 4/(1 + bxs*bxs + bys*bys);
+
+					// // vector from j to i weighted by inverse square distance
+					// RepulsionX += bxs*invdistsq;
+					// RepulsionY += bys*invdistsq;				
+					
+					// // Alignment: steer towards the average heading of local flockmates
+					// // add to the sum
+					
+					// AlignmentX += bj.vX;
+					// AlignmentY += bj.vY;
+										
+					// // Cohesion: steer to move toward the average position of local flockmates
+					
+					// // vector from i to j
+					// CohesionX -= bxs;
+					// CohesionY -= bys;
+					
+				// }
+			
+				// // preparing these vectors for separate representation!
+				// // all of these defined as mean
+				// RepulsionX /= Interactions;				
+				// RepulsionY /= Interactions;
+				// AlignmentX /= Interactions;
+				// AlignmentY /= Interactions;
+				// CohesionX  /= Interactions;
+				// CohesionY  /= Interactions;				
+							
+				// newVX[interactor1] += RepCoeff*RepulsionX + AliCoeff*AlignmentX + CohCoeff*CohesionX;
+				// newVY[interactor1] += RepCoeff*RepulsionY + AliCoeff*AlignmentY + CohCoeff*CohesionY;				
+							
+			// }
+
+		// }			
+		
+		
         for(var interactor1 = ballList.length-1; interactor1>=0; interactor1--) {
 
             // add your own velocity
@@ -257,6 +339,7 @@ Boid.Agent = function()
                 // Cohesion: steer to move toward the average position of local flockmates
             }
         }
+		
     }
 
 
@@ -317,7 +400,7 @@ Boid.Agent = function()
         if (self.addAgent) {
 
             var randomAngleInRadians = Math.random()*Math.PI*2;
-            b = self.makeBall( addAgentX, addAgentY, Math.cos(randomAngleInRadians) * self.genericSpeed, Math.sin(randomAngleInRadians) * self.genericSpeed, Math.random()*5+1, self.genericColour, self.genericStroke );
+            b = self.makeBall( self.addAgentX, self.addAgentY, Math.cos(randomAngleInRadians) * self.genericSpeed, Math.sin(randomAngleInRadians) * self.genericSpeed, Math.random()*5+1, self.genericColour, self.genericStroke );
             theBalls.push(b);
 
             self.addAgent = false;
@@ -334,12 +417,13 @@ Boid.Agent = function()
         // a catch - we need to adjust for where the canvas is!
         // this is quite ugly without some degree of support from
         // a library
-        var addAgent = self.addAgent;
+        // var addAgent = self.addAgent;
         var theCanvas = self.theCanvas;
 
-        addAgent = true;
-        addAgentX = evt.pageX - theCanvas.offsetLeft;
-        addAgentY = evt.pageY - theCanvas.offsetTop;
+				
+        self.addAgent = true;
+        self.addAgentX = evt.pageX - theCanvas.offsetLeft;
+        self.addAgentY = evt.pageY - theCanvas.offsetTop;
 
     }
 
@@ -389,8 +473,9 @@ Boid.Agent = function()
 							  Math.sin(randomAngleInRadians) * self.genericSpeed,
 							  Math.random()*5+1, self.genericColour, self.genericStroke );
 			theBalls.push(b);
-			}
-
+		}
+			
+		theCanvas.addEventListener("mousemove",this.doClick,false);	
 		self.loop();
     }
 
