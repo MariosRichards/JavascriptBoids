@@ -38,11 +38,18 @@ window.onload = function() {
 	// Marios: This is where I'm dumping any new parameters
 	var genericSpeed = 4.0; // this is just the speed at which I want to initialise all my Balls
 	var genericRadius = 1; // this is just the radius at which I want to initialise all my Balls
-	var ali = 10; // alignment parameter - between 0 and 1	
-	var directionIndicatorLength = genericRadius;
-	var perceptionRange = 20;
+	// radius only effects interactions with the wall!
+//	var ali = 10; // alignment parameter - between 0 and 1	
+
+	var perceptionRange = 10;
+	var directionIndicatorLength = perceptionRange;	
 	var perceptionRangeSquared = perceptionRange*perceptionRange;
-	var initialPopulation = 2000;
+	var initialPopulation = 40;
+	
+	var RepCoeff = 1;
+	var AliCoeff = 1; 
+	var CohCoeff = 0;
+	
 	
 	// note - am assuming canvas won't change size!!
 	var pigeonholeWidth = Math.ceil(theCanvas.width/perceptionRange);
@@ -73,7 +80,7 @@ window.onload = function() {
 			theContext.beginPath();
 			theContext.arc(this.x,this.y,perceptionRange,0,circ,true);
 			theContext.moveTo(this.x,this.y);
-			theContext.lineTo(this.x + directionIndicatorLength*this.vX, this.y + directionIndicatorLength*this.vY);
+			theContext.lineTo(this.x + directionIndicatorLength*this.vX/this.speed, this.y + directionIndicatorLength*this.vY/this.speed);
 			theContext.closePath();
 			theContext.stroke();
 //			theContext.fill();			
@@ -252,8 +259,8 @@ window.onload = function() {
 			var biy = bi.y;
 			
 			// changed ali to be a weighting parameter on self-contribution!
-			newVX2[i] += bi.vX*ali;
-			newVY2[i] += bi.vY*ali;
+			newVX2[i] += bi.vX;
+			newVY2[i] += bi.vY;
 
 			// Marios: This section right here is why it crashes if
 			// the alignment parameter (ali) is set to 0 (as you can later on)
@@ -378,7 +385,7 @@ window.onload = function() {
 
 						j = PigeonHoles[pigeonhole][interactant];
 						// here is where you'd add an if statement to cut work in half!
-						if(j>i) { //
+						if(j!=i) { // j>i
 						// test if within perceptionRange
 							var bj = ballList[j];						
 							var dx = bj.x - bix;
@@ -397,7 +404,7 @@ window.onload = function() {
 	
 	
 	
-	function align(ballList,InteractionList)	
+	function applyRules(ballList,InteractionList)	
 	{
 
 		
@@ -405,42 +412,89 @@ window.onload = function() {
 		
 			// add your own velocity
 			var bi = ballList[interactor1];		
+			
+			// initialises the new velocity array!
+			newVX[interactor1] = bi.vX;
+			newVY[interactor1] = bi.vY;			
 
+			// will probably remove this crude weighting!
+			
+			AlignmentX = 0;
+			AlignmentY = 0;
+			
+			CohesionX = 0;
+			CohesionY = 0;
+			
+			RepulsionX = 0;
+			RepulsionY = 0;
+			
+			// TOO CLEVER - USING SYMMETRY MAKES OTHER STUFF HARDER!
+			
+			Interactions = InteractionList[interactor1].length;
 
-			for(var j = InteractionList[interactor1].length-1; j>=0; j--) {	
+			if (Interactions > 0) {
+			
+				for(var j = Interactions-1; j>=0; j--) {	
 
-				interactor2 = InteractionList[interactor1][j];
-				var bj = ballList[interactor2];
+					interactor2 = InteractionList[interactor1][j];
+					var bj = ballList[interactor2];
 
-				// Separation: steer to avoid crowding local flockmates
-				
-				var bxs = bi.x - bj.x;
-				var bys = bi.y - bj.y;
-				var distsq = (1 + bxs*bxs + bys*bys)/4;
-				bxs/=distsq;
-				bys/=distsq;
+					// Repulsion: steer to avoid crowding local flockmates
+					
+					var bxs = bi.x - bj.x;
+					var bys = bi.y - bj.y;
+					var invdistsq = 4/(1 + bxs*bxs + bys*bys);
 
-				newVX[interactor1] += bxs;
-				newVY[interactor1] += bys;
+					// vector from j to i weighted by inverse square distance
+					RepulsionX += bxs*invdistsq;
+					RepulsionY += bys*invdistsq;
+					
+					// newVX[interactor1] += bxs;
+					// newVY[interactor1] += bys;
 
-				newVX[interactor2] -= bxs;
-				newVY[interactor2] -= bys;					
+					// newVX[interactor2] -= bxs;
+					// newVY[interactor2] -= bys;					
+					
+					// Alignment: steer towards the average heading of local flockmates
+					// add to the sum
+					
+					AlignmentX += bj.vX;
+					AlignmentY += bj.vY;
+					
+					// newVX[interactor1] += bj.vX;
+					// newVY[interactor1] += bj.vY;			
+					// by symmetry
+					// newVX[interactor2] += bi.vX;
+					// newVY[interactor2] += bi.vY;			
+					
+					// Cohesion: steer to move toward the average position of local flockmates
+					
+					// vector from i to j
+					CohesionX -= bxs;
+					CohesionY -= bys;
+					
+				}
+			
+				// preparing these vectors for separate representation!
+				// all of these defined as mean
+				RepulsionX /= Interactions;				
+				RepulsionY /= Interactions;
+				AlignmentX /= Interactions;
+				AlignmentY /= Interactions;
+				CohesionX  /= Interactions;
+				CohesionY  /= Interactions;				
 				
-				// Alignment: steer towards the average heading of local flockmates
-				// add to the sum
-				newVX[interactor1] += bj.vX;
-				newVY[interactor1] += bj.vY;			
-				// by symmetry
-				newVX[interactor2] += bi.vX;
-				newVY[interactor2] += bi.vY;			
-				
-				// Cohesion: steer to move toward the average position of local flockmates
+			
+				newVX[interactor1] += RepCoeff*RepulsionX + AliCoeff*AlignmentX + CohCoeff*CohesionX;
+				newVY[interactor1] += RepCoeff*RepulsionY + AliCoeff*AlignmentY + CohCoeff*CohesionY;				
 				
 				
-				
-				
-	
 			}
+			
+			
+			
+			
+			
 		}		
 
 		
@@ -460,38 +514,50 @@ window.onload = function() {
 		// what can interact with what
 		createInteractionList(theBalls);
 
-		for(var i=theBalls.length-1; i>=0; i--) {		
-			var bi = theBalls[i];		
+		// for(var i=theBalls.length-1; i>=0; i--) {		
+			// var bi = theBalls[i];		
 
-			// initialises the new velocity array!
-			newVX[i] = bi.vX*ali;
-			newVY[i] = bi.vY*ali;		
-		}			
+			// // initialises the new velocity array!
+			// newVX[i] = bi.vX*ali;
+			// newVY[i] = bi.vY*ali;		
+		// }			
 		
 		// PUT YOUR RULE FUNCTIONS HERE
-		align(theBalls,InteractionList);
+		applyRules(theBalls,InteractionList);
 	//	bounce(theBalls);	
 	
 		// confirms update!
 		for(var i=theBalls.length-1; i>=0; i--) {
 			var nvx = newVX[i];
 			var nvy = newVY[i];
-			normalisingCoefficient = theBalls[i].speed/Math.sqrt(nvx*nvx + nvy*nvy);
-			theBalls[i].vX = nvx*normalisingCoefficient;
-			theBalls[i].vY = nvy*normalisingCoefficient;
+			// any chance of zero velocity?
+			var z = Math.sqrt(nvx*nvx + nvy*nvy);
+			if (z<.001) {
+				//Marios: Note - very unlikely to enter this loop ... but still
+				
+				var randomAngleInRadians = Math.random()*Math.PI*2;
+				theBalls[i].vX = Math.cos(randomAngleInRadians) * theBalls[i].speed;
+				theBalls[i].vY = Math.sin(randomAngleInRadians) * theBalls[i].speed;
+				
+			}
+			else {				
+				normalisingCoefficient = theBalls[i].speed/z;
+				theBalls[i].vX = nvx*normalisingCoefficient;
+				theBalls[i].vY = nvy*normalisingCoefficient;
+			}
 		}				
 	
 		// clean array
 		PigeonHoles = new Array();
 		// 600 array positions
-		for (var i=0; i<pigeonholeWidth*pigeonholeHeight; i++) {
+		for (var i=pigeonholeWidth*pigeonholeHeight-1; i>=0; i--) {
 			PigeonHoles[i] = new Array();
 		}		
 	
-	
-		for (var i=0; i<theBalls.length; i++) {
-			//theBalls[i].norm();
+
+		for(var i=theBalls.length-1; i>=0; i--) {
 			theBalls[i].move();
+
 			pigeonIndex = Math.floor(theBalls[i].x/perceptionRange)+Math.floor(theBalls[i].y/perceptionRange)*pigeonholeWidth;
 			PigeonHoles[pigeonIndex].push(i);	
 			theBalls[i].pigeon = pigeonIndex;		
@@ -557,7 +623,7 @@ window.onload = function() {
 	// create the interaction list array;
 	InteractionList = [];
 
-	// temp veloctity variables
+	// temp velocity variables
 	var newVX = [];
 	var newVY = [];	
 		

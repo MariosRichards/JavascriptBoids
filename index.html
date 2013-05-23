@@ -9,16 +9,25 @@
 
 <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js" type="text/javascript"></script>
 
-<script type="text/javascript" src="tutor.js"></script>        
+<script type="text/javascript" src="tutor.js"></script>  
+<script type="text/javascript" src="boids-jqui.js"></script>
+
 </head>
 <body>
-<p>This is Professor Gleicher's Javascript Boids tutorial. You may want to look at the <a href="instructions.html">instructions</a>.</p>
-<p>This is Phase 13. Now with alignment. It's really flocking.</p>
-        <div>
+<p>Based on Professor Gleicher's Javascript Boids tutorial. You may want to look at the <a href="instructions.html">instructions</a>.</p>
+    <div>
         	<canvas id="mycanvas" width="600" height=400 style="border-color:#999; border-style:solid;"></canvas>
     
 
     </div>
+        <div id="panel" class="boxed inset panel">
+        	<h2>Controls</h2>
+        	<div id="controls" class="inset">
+        		<button id="stopbutton">stop</button>
+        	</div>
+
+        </div>
+	
 	
 	
 <div id = "Marios"></div>
