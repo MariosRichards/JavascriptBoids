@@ -3,9 +3,9 @@ $(document).ready(function(){
 	c = new Boid.Agent();
 	c.start();
 				
-	makeSlider("Radius:",function(v){}, {value:10, min:2, max:30, step:1});
-	makeSlider("Align:",function(v){}, {value:.1, min:0, max:1, step:.05});
-	makeSlider("Vel:",function(v){}, {value:10, min:2, max:30, step:1});
+	makeSlider("AliCoeff:",function(v){c.AliCoeff = v}, {value:1, min:0, max:10, step:.05});
+	makeSlider("RepCoeff:",function(v){c.RepCoeff = v}, {value:1, min:0, max:10, step:.05});
+	makeSlider("CohCoeff:",function(v){c.CohCoeff = v}, {value:0, min:0, max:10, step:.05});
 
 	// makeSlider("Radius:",function(v){theBoids.params.radius = v}, {value:10, min:2, max:30, step:1});
 	// makeSlider("Align:",function(v){theBoids.params.align = v}, {value:.1, min:0, max:1, step:.05});
@@ -16,13 +16,14 @@ $(document).ready(function(){
 
 function stopButtonCB()
 {
-	if (running) {
-		running = 0;
+	if (c.running) {
+		c.running = 0;
 		$("#stopbutton").html("start");
 	} else {
-		running = 1;
+		c.running = 1;
 		$("#stopbutton").html("stop");
-		reqFrame(animLoop,theCanvas);
+//		reqFrame(c.loop,c.theCanvas);
+		c.loop();
 	}
 }
 

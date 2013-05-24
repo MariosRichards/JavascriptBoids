@@ -58,6 +58,8 @@ Boid.Player = function(name, id ){
 Boid.Agent = function()
 {
 
+	this.running;
+
 // PLAYER STUFF
 	this.numberPlayers= 2;
 	this.thePlayers = [];
@@ -460,43 +462,51 @@ Boid.Agent = function()
     // WARNING: this is the simplest, but not the best, way to do this
     this.drawLoop = function() {
 	
-        self.moveBalls();    // new position
-        self.drawBalls();    // show things
+		if (this.running == 1) 
+		{	
+			self.moveBalls();    // new position
+			self.drawBalls();    // show things
 
-        // reqFrame(self.drawLoop);    // call us again in 20ms
-        // print number of Balls
+			// reqFrame(self.drawLoop);    // call us again in 20ms
+			// print number of Balls
 
-        // Jquery code to display number of Balls beneath canvas
-        var x = document.getElementById("canvas_info");
-        if ( !x)
-        {
-            var div = '<div id = "canvas_info"></div>';
-            $("body").append(div);
-        }
-        $("#canvas_info").html(self.theBalls.length);
+			// Jquery code to display number of Balls beneath canvas
+			var x = document.getElementById("canvas_info");
+			if ( !x)
+			{
+				var div = '<div id = "canvas_info"></div>';
+				$("body").append(div);
+			}
+			$("#canvas_info").html(self.theBalls.length);
+		}
 
     }
 
     this.loop = function()
     {
+
 		var s = 'BoidAgents[' + self.id + '].drawLoop()';
 		self.pid = window.setInterval(s, 50);
 		
 		// var reqFrame =
 		// window.requestAnimationFrame ||
-	          // window.webkitRequestAnimationFrame ||
-	          // window.mozRequestAnimationFrame ||
-	          // window.oRequestAnimationFrame ||
-	          // window.msRequestAnimationFrame ||
-	          // function(/* function FrameRequestCallback */ callback, /* DOMElement Element */ element){
-	            // window.setTimeout(callback, 1000 / 60);
+			  // window.webkitRequestAnimationFrame ||
+			  // window.mozRequestAnimationFrame ||
+			  // window.oRequestAnimationFrame ||
+			  // window.msRequestAnimationFrame ||
+			  // function(/* function FrameRequestCallback */ callback, /* DOMElement Element */ element){
+				// window.setTimeout(callback, 1000 / 60);
 				// };
-				
-
-
+					
     }
 
-
+	function setclicks()
+	{
+		theCanvas.onclick = function() { if (!this.running) {this.running=1; reqFrame(animLoop,theCanvas);}};
+		document.getElementById("stopbutton").onclick = function() {this.running=0;};
+	}
+	
+	
     this.start = function()
     {
 		var theBalls = self.theBalls;
@@ -514,7 +524,10 @@ Boid.Agent = function()
 							  self.genericStroke );
 			theBalls.push(b);
 		}
-		theCanvas.addEventListener("mousemove",this.doClick,false);			
+		theCanvas.addEventListener("mousemove",this.doClick,false);	
+
+		this.running = 1;
+		
 		self.loop();
     }
 
