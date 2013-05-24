@@ -237,7 +237,7 @@ Boid.Agent = function()
         var theContext = self.theContext;
         theContext.clearRect(0, 0, theCanvas.width, theCanvas.height);
         // draw the balls - too bad we can't use for i in theBalls
-        for (var i=0; i< self.theBalls.length; i++) {
+        for (var i=self.theBalls.length-1; i>=0; i--) {
             self.theBalls[i].draw();
         }
     }
@@ -257,7 +257,7 @@ Boid.Agent = function()
         // var PigeonHoles = self.PigeonHoles;
 
         // 600 array positions
-        for (var i=0; i<ballList.length; i++) {
+        for(var i=ballList.length-1; i>=0; i--) {
             InteractionList[i] = new Array();
         }
 
@@ -501,7 +501,7 @@ Boid.Agent = function()
     {
 		var theBalls = self.theBalls;
 
-		for (var i=0; i< self.initialPopulation; i++) {
+		for (var i=self.initialPopulation-1; i>=0; i--) {
 
 			var randomAngleInRadians = Math.random()*Math.PI*2;
 
@@ -518,14 +518,13 @@ Boid.Agent = function()
 		self.loop();
     }
 
-
-
+	
     this.init = function()
     {
 		self.id = BoidAgents.length;
 		BoidAgents.push(self);
 
-		for (var i=0; i < self.pigeonholeWidth*self.pigeonholeHeight; i++)
+		for (var i=self.pigeonholeWidth*self.pigeonholeHeight-1; i>=0; i--)
         {
 			this.PigeonHoles[i] = [];
         }
