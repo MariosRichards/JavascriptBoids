@@ -1,11 +1,13 @@
+
+
 $(document).ready(function(){ 
 	$("#stopbutton").click(stopButtonCB);
 	c = new Boid.Agent();
 	c.start();
 				
-	makeSlider("AliCoeff:",function(v){c.AliCoeff = v}, {value:1, min:0, max:10, step:.05});
-	makeSlider("RepCoeff:",function(v){c.RepCoeff = v}, {value:1, min:0, max:10, step:.05});
-	makeSlider("CohCoeff:",function(v){c.CohCoeff = v}, {value:0, min:0, max:10, step:.05});
+	makeSlider("Radius:",function(v){c.AliCoeff = v}, {value:1, min:0, max:10, step:.05});
+	makeSlider("Align:",function(v){c.RepCoeff = v}, {value:1, min:0, max:10, step:.05});
+	makeSlider("Vel:",function(v){c.CohCoeff = v}, {value:0, min:0, max:10, step:.05});
 
 	// makeSlider("Radius:",function(v){theBoids.params.radius = v}, {value:10, min:2, max:30, step:1});
 	// makeSlider("Align:",function(v){theBoids.params.align = v}, {value:.1, min:0, max:1, step:.05});

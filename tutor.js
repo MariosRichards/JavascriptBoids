@@ -117,7 +117,7 @@ Boid.Agent = function()
 	this.genericRadius = perceptionRange; // this is just the radius at which I want to initialise all my Balls	
 	this.genericSpeed = perceptionRange; // this is just the speed at which I want to initialise all my Balls	
 	
-	this.initialPopulation = 2000;
+	this.initialPopulation = 1000;
 
     // note - am assuming canvas won't change size!!
     this.pigeonholeWidth = Math.ceil(this.theCanvas.width/this.perceptionRange);
@@ -486,6 +486,7 @@ Boid.Agent = function()
     {
 
 		var s = 'BoidAgents[' + self.id + '].drawLoop()';
+		// var s = 'BoidAgents[' + self.id + '].drawLoop';
 		self.pid = window.setInterval(s, 50);
 		
 		// var reqFrame =
@@ -497,6 +498,8 @@ Boid.Agent = function()
 			  // function(/* function FrameRequestCallback */ callback, /* DOMElement Element */ element){
 				// window.setTimeout(callback, 1000 / 60);
 				// };
+				
+		// reqFrame(eval(s),this.theCanvas);
 					
     }
 
