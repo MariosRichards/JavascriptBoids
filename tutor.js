@@ -59,6 +59,7 @@ Boid.Agent = function()
 {
 
 	this.running;
+	var toroidal = 0;
 
 // PLAYER STUFF
 	this.numberPlayers= 2;
@@ -115,9 +116,9 @@ Boid.Agent = function()
 	var directionIndicatorLength = this.directionIndicatorLength;
 	
 	this.genericRadius = perceptionRange; // this is just the radius at which I want to initialise all my Balls	
-	this.genericSpeed = perceptionRange; // this is just the speed at which I want to initialise all my Balls	
+	this.genericSpeed = perceptionRange/2; // this is just the speed at which I want to initialise all my Balls	
 	
-	this.initialPopulation = 1000;
+	this.initialPopulation = 5000;
 
     // note - am assuming canvas won't change size!!
     this.pigeonholeWidth = Math.ceil(this.theCanvas.width/this.perceptionRange);
@@ -163,28 +164,39 @@ Boid.Agent = function()
             // Marios: Minor unnecessary optimisation - only checks for Upper penetration in an axis
             // if Lower penetration has not occurred
 
-            var penetrationUpper = this.x + this.radius - theCanvas.width;
-            var penetrationLower = this.radius - this.x;
-            if (penetrationUpper > 0) {
-                this.vX = -this.vX;
-                this.x -= 2*penetrationUpper;
-            } // mutually exclusive events
-            // ASSUMES RADIUS SMALLER THAN HALF THE SCREEN
-            else if    (penetrationLower > 0) {
-                this.vX = -this.vX;
-                this.x += 2*penetrationLower;
-            }
+			if (toroidal)
+			{
+			// Note - this ignores radius
+				this.x = (this.x+theCanvas.width)%theCanvas.width;
+				this.y = (this.y+theCanvas.height)%theCanvas.height;
 
-            penetrationUpper = this.y + this.radius - theCanvas.height;
-            penetrationLower = this.radius - this.y;
-            if (penetrationUpper > 0) {
-                this.vY = -this.vY;
-                this.y -= 2*penetrationUpper;
-            }
-            else if (penetrationLower > 0) {
-                this.vY = -this.vY;
-                this.y += 2*penetrationLower;
-            }
+			}
+			else
+			{
+
+				var penetrationUpper = this.x + this.radius - theCanvas.width;
+				var penetrationLower = this.radius - this.x;
+				if (penetrationUpper > 0) {
+					this.vX = -this.vX;
+					this.x -= 2*penetrationUpper;
+				} // mutually exclusive events
+				// ASSUMES RADIUS SMALLER THAN HALF THE SCREEN
+				else if    (penetrationLower > 0) {
+					this.vX = -this.vX;
+					this.x += 2*penetrationLower;
+				}
+
+				penetrationUpper = this.y + this.radius - theCanvas.height;
+				penetrationLower = this.radius - this.y;
+				if (penetrationUpper > 0) {
+					this.vY = -this.vY;
+					this.y -= 2*penetrationUpper;
+				}
+				else if (penetrationLower > 0) {
+					this.vY = -this.vY;
+					this.y += 2*penetrationLower;
+				}
+			}
         }
 
     };
@@ -272,31 +284,79 @@ Boid.Agent = function()
             pigeonX = bi.pigeon%pigeonholeWidth; // 0 : pigeonholeWidth - 1
             pigeonY = Math.floor(bi.pigeon/pigeonholeWidth); // 0 : pigeonholeHeight -1??
 
-            // loop through the 9 tiles without trying access tiles that are outside of the canvas
-            for(var holeX = Math.min(pigeonX+1,pigeonholeWidth-1); holeX>= Math.max(pigeonX-1,0); holeX--) {
+            // loop through the 9 tiles without trying access tiles that are outside of the canvas			
+			if (toroidal)
+			{
+				for(var holeX = pigeonX+1; holeX>= pigeonX-1; holeX--) {
+				//	holeX = (holeX+pigeonholeWidth)%pigeonholeWidth;
+					for(var holeY = pigeonY+1; holeY>= pigeonY-1; holeY--) {
+						//holeY = (holeY+pigeonholeHeight)%pigeonholeHeight;
+						
+						pigeonhole = ((holeX+pigeonholeWidth)%pigeonholeWidth) + pigeonholeWidth*((holeY+pigeonholeHeight)%pigeonholeHeight);
+						// now iterate through the Balls in this pigeon if any
+						if (pigeonhole < 0 || pigeonhole >= pigeonholeWidth*pigeonholeHeight) {
+							debugger;
+						}
+						for(var interactant = self.PigeonHoles[pigeonhole].length-1; interactant>=0; interactant--) {
 
-                for(var holeY = Math.min(pigeonY+1,pigeonholeHeight-1); holeY>= Math.max(pigeonY-1,0); holeY--) {
+							j = self.PigeonHoles[pigeonhole][interactant];
 
-                    pigeonhole = holeX + pigeonholeWidth*holeY;
-                    // now iterate through the Balls in this pigeon if any
-                    for(var interactant = self.PigeonHoles[pigeonhole].length-1; interactant>=0; interactant--) {
+							// here is where you'd add an if statement to cut work in half!
+							if(j != i) { //
 
-                        j = self.PigeonHoles[pigeonhole][interactant];
+							// test if within perceptionRange
+								var bj = ballList[j];
+								var dx = bj.x - bix;
+								var dy = bj.y - biy;
+								
+								if ( 2*Math.abs(dx) > theCanvas.width ) {
+									dx = theCanvas.width - Math.abs(dx);
+								}
+								
+								if ( 2*Math.abs(dy) > theCanvas.height ) {
+									dy = theCanvas.height - Math.abs(dy);
+								}								
+									
+								if ( (dx*dx + dy*dy) <= self.perceptionRangeSquared ) {
+								   // debugger;
+									InteractionList[i].push(j);
+								}
+							}
+						}	
+					}
+				}
+			}
+			else
+			{		
 
-                        // here is where you'd add an if statement to cut work in half!
-                        if(j != i) { //
+				for(var holeX = Math.min(pigeonX+1,pigeonholeWidth-1); holeX>= Math.max(pigeonX-1,0); holeX--) {
 
-                        // test if within perceptionRange
-                            var bj = ballList[j];
-                            var dx = bj.x - bix;
-                            var dy = bj.y - biy;
-                            if ( (dx*dx + dy*dy) <= self.perceptionRangeSquared ) {
-                                InteractionList[i].push(j);
-                            }
-                        }
-                    }
-                }
-            }
+					for(var holeY = Math.min(pigeonY+1,pigeonholeHeight-1); holeY>= Math.max(pigeonY-1,0); holeY--) {
+
+						pigeonhole = holeX + pigeonholeWidth*holeY;
+						// now iterate through the Balls in this pigeon if any
+						for(var interactant = self.PigeonHoles[pigeonhole].length-1; interactant>=0; interactant--) {
+
+							j = self.PigeonHoles[pigeonhole][interactant];
+
+							// here is where you'd add an if statement to cut work in half!
+							if(j != i) { //
+
+							// test if within perceptionRange
+								var bj = ballList[j];
+								var dx = bj.x - bix;
+								var dy = bj.y - biy;
+								if ( (dx*dx + dy*dy) <= self.perceptionRangeSquared ) {
+									InteractionList[i].push(j);
+								}
+							}
+						}
+					}
+				}
+			}
+			
+			
+			
 			self.InteractionList = InteractionList;
         }
     }
@@ -340,6 +400,17 @@ Boid.Agent = function()
 					
 					var bxs = bi.x - bj.x;
 					var bys = bi.y - bj.y;
+
+					if (toroidal) {
+						if ( 2*Math.abs(bxs) > theCanvas.width ) {
+							bxs = theCanvas.width - bxs;
+						}
+						
+						if ( 2*Math.abs(bys) > theCanvas.height ) {
+							bys = theCanvas.height - bys;
+						}
+					}
+					
 					var invdistsq = 4/(1 + bxs*bxs + bys*bys);
 
 					// vector from j to i weighted by inverse square distance
