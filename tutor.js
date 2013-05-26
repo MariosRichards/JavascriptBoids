@@ -59,7 +59,7 @@ Boid.Agent = function()
 {
 
 	this.running;
-	var toroidal = 0;
+	var toroidal = 1;
 
 // PLAYER STUFF
 	this.numberPlayers= 2;
