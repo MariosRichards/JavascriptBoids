@@ -59,7 +59,25 @@ Boid.Agent = function()
 {
 
 	this.running;
-	var toroidal = 1;
+	
+	// wall function choice
+	// 0 = Hard Bounce
+	// 1 = toroidal (no walls)
+	// 2 = Repulsion
+	
+	// WARNING: WALL COLLISION PLACES A CONSTRAINT ON MAXIMUM SPEED OF 1/4 PERCEPTION RANGE
+	// WHY 1/4?
+	var wallCollision = 0;
+	var wallRepulsion = 100;
+	// use negative indices to refer to objects
+	var wallLeft = -1;// -1 = left wall
+	var wallRight = -2;// -2 = right wall
+	var wallTop = -3;// -3 = upper wall
+	var wallBottom = -4;// -4 = lower wall
+	
+	
+
+	
 
 // PLAYER STUFF
 	this.numberPlayers= 2;
@@ -94,18 +112,23 @@ Boid.Agent = function()
 	var theCanvas   = this.theCanvas;
 	var theContext  = this.theContext;
 
-	this.genericStroke = "#728FCE";        // black outline
+	this.genericStroke = "#728FCE";        // steel blue outline
 	this.circ = Math.PI*2;            // complete circle
 
 	var circ = this.circ;
+	
+	
+	var Obstacles = 1; // turn obstacle interaction on(1)/off(0)
+	// obstacle is a circle
+	var obstacleRadius = 50;
+	var obstacleX = theCanvas.width/2;
+	var obstacleY = theCanvas.height/2;
+	var obstacleIndex = -5;
+	var obstacleRepulsion =100;
+	
 
 	// make everything go the same speed
 	// Marios: This is where I'm dumping any new parameters
-
-
-
-
-
 
 
 	this.perceptionRange = 5;
@@ -116,7 +139,8 @@ Boid.Agent = function()
 	var directionIndicatorLength = this.directionIndicatorLength;
 	
 	this.genericRadius = perceptionRange; // this is just the radius at which I want to initialise all my Balls	
-	this.genericSpeed = perceptionRange/2; // this is just the speed at which I want to initialise all my Balls	
+	this.genericSpeed = perceptionRange/4;
+	//perceptionRange/2; // this is just the speed at which I want to initialise all my Balls	
 	
 	this.initialPopulation = 5000;
 
@@ -159,19 +183,19 @@ Boid.Agent = function()
             this.y += this.vY;
 
             // Marios: Wouldn't need to check velocity if you could *only* hit the wall when moving in that direction
-            // Marios: Could remove wall issues by using toroidal space
+            // Marios: Could remove wall issues by using wallCollision space
             // Marios: My modifications implicitly assume you won't *appear* in the wall
             // Marios: Minor unnecessary optimisation - only checks for Upper penetration in an axis
             // if Lower penetration has not occurred
 
-			if (toroidal)
+			if (wallCollision==1) // toroidal
 			{
 			// Note - this ignores radius
 				this.x = (this.x+theCanvas.width)%theCanvas.width;
 				this.y = (this.y+theCanvas.height)%theCanvas.height;
 
 			}
-			else
+			else if (wallCollision==0) // hard bounce
 			{
 
 				var penetrationUpper = this.x + this.radius - theCanvas.width;
@@ -197,6 +221,9 @@ Boid.Agent = function()
 					this.y += 2*penetrationLower;
 				}
 			}
+			else // repulsion
+			{
+			}
         }
 
     };
@@ -210,7 +237,7 @@ Boid.Agent = function()
 		self.addAgent = true;
     }
 
-	this.makeBall = function(x,y, vX, vY, radius, colour, stroke) {
+	this.makeBall = function(x, y, vX, vY, radius, colour, stroke) {
 
         var theCanvas = this.theCanvas;
 
@@ -222,6 +249,27 @@ Boid.Agent = function()
         // Prevent balls from being created overlapping with walls
         x = Math.min( Math.max(x , radius) , (theCanvas.width-radius));
         y = Math.min( Math.max(y , radius) , (theCanvas.height-radius));
+		
+		// Prevent balls from being created inside obstacles
+		// ugly random positioning solution!
+		if (Obstacles==1)
+		{
+			// radius = Math.sqrt((obstacleX - x)*(obstacleX - x) + (obstacleY - y)*(obstacleY - y) );
+			while ( Math.sqrt((obstacleX - x)*(obstacleX - x) + (obstacleY - y)*(obstacleY - y) ) < (obstacleRadius) )
+			{
+
+				x = Math.random()*theCanvas.width;
+				y = Math.random()*theCanvas.height;
+				
+				x = Math.min( Math.max(x , radius) , (theCanvas.width-radius));
+				y = Math.min( Math.max(y , radius) , (theCanvas.height-radius));				
+						
+				// radius = Math.sqrt((obstacleX - x)^2 + (obstacleY - y)^2 );
+						
+			}
+
+		}
+		
 
         ball.x = x;
         ball.y = y;
@@ -254,6 +302,18 @@ Boid.Agent = function()
         for (var i=self.theBalls.length-1; i>=0; i--) {
             self.theBalls[i].draw();
         }
+		
+		// draw obstacles
+		if (Obstacles==1) {
+		
+            theContext.strokeStyle = "#FF0000";
+            theContext.beginPath();
+            theContext.arc(obstacleX,obstacleY, obstacleRadius,0, circ,true);
+            theContext.closePath();
+            theContext.stroke();
+
+		}
+		
     }
 
 
@@ -281,11 +341,22 @@ Boid.Agent = function()
             bix = bi.x;
             biy = bi.y;
 
-            pigeonX = bi.pigeon%pigeonholeWidth; // 0 : pigeonholeWidth - 1
+            pigeonX = bi.pigeon%pigeonholeWidth; // 0 : pigeonholeWidth-1
             pigeonY = Math.floor(bi.pigeon/pigeonholeWidth); // 0 : pigeonholeHeight -1??
-
+			
+			// Check for obstacles
+			if (Obstacles==1)
+			{
+			
+				if ( ((obstacleX - bix)*(obstacleX - bix) + (obstacleY - biy)*(obstacleY - biy)) < ((obstacleRadius + perceptionRange)*(obstacleRadius + perceptionRange)) )
+				{
+					InteractionList[i].push(obstacleIndex);
+				}
+				
+			}
+			
             // loop through the 9 tiles without trying access tiles that are outside of the canvas			
-			if (toroidal)
+			if (wallCollision==1)
 			{
 				for(var holeX = pigeonX+1; holeX>= pigeonX-1; holeX--) {
 				//	holeX = (holeX+pigeonholeWidth)%pigeonholeWidth;
@@ -326,7 +397,7 @@ Boid.Agent = function()
 					}
 				}
 			}
-			else
+			else if (wallCollision ==0)
 			{		
 
 				for(var holeX = Math.min(pigeonX+1,pigeonholeWidth-1); holeX>= Math.max(pigeonX-1,0); holeX--) {
@@ -354,9 +425,84 @@ Boid.Agent = function()
 					}
 				}
 			}
+			else //wallCollision by repulsion
+			{
+				//var wallLeft = -1;// -1 = left wall
+				//var wallRight = -2;// -2 = right wall
+				//var wallTop = -3;// -3 = upper wall
+				//var wallBottom = -4;// -4 = lower wall
+
+				// left/right wall near?
+
+				var penetrationUpper = bix + self.perceptionRange - this.theCanvas.width;
+				var penetrationLower = self.perceptionRange - bix;
+				if (penetrationUpper > 0) { // right wall
+					
+					InteractionList[i].push(wallRight);
+					
+					// this.vX = -this.vX;
+					// this.x -= 2*penetrationUpper;
+				} // mutually exclusive events
+				// ASSUMES RADIUS SMALLER THAN HALF THE SCREEN
+				else if (penetrationLower > 0) {
+					
+					InteractionList[i].push(wallLeft);
+					
+					// this.vX = -this.vX;
+					// this.x += 2*penetrationLower;
+				}
+
+				penetrationUpper = biy + self.perceptionRange - this.theCanvas.height;
+				penetrationLower = self.perceptionRange - biy;
+				if (penetrationUpper > 0) {
+				
+					InteractionList[i].push(wallTop);
+				
+				
+					// this.vY = -this.vY;
+					// this.y -= 2*penetrationUpper;
+				}
+				else if (penetrationLower > 0) {
+				
+					InteractionList[i].push(wallBottom);
+				
+					// this.vY = -this.vY;
+					// this.y += 2*penetrationLower;
+				}				
+				
+				
+
+				
+				// upper/lower wall near?
+				
 			
+				for(var holeX = Math.min(pigeonX+1,pigeonholeWidth-1); holeX>= Math.max(pigeonX-1,0); holeX--) {
+
+					for(var holeY = Math.min(pigeonY+1,pigeonholeHeight-1); holeY>= Math.max(pigeonY-1,0); holeY--) {
+
+						pigeonhole = holeX + pigeonholeWidth*holeY;
+						// now iterate through the Balls in this pigeon if any
+						for(var interactant = self.PigeonHoles[pigeonhole].length-1; interactant>=0; interactant--) {
+
+							j = self.PigeonHoles[pigeonhole][interactant];
+
+							// here is where you'd add an if statement to cut work in half!
+							if(j != i) { //
+
+							// test if within perceptionRange
+								var bj = ballList[j];
+								var dx = bj.x - bix;
+								var dy = bj.y - biy;
+								if ( (dx*dx + dy*dy) <= self.perceptionRangeSquared ) {
+									InteractionList[i].push(j);
+								}
+							}
+						}
+					}
+				}			
+			}
 			
-			
+		
 			self.InteractionList = InteractionList;
         }
     }
@@ -394,40 +540,98 @@ Boid.Agent = function()
 				for(var j = Interactions-1; j>=0; j--) {
 
 					interactor2 = InteractionList[interactor1][j];
-					var bj = ballList[interactor2];
+				
+					if (wallCollision==2 && interactor2<0 && interactor2>-5) { //wall collision by repulsion
 
-					// Repulsion: steer to avoid crowding local flockmates
-					
-					var bxs = bi.x - bj.x;
-					var bys = bi.y - bj.y;
-
-					if (toroidal) {
-						if ( 2*Math.abs(bxs) > theCanvas.width ) {
-							bxs = theCanvas.width - bxs;
+						// var wallLeft = -1;// -1 = left wall
+						// var wallRight = -2;// -2 = right wall
+						// var wallTop = -3;// -3 = upper wall
+						// var wallBottom = -4;// -4 = lower wall					
+						
+						if (interactor2 ==-1) {
+						
+							var bxs = bi.x;
+							RepulsionX += wallRepulsion*bxs/(1+Math.abs(bxs));
+						
 						}
 						
-						if ( 2*Math.abs(bys) > theCanvas.height ) {
-							bys = theCanvas.height - bys;
+						else if(interactor2 ==-2) {
+						
+							var bxs = bi.x - this.theCanvas.width;
+							RepulsionX += wallRepulsion*bxs/(1+Math.abs(bxs));
+						
 						}
+						
+						else if(interactor2 ==-3) {		
+
+							var bys = bi.y - this.theCanvas.height;
+							RepulsionY += wallRepulsion*bys/(1+Math.abs(bys));
+						
+						}
+						
+						else if(interactor2 ==-4) {
+						
+							var bys = bi.y;
+							RepulsionY += wallRepulsion*bys/(1+Math.abs(bys));
+						
+						}
+						
+						else
+						{
+							debugger;
+						}
+						
+						break;
+						//dreaded break command!
+						// filthy filthy filthy
 					}
-					
-					var invdistsq = 4/(1 + bxs*bxs + bys*bys);
+					else if (Obstacles ==1 && interactor2==-5)
+					{
+						
+							var bxs = bi.x-obstacleX;
+							var bys = bi.y-obstacleY;							
+							RepulsionX += obstacleRepulsion*bxs/(1+Math.abs(bxs));						
+							RepulsionY += obstacleRepulsion*bys/(1+Math.abs(bys));						
 
-					// vector from j to i weighted by inverse square distance
-					RepulsionX += bxs*invdistsq;
-					RepulsionY += bys*invdistsq;
+					}
+					else // interaction with another Ball
+					{
+						
+						var bj = ballList[interactor2];
 
-					// Alignment: steer towards the average heading of local flockmates
-					// add to the sum
-					
-					AlignmentX += bj.vX;
-					AlignmentY += bj.vY;
+						// Repulsion: steer to avoid crowding local flockmates
+						
+						var bxs = bi.x - bj.x;
+						var bys = bi.y - bj.y;
 
-					// Cohesion: steer to move toward the average position of local flockmates
-					
-					// vector from i to j
-					CohesionX -= bxs*Math.sqrt(invdistsq);
-					CohesionY -= bys*Math.sqrt(invdistsq);
+						if (wallCollision==1) { // toroidal wall collision
+							if ( 2*Math.abs(bxs) > theCanvas.width ) {
+								bxs = theCanvas.width - bxs;
+							}
+							
+							if ( 2*Math.abs(bys) > theCanvas.height ) {
+								bys = theCanvas.height - bys;
+							}
+						}
+						
+						var invdistsq = 4/(1 + bxs*bxs + bys*bys);
+
+						// vector from j to i weighted by inverse square distance
+						RepulsionX += bxs*invdistsq;
+						RepulsionY += bys*invdistsq;
+
+						// Alignment: steer towards the average heading of local flockmates
+						// add to the sum
+						
+						AlignmentX += bj.vX;
+						AlignmentY += bj.vY;
+
+						// Cohesion: steer to move toward the average position of local flockmates
+						
+						// vector from i to j
+						CohesionX -= bxs*Math.sqrt(invdistsq);
+						CohesionY -= bys*Math.sqrt(invdistsq);
+					}
 	
 				}
 				
