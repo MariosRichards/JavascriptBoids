@@ -93,29 +93,36 @@ Boid.Agent = function()
 	this.PigeonHoles = [];
 	// create the interaction list array;
 	this.InteractionList = [];
+	// temp velocity variables
+	var newVX = [];
+	var newVY = [];
+	this.theCanvas = document.getElementById("mycanvas");
+	this.theContext = this.theCanvas.getContext("2d");
+	// these are effectively the constants	
+	var theCanvas   = this.theCanvas;
+	var theContext  = this.theContext;
+	
+    // Semaphore variable to add agent
+    this.addAgent = false;
+    var addAgentX = 0;
+    var addAgentY = 0;	
+
+	this.genericStroke = "#728FCE";        // steel blue outline
+	this.circ = Math.PI*2;            // complete circle
+	var circ = this.circ;
+
+ 
+	
+	
+	
 	
 	// Rule coefficients
 	this.RepCoeff  = 1; // repulsion coefficient
     this.AliCoeff  = 1;	// alignment coefficient
 	this.CohCoeff  = 0;	// cohesion coefficient	
-	
-
-	// temp veloctity variables
-	var newVX = [];
-	var newVY = [];
 
 
-	this.theCanvas = document.getElementById("mycanvas");
-	this.theContext = this.theCanvas.getContext("2d");
-	// these are effectively the constants
 
-	var theCanvas   = this.theCanvas;
-	var theContext  = this.theContext;
-
-	this.genericStroke = "#728FCE";        // steel blue outline
-	this.circ = Math.PI*2;            // complete circle
-
-	var circ = this.circ;
 	
 	
 	var Obstacles = 1; // turn obstacle interaction on(1)/off(0)
@@ -144,15 +151,11 @@ Boid.Agent = function()
 	
 	this.initialPopulation = 5000;
 
-    // note - am assuming canvas won't change size!!
+   // note - am assuming canvas won't change size!!
     this.pigeonholeWidth = Math.ceil(this.theCanvas.width/this.perceptionRange);
     this.pigeonholeHeight = Math.ceil(this.theCanvas.height/this.perceptionRange);
 
-    // Semaphore variable to add agent
-    this.addAgent = false;
 
-    var addAgentX = 0;
-    var addAgentY = 0;
 
 
     this.aBall = {
@@ -281,6 +284,12 @@ Boid.Agent = function()
 
         // make Ball note which pigeonhole it is in
         ball.pigeon = Math.floor(x/ this.perceptionRange) + (Math.floor(y/this.perceptionRange)) * this.pigeonholeWidth;
+		
+		if (ball.pigeon >= this.pigeonholeWidth*this.pigeonholeHeight || ball.pigeon <0)
+		{
+			debugger;
+		}
+		
         // 0 : pigeonholeWidth*pigeonholeHeight-1
         // add ball to pigeonhole
         // 0 : pigeonholeWidth*pigeonholeHeight-1
@@ -793,8 +802,8 @@ Boid.Agent = function()
 
 			var randomAngleInRadians = Math.random()*Math.PI*2;
 
-			b = self.makeBall(50+Math.random()*500,
-							  50+Math.random()*300,
+			b = self.makeBall(theCanvas.width*Math.random(),
+							  theCanvas.height*Math.random(),
 							  Math.cos(randomAngleInRadians) * self.genericSpeed,
 							  Math.sin(randomAngleInRadians) * self.genericSpeed,
 							  self.genericRadius,
