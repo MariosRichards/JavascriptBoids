@@ -10,10 +10,11 @@ $(document).ready(function(){
 	makeSlider("Repulsion:",function(v){c.RepCoeff = v}, {value:1, min:0, max:10, step:.05});
 	makeSlider("Cohesion:",function(v){c.CohCoeff = v}, {value:0, min:0, max:10, step:.05});
 
-	makeSlider2("Initial Population:",function(v){c.initialPopulation = v}, {value:50, min:1, max:10000, step:1});
-	makeSlider2("Speed:",function(v){c.genericSpeed = v}, {value:1, min:.1, max:10, step:.05});
-	makeSlider2("Perception Range:",function(v){c.perceptionRange = v}, {value:5, min:1, max:100, step:1});	
-	
+	makeSlider2("Initial Population:",function(v){c.newInitialPopulation = v}, {value:50, min:1, max:10000, step:1});
+	makeSlider2("Speed:",function(v){c.newGenericSpeed = v}, {value:1, min:.1, max:10, step:.05});
+	makeSlider2("Perception Range:",function(v){c.newPerceptionRange = v}, {value:5, min:1, max:100, step:1});	
+	makeSlider2("Obstacles on/off:",function(v){c.newObstacles = v}, {value:1, min:0, max:1, step:1});		
+	makeSlider2("Wall Collision type:",function(v){c.newWallCollision = v}, {value:0, min:0, max:2, step:1});		
 	
 });
 
@@ -25,8 +26,8 @@ function stopButtonCB()
 	} else {
 		c.running = 1;
 		$("#stopbutton").html("stop");
-//		reqFrame(c.loop,c.theCanvas);
-		c.loop();
+		reqFrame(c.drawLoop);
+
 	}
 }
 
@@ -41,6 +42,17 @@ function restartButtonCB()
 // //		reqFrame(c.loop,c.theCanvas);
 		// c.loop();
 	// }
+	
+	
+	// var allInputs = $(":input","#controls3");
+	
+	// if (allInputs[0].valueAsNumber) {c.newInitialPopulation = allInputs[0].valueAsNumber;}
+	// if (allInputs[1].valueAsNumber) {c.newGenericSpeed      = allInputs[1].valueAsNumber;}		
+	// if (allInputs[2].valueAsNumber) {c.newPerceptionRange   = allInputs[2].valueAsNumber;}		
+	// if (allInputs[3].valueAsNumber) {c.newObstacles         = allInputs[3].valueAsNumber;}		
+	// if (allInputs[4].valueAsNumber) {c.newWallCollision     = allInputs[4].valueAsNumber;}	
+	
+
 	c.restartNow = 1;
 	c.running = 0;
 	

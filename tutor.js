@@ -58,6 +58,17 @@ Boid.Player = function(name, id ){
 Boid.Agent = function()
 {
 
+	// shim layer with setTimeout fallback
+	reqFrame =window.requestAnimationFrame ||
+	          window.webkitRequestAnimationFrame ||
+	          window.mozRequestAnimationFrame ||
+	          window.oRequestAnimationFrame ||
+	          window.msRequestAnimationFrame ||
+	          function(/* function FrameRequestCallback */ callback, /* DOMElement Element */ element){
+	            window.setTimeout(callback, 1000 / 60);
+				};
+
+
 	this.running;
 	this.restartNow = 0;
 	
@@ -75,6 +86,10 @@ Boid.Agent = function()
 	var wallRight = -2;// -2 = right wall
 	var wallTop = -3;// -3 = upper wall
 	var wallBottom = -4;// -4 = lower wall
+	
+	
+
+	
 	
 	
 
@@ -134,6 +149,15 @@ Boid.Agent = function()
 	var obstacleIndex = -5;
 	var obstacleRepulsion =100;
 	
+	
+	var Objects = 1; // Objects turned on
+	var objectX = [];
+	var objectY = [];
+	var numObjects = 0;
+	var objectIndex = [];
+	
+	
+	
 
 	// make everything go the same speed
 	// Marios: This is where I'm dumping any new parameters
@@ -156,6 +180,12 @@ Boid.Agent = function()
     this.pigeonholeWidth = Math.ceil(this.theCanvas.width/this.perceptionRange);
     this.pigeonholeHeight = Math.ceil(this.theCanvas.height/this.perceptionRange);
 
+	this.newInitialPopulation = this.initialPopulation;
+	this.newGenericSpeed = this.genericSpeed;
+	this.newPerceptionRange = this.perceptionRange;
+	this.newWallCollision = wallCollision;
+	this.newObstacles = Obstacles;
+	
 
 
 
@@ -165,10 +195,10 @@ Boid.Agent = function()
         vX : 10,
         vY : 10,
         pigeon : 0, // pigeonhole
-        speed : this.genericSpeed,
-        radius : this.genericRadius,
-        colour : this.genericColour,
-        stroke : this.genericStroke,
+        speed : self.genericSpeed,
+        radius : self.genericRadius,
+        //colour : self.genericColour,
+        stroke : self.genericStroke,
 
         draw : function() {
             theContext.strokeStyle = this.stroke;
@@ -241,7 +271,7 @@ Boid.Agent = function()
 		self.addAgent = true;
     }
 
-	this.makeBall = function(x, y, vX, vY, radius, stroke) {
+	this.makeBall = function(x, y, vX, vY, speed, radius, stroke) {
 
         var theCanvas = this.theCanvas;
 
@@ -282,6 +312,7 @@ Boid.Agent = function()
         ball.radius = radius;
 //        ball.colour = colour;
         ball.stroke = stroke;
+		ball.speed = speed;
 
         // make Ball note which pigeonhole it is in
         ball.pigeon = Math.floor(x/ this.perceptionRange) + (Math.floor(y/this.perceptionRange)) * this.pigeonholeWidth;
@@ -324,6 +355,21 @@ Boid.Agent = function()
 
 		}
 		
+		// draw objects
+		if (Objects==1)
+		{
+			for (var obj = numObjects-1; obj>=0; obj--)
+			{
+
+				theContext.strokeStyle = "#00FF00";
+				theContext.beginPath();
+				theContext.arc(objectX[obj],objectY[obj], 20,0, circ,true);
+				theContext.closePath();
+				theContext.stroke();			
+								
+			}
+		}
+		
     }
 
 
@@ -364,6 +410,9 @@ Boid.Agent = function()
 				}
 				
 			}
+			
+
+			
 			
             // loop through the 9 tiles without trying access tiles that are outside of the canvas			
 			if (wallCollision==1)
@@ -719,12 +768,20 @@ Boid.Agent = function()
         // Note - this prevents new agent creation in the middle of a cycle
         // Downside, reduces user agency noticeably (creation latency)!
 
-        if (self.addAgent) {
+        if (self.addAgent && Objects==1) {
 
-            var randomAngleInRadians = Math.random()*Math.PI*2;
-            b = self.makeBall( self.addAgentX, self.addAgentY, Math.cos(randomAngleInRadians) * self.genericSpeed, Math.sin(randomAngleInRadians) * self.genericSpeed, self.genericRadius, self.genericStroke );
-            theBalls.push(b);
-            self.addAgent = false;
+            // var randomAngleInRadians = Math.random()*Math.PI*2;
+            // b = self.makeBall( self.addAgentX, self.addAgentY, Math.cos(randomAngleInRadians) * self.genericSpeed, Math.sin(randomAngleInRadians) * self.genericSpeed, self.genericSpeed, self.genericRadius, self.genericStroke );
+            // theBalls.push(b);
+            // self.addAgent = false;
+			
+			// Add object
+			
+			objectX[numObjects] = self.addAgentX;
+			objectY[numObjects] = self.addAgentY;
+			objectIndex[numObjects] = -6-numObjects;
+			numObjects++;
+			self.addAgent = 0;
         }
     }
 
@@ -739,6 +796,7 @@ Boid.Agent = function()
         self.addAgent = true;
         self.addAgentX = evt.pageX - theCanvas.offsetLeft;
         self.addAgentY = evt.pageY - theCanvas.offsetTop;
+		
     }
 
 
@@ -747,7 +805,7 @@ Boid.Agent = function()
     // WARNING: this is the simplest, but not the best, way to do this
     this.drawLoop = function() {
 	
-		if (this.running == 1) 
+		if (self.running == 1) 
 		{	
 			self.moveBalls();    // new position
 			self.drawBalls();    // show things
@@ -763,10 +821,13 @@ Boid.Agent = function()
 				$("body").append(div);
 			}
 			$("#canvas_info").html(self.theBalls.length);
+			
+			reqFrame(self.drawLoop);
+			
 		}
-		else if (this.restartNow == 1)
+		else if (self.restartNow == 1)
 		{
-			this.restart();
+			self.restart();
 		}
 
     }
@@ -788,7 +849,7 @@ Boid.Agent = function()
 				// window.setTimeout(callback, 1000 / 60);
 				// };
 				
-		// reqFrame(eval(s),this.theCanvas);
+		// reqFrame(eval(s));
 					
     }
 
@@ -811,12 +872,20 @@ Boid.Agent = function()
 		
 		//this.perceptionRange = 5;
 //		var perceptionRange = this.perceptionRange;
+
+		this.initialPopulation = this.newInitialPopulation;
+		this.genericSpeed = this.newGenericSpeed;
+		this.perceptionRange = this.newPerceptionRange;
+
+
 		this.genericRadius = this.perceptionRange; // this is just the radius at which I want to initialise all my Balls			
 
 		this.perceptionRangeSquared = this.perceptionRange*this.perceptionRange;
 		this.directionIndicatorLength = this.perceptionRange;
 		var directionIndicatorLength = this.directionIndicatorLength;
 		
+		wallCollision = this.newWallCollision;
+		Obstacles = this.newObstacles;		
 
 		//this.genericSpeed = perceptionRange/4;
 		//perceptionRange/2; // this is just the speed at which I want to initialise all my Balls	
@@ -845,15 +914,17 @@ Boid.Agent = function()
 							  theCanvas.height*Math.random(),
 							  Math.cos(randomAngleInRadians) * self.genericSpeed,
 							  Math.sin(randomAngleInRadians) * self.genericSpeed,
+							  self.genericSpeed,
 							  self.genericRadius,
 							  self.genericStroke );
 			theBalls.push(b);
 		}
-		theCanvas.addEventListener("mousemove",this.doClick,false);	
-
+//		theCanvas.addEventListener("mousemove",this.doClick,false);	
+		theCanvas.addEventListener("click",this.doClick,false);	
 		this.running = 1;
 		
-		self.loop();
+		//self.loop();
+		reqFrame(self.drawLoop);
     }
 
 	
