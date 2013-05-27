@@ -10,21 +10,21 @@ h2 {
 	font-family: "Courier New", Courier, monospace;
 }
 
-.inset {
+/* .inset {
 	margin: 5px;
 	padding: 5px;
 }
 .boxed {
 	border: thin solid #666;
-}
-.panel {
+} */
+/* .panel {
 	background-color: #CCC;
-	width: 400px;
-}
-.slidermarg {
+	width: 300px;
+} */
+/* .slidermarg {
 	margin: 5px;
-}
-.numlabel {
+} */
+/* .numlabel {
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 10px;
 }
@@ -38,4 +38,4 @@ h2 {
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 10px;
 	font-weight: bold;
-}
+} */

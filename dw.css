@@ -7,9 +7,21 @@
 	border: thin solid #666;
 }
 .panel {
+/* 	position:absolute;
+	left:300px; */
+	float:left;
 	background-color: #CCC;
-	width: 400px;
+	width: 300px;
 }
+/*  .panel2 {
+ 	position:absolute;
+	left:350px; 
+	float:left;
+	background-color: #CCC;
+	width: 300px;
+}  */
+
+
 .slidermarg {
 	margin: 5px;
 }

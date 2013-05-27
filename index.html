@@ -7,27 +7,36 @@
 
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-
 		<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 		<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 		<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 		
-		
         <script type="text/javascript" src="tutor.js"></script>
 		<script type="text/javascript" src="boids-jqui.js"></script>
         <title>Boids Experiment - with JQuery</title>
+		
     </head>
     <body>
+	
         <h1>Boids Experiment - with JQuery</h1>
+		
         <div>
         	<canvas id="mycanvas" class = "boxed" width=700 height=500></canvas>
         </div>
+		
         <div id="panel" class="boxed inset panel">
-        	<h2>Controls</h2>
+        	<h2>Real-time Controls</h2>
         	<div id="controls" class="inset">
         		<button id="stopbutton">stop</button>
         	</div>
-
         </div>
+		
+        <div id="panel2" class="boxed inset panel">
+        	<h2>Require Restart Controls</h2>
+        	<div id="controls2" class="inset">
+        		<button id="restartbutton">Restart</button>
+        	</div>
+        </div>		
+		
     </body>
 </html>

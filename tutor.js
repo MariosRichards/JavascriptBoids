@@ -59,6 +59,7 @@ Boid.Agent = function()
 {
 
 	this.running;
+	this.restartNow = 0;
 	
 	// wall function choice
 	// 0 = Hard Bounce
@@ -172,9 +173,9 @@ Boid.Agent = function()
         draw : function() {
             theContext.strokeStyle = this.stroke;
             theContext.beginPath();
-            theContext.arc(this.x,this.y, perceptionRange,0, circ,true);
+            theContext.arc(this.x,this.y, self.perceptionRange,0, circ,true);
             theContext.moveTo(this.x,this.y);
-            theContext.lineTo(this.x + directionIndicatorLength*this.vX/this.speed, this.y + directionIndicatorLength*this.vY/this.speed);
+            theContext.lineTo(this.x + self.directionIndicatorLength*this.vX/this.speed, this.y + self.directionIndicatorLength*this.vY/this.speed);
             theContext.closePath();
             theContext.stroke();
         },
@@ -240,7 +241,7 @@ Boid.Agent = function()
 		self.addAgent = true;
     }
 
-	this.makeBall = function(x, y, vX, vY, radius, colour, stroke) {
+	this.makeBall = function(x, y, vX, vY, radius, stroke) {
 
         var theCanvas = this.theCanvas;
 
@@ -279,7 +280,7 @@ Boid.Agent = function()
         ball.vX = vX;
         ball.vY = vY;
         ball.radius = radius;
-        ball.colour = colour;
+//        ball.colour = colour;
         ball.stroke = stroke;
 
         // make Ball note which pigeonhole it is in
@@ -357,7 +358,7 @@ Boid.Agent = function()
 			if (Obstacles==1)
 			{
 			
-				if ( ((obstacleX - bix)*(obstacleX - bix) + (obstacleY - biy)*(obstacleY - biy)) < ((obstacleRadius + perceptionRange)*(obstacleRadius + perceptionRange)) )
+				if ( ((obstacleX - bix)*(obstacleX - bix) + (obstacleY - biy)*(obstacleY - biy)) < ((obstacleRadius + this.perceptionRange)*(obstacleRadius + this.perceptionRange)) )
 				{
 					InteractionList[i].push(obstacleIndex);
 				}
@@ -721,7 +722,7 @@ Boid.Agent = function()
         if (self.addAgent) {
 
             var randomAngleInRadians = Math.random()*Math.PI*2;
-            b = self.makeBall( self.addAgentX, self.addAgentY, Math.cos(randomAngleInRadians) * self.genericSpeed, Math.sin(randomAngleInRadians) * self.genericSpeed, self.genericRadius, self.genericColour, self.genericStroke );
+            b = self.makeBall( self.addAgentX, self.addAgentY, Math.cos(randomAngleInRadians) * self.genericSpeed, Math.sin(randomAngleInRadians) * self.genericSpeed, self.genericRadius, self.genericStroke );
             theBalls.push(b);
             self.addAgent = false;
         }
@@ -763,6 +764,10 @@ Boid.Agent = function()
 			}
 			$("#canvas_info").html(self.theBalls.length);
 		}
+		else if (this.restartNow == 1)
+		{
+			this.restart();
+		}
 
     }
 
@@ -787,12 +792,46 @@ Boid.Agent = function()
 					
     }
 
-	function setclicks()
-	{
-		theCanvas.onclick = function() { if (!this.running) {this.running=1; reqFrame(animLoop,theCanvas);}};
-		document.getElementById("stopbutton").onclick = function() {this.running=0;};
-	}
+	// function setclicks()
+	// {
+		// theCanvas.onclick = function() { if (!this.running) {this.running=1; reqFrame(animLoop,theCanvas);}};
+		// document.getElementById("stopbutton").onclick = function() {this.running=0;};
+	// }
 	
+	
+	this.restart = function()
+	{
+		
+		this.theBalls = [];
+		// create an array of pigeonholes
+		this.PigeonHoles = [];
+		// create the interaction list array;
+		this.InteractionList = [];
+		// temp velocity variables		
+		
+		//this.perceptionRange = 5;
+//		var perceptionRange = this.perceptionRange;
+		this.genericRadius = this.perceptionRange; // this is just the radius at which I want to initialise all my Balls			
+
+		this.perceptionRangeSquared = this.perceptionRange*this.perceptionRange;
+		this.directionIndicatorLength = this.perceptionRange;
+		var directionIndicatorLength = this.directionIndicatorLength;
+		
+
+		//this.genericSpeed = perceptionRange/4;
+		//perceptionRange/2; // this is just the speed at which I want to initialise all my Balls	
+		
+		//this.initialPopulation = 5000;
+
+	   // note - am assuming canvas won't change size!!
+		this.pigeonholeWidth = Math.ceil(this.theCanvas.width/this.perceptionRange);
+		this.pigeonholeHeight = Math.ceil(this.theCanvas.height/this.perceptionRange);		
+		
+		this.restartNow = 0;
+		this.init();
+		this.start();
+	
+	}
 	
     this.start = function()
     {
@@ -807,7 +846,6 @@ Boid.Agent = function()
 							  Math.cos(randomAngleInRadians) * self.genericSpeed,
 							  Math.sin(randomAngleInRadians) * self.genericSpeed,
 							  self.genericRadius,
-							  self.genericColour,
 							  self.genericStroke );
 			theBalls.push(b);
 		}
