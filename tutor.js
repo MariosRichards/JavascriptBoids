@@ -141,7 +141,7 @@ Boid.Agent = function()
 
 	
 	
-	var Obstacles = 1; // turn obstacle interaction on(1)/off(0)
+	var Obstacles = 0; // turn obstacle interaction on(1)/off(0)
 	// obstacle is a circle
 	var obstacleRadius = 50;
 	var obstacleX = theCanvas.width/2;
@@ -155,6 +155,7 @@ Boid.Agent = function()
 	var objectY = [];
 	var numObjects = 0;
 	var objectIndex = [];
+	var objectPigeonhole = [];
 	
 	
 	
@@ -163,7 +164,7 @@ Boid.Agent = function()
 	// Marios: This is where I'm dumping any new parameters
 
 
-	this.perceptionRange = 5;
+	this.perceptionRange = 100;
 	var perceptionRange = this.perceptionRange;
 
 	this.perceptionRangeSquared = this.perceptionRange*this.perceptionRange;
@@ -174,7 +175,7 @@ Boid.Agent = function()
 	this.genericSpeed = perceptionRange/4;
 	//perceptionRange/2; // this is just the speed at which I want to initialise all my Balls	
 	
-	this.initialPopulation = 5000;
+	this.initialPopulation = 1;
 
    // note - am assuming canvas won't change size!!
     this.pigeonholeWidth = Math.ceil(this.theCanvas.width/this.perceptionRange);
@@ -363,7 +364,7 @@ Boid.Agent = function()
 
 				theContext.strokeStyle = "#00FF00";
 				theContext.beginPath();
-				theContext.arc(objectX[obj],objectY[obj], 20,0, circ,true);
+				theContext.arc(objectX[obj],objectY[obj], 1,0, circ,true);
 				theContext.closePath();
 				theContext.stroke();			
 								
@@ -424,9 +425,7 @@ Boid.Agent = function()
 						
 						pigeonhole = ((holeX+pigeonholeWidth)%pigeonholeWidth) + pigeonholeWidth*((holeY+pigeonholeHeight)%pigeonholeHeight);
 						// now iterate through the Balls in this pigeon if any
-						if (pigeonhole < 0 || pigeonhole >= pigeonholeWidth*pigeonholeHeight) {
-							debugger;
-						}
+
 						for(var interactant = self.PigeonHoles[pigeonhole].length-1; interactant>=0; interactant--) {
 
 							j = self.PigeonHoles[pigeonhole][interactant];
@@ -472,10 +471,22 @@ Boid.Agent = function()
 							// here is where you'd add an if statement to cut work in half!
 							if(j != i) { //
 
-							// test if within perceptionRange
-								var bj = ballList[j];
-								var dx = bj.x - bix;
-								var dy = bj.y - biy;
+								if (j<=-6)
+								{
+
+									var dx = objectX[-6-j] - bix;
+									var dy = objectY[-6-j] - biy;
+								
+								}
+								else
+								{
+							
+									// test if within perceptionRange
+									var bj = ballList[j];
+									var dx = bj.x - bix;
+									var dy = bj.y - biy;
+									
+								}
 								if ( (dx*dx + dy*dy) <= self.perceptionRangeSquared ) {
 									InteractionList[i].push(j);
 								}
@@ -484,8 +495,10 @@ Boid.Agent = function()
 					}
 				}
 			}
-			else //wallCollision by repulsion
+			else //wallCollision==1 by repulsion
 			{
+			
+
 				//var wallLeft = -1;// -1 = left wall
 				//var wallRight = -2;// -2 = right wall
 				//var wallTop = -3;// -3 = upper wall
@@ -656,13 +669,24 @@ Boid.Agent = function()
 					else // interaction with another Ball
 					{
 						
-						var bj = ballList[interactor2];
+						if (interactor2<=-6)
+						{
+						
+							var bxs = bi.x - objectX[-6-interactor2] ;
+							var bys = bi.y - objectY[-6-interactor2] ;
+						
+						}
+						else
+						{
+							// test if within perceptionRange
+							var bj = ballList[interactor2];
+							var bxs = bi.x - bj.x;
+							var bys = bi.y - bj.y;
+							
+						}						
 
 						// Repulsion: steer to avoid crowding local flockmates
 						
-						var bxs = bi.x - bj.x;
-						var bys = bi.y - bj.y;
-
 						if (wallCollision==1) { // toroidal wall collision
 							if ( 2*Math.abs(bxs) > theCanvas.width ) {
 								bxs = theCanvas.width - bxs;
@@ -673,23 +697,51 @@ Boid.Agent = function()
 							}
 						}
 						
-						var invdistsq = 4/(1 + bxs*bxs + bys*bys);
-
-						// vector from j to i weighted by inverse square distance
-						RepulsionX += bxs*invdistsq;
-						RepulsionY += bys*invdistsq;
-
-						// Alignment: steer towards the average heading of local flockmates
-						// add to the sum
+						if (interactor2<=-6)
+						{
 						
-						AlignmentX += bj.vX;
-						AlignmentY += bj.vY;
+							var invdistsq = 4/(1 + bxs*bxs + bys*bys);
 
-						// Cohesion: steer to move toward the average position of local flockmates
+							// vector from j to i weighted by inverse square distance
+							RepulsionX += 1000*bxs*invdistsq;
+							RepulsionY += 1000*bys*invdistsq;
+
+							// Alignment: steer towards the average heading of local flockmates
+							// add to the sum
+							
+							// AlignmentX += bj.vX;
+							// AlignmentY += bj.vY;
+
+							// // Cohesion: steer to move toward the average position of local flockmates
+							
+							// // vector from i to j
+							// CohesionX -= bxs*Math.sqrt(invdistsq);
+							// CohesionY -= bys*Math.sqrt(invdistsq);
+							
+						}
+						else
+						{
+							
+							var invdistsq = 4/(1 + bxs*bxs + bys*bys);
+
+							// vector from j to i weighted by inverse square distance
+							RepulsionX += bxs*invdistsq;
+							RepulsionY += bys*invdistsq;
+
+							// Alignment: steer towards the average heading of local flockmates
+							// add to the sum
+							
+							AlignmentX += bj.vX;
+							AlignmentY += bj.vY;
+
+							// Cohesion: steer to move toward the average position of local flockmates
+							
+							// vector from i to j
+							CohesionX -= bxs*Math.sqrt(invdistsq);
+							CohesionY -= bys*Math.sqrt(invdistsq);							
+
+						}
 						
-						// vector from i to j
-						CohesionX -= bxs*Math.sqrt(invdistsq);
-						CohesionY -= bys*Math.sqrt(invdistsq);
 					}
 	
 				}
@@ -711,6 +763,30 @@ Boid.Agent = function()
     }
 
 
+	// are the object pigeonholes consistent?
+	this.testObjectPigeonholes = function()
+	{
+		for (obj = numObjects-1; obj>=0; obj--)
+		{	
+		    var contents = self.PigeonHoles[objectPigeonhole[obj]];
+		    unfound = true;
+		    for (int = contents.length-1; int >=0; int--)
+		    {
+		        
+    			if (contents[int]==objectIndex[obj])
+    			{
+    				unfound = false;
+    			}
+		    }
+		    if (unfound)
+		    {
+		         debugger;   
+		    }
+		}
+	}
+	
+	
+	
 
     // move the balls
     this.moveBalls = function() {
@@ -757,14 +833,24 @@ Boid.Agent = function()
             self.PigeonHoles[i] = new Array();
         }
 
-
+// move balls and update pigeonholes
         for(var i=theBalls.length-1; i>=0; i--) {
             theBalls[i].move();
             var pigeonIndex = Math.floor(theBalls[i].x/perceptionRange)+Math.floor(theBalls[i].y/perceptionRange)*pigeonholeWidth;
             self.PigeonHoles[pigeonIndex].push(i);
             theBalls[i].pigeon = pigeonIndex;
         }
-
+		
+// reset pigeonholes for objects
+		for(var i=numObjects-1; i>=0; i--)
+		{
+			
+			pigeon = Math.floor(objectX[i]/self.perceptionRange)+ (Math.floor(objectY[i]/self.perceptionRange)) * self.pigeonholeWidth;
+			self.PigeonHoles[pigeon].push(objectIndex[i]);		
+			objectPigeonhole[i] = pigeon;		
+		
+		}
+		
         // Note - this prevents new agent creation in the middle of a cycle
         // Downside, reduces user agency noticeably (creation latency)!
 
@@ -774,16 +860,32 @@ Boid.Agent = function()
             // b = self.makeBall( self.addAgentX, self.addAgentY, Math.cos(randomAngleInRadians) * self.genericSpeed, Math.sin(randomAngleInRadians) * self.genericSpeed, self.genericSpeed, self.genericRadius, self.genericStroke );
             // theBalls.push(b);
             // self.addAgent = false;
+
+			x =  self.addAgentX;
+			y =  self.addAgentY;
 			
-			// Add object
+			x = Math.min( Math.max(x , 1) , (theCanvas.width-1));
+			y = Math.min( Math.max(y , 1) , (theCanvas.height-1));
 			
-			objectX[numObjects] = self.addAgentX;
-			objectY[numObjects] = self.addAgentY;
-			objectIndex[numObjects] = -6-numObjects;
-			numObjects++;
+			objectX[numObjects] = x;
+			objectY[numObjects] = y;
+			objectIndex[numObjects] = - 6 - numObjects;
+
 			self.addAgent = 0;
+
+			pigeon = Math.floor(objectX[numObjects]/ self.perceptionRange) + (Math.floor(objectY[numObjects]/self.perceptionRange)) * self.pigeonholeWidth;
+			self.PigeonHoles[pigeon].push(objectIndex[numObjects]);
+			objectPigeonhole[numObjects] = pigeon;
+			numObjects++;
+
         }
+		
+		
+		this.testObjectPigeonholes();
+		
     }
+	
+	
 
 
     // what to do when things get clicked
@@ -792,10 +894,14 @@ Boid.Agent = function()
         // this is quite ugly without some degree of support from
         // a library
         var theCanvas = self.theCanvas;
-
-        self.addAgent = true;
-        self.addAgentX = evt.pageX - theCanvas.offsetLeft;
-        self.addAgentY = evt.pageY - theCanvas.offsetTop;
+		
+		// aha! - lock this function so no multiple updates can occur!
+		if (!self.addAgent)
+		{
+			self.addAgent = true;
+			self.addAgentX = evt.pageX - theCanvas.offsetLeft;
+			self.addAgentY = evt.pageY - theCanvas.offsetTop;
+		}
 		
     }
 
@@ -885,7 +991,15 @@ Boid.Agent = function()
 		var directionIndicatorLength = this.directionIndicatorLength;
 		
 		wallCollision = this.newWallCollision;
-		Obstacles = this.newObstacles;		
+		Obstacles = this.newObstacles;	
+
+
+		Objects = 1; // Objects turned on
+		objectX = [];
+		objectY = [];
+		numObjects = 0;
+		objectIndex = [];
+		objectPigeonhole = [];
 
 		//this.genericSpeed = perceptionRange/4;
 		//perceptionRange/2; // this is just the speed at which I want to initialise all my Balls	
@@ -920,7 +1034,7 @@ Boid.Agent = function()
 			theBalls.push(b);
 		}
 //		theCanvas.addEventListener("mousemove",this.doClick,false);	
-		theCanvas.addEventListener("click",this.doClick,false);	
+		theCanvas.addEventListener("mousemove",this.doClick,false);	
 		this.running = 1;
 		
 		//self.loop();
