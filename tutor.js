@@ -141,7 +141,7 @@ Boid.Agent = function()
 
 	
 	
-	var Obstacles = 1; // turn obstacle interaction on(1)/off(0)
+	var Obstacles = 0; // turn obstacle interaction on(1)/off(0)
 	// obstacle is a circle
 	var obstacleRadius = 20;
 	var obstacleX = theCanvas.width/2;
@@ -155,6 +155,7 @@ Boid.Agent = function()
 	var objectY = [];
 	var numObjects = 0;
 	var objectIndex = [];
+	var objectPigeonhole = [];
 	
 	
 	
@@ -163,7 +164,7 @@ Boid.Agent = function()
 	// Marios: This is where I'm dumping any new parameters
 
 
-	this.perceptionRange = 5;
+	this.perceptionRange = 100;
 	var perceptionRange = this.perceptionRange;
 
 	this.perceptionRangeSquared = this.perceptionRange*this.perceptionRange;
@@ -174,7 +175,7 @@ Boid.Agent = function()
 	this.genericSpeed = perceptionRange/4;
 	//perceptionRange/2; // this is just the speed at which I want to initialise all my Balls	
 	
-	this.initialPopulation = 5000;
+	this.initialPopulation = 1;
 
    // note - am assuming canvas won't change size!!
     this.pigeonholeWidth = Math.ceil(this.theCanvas.width/this.perceptionRange);
@@ -496,6 +497,8 @@ Boid.Agent = function()
 			}
 			else //wallCollision==1 by repulsion
 			{
+			
+
 				//var wallLeft = -1;// -1 = left wall
 				//var wallRight = -2;// -2 = right wall
 				//var wallTop = -3;// -3 = upper wall
@@ -708,6 +711,7 @@ Boid.Agent = function()
 							
 							// AlignmentX += bj.vX;
 							// AlignmentY += bj.vY;
+<<<<<<< HEAD
 
 							// // Cohesion: steer to move toward the average position of local flockmates
 							
@@ -731,6 +735,31 @@ Boid.Agent = function()
 							AlignmentX += bj.vX;
 							AlignmentY += bj.vY;
 
+=======
+
+							// // Cohesion: steer to move toward the average position of local flockmates
+							
+							// // vector from i to j
+							// CohesionX -= bxs*Math.sqrt(invdistsq);
+							// CohesionY -= bys*Math.sqrt(invdistsq);
+							
+						}
+						else
+						{
+							
+							var invdistsq = 4/(1 + bxs*bxs + bys*bys);
+
+							// vector from j to i weighted by inverse square distance
+							RepulsionX += bxs*invdistsq;
+							RepulsionY += bys*invdistsq;
+
+							// Alignment: steer towards the average heading of local flockmates
+							// add to the sum
+							
+							AlignmentX += bj.vX;
+							AlignmentY += bj.vY;
+
+>>>>>>> e078b4d6547a3fc0ddaa74388d0a369842c3ad39
 							// Cohesion: steer to move toward the average position of local flockmates
 							
 							// vector from i to j
@@ -760,6 +789,30 @@ Boid.Agent = function()
     }
 
 
+	// are the object pigeonholes consistent?
+	this.testObjectPigeonholes = function()
+	{
+		for (obj = numObjects-1; obj>=0; obj--)
+		{	
+		    var contents = self.PigeonHoles[objectPigeonhole[obj]];
+		    unfound = true;
+		    for (int = contents.length-1; int >=0; int--)
+		    {
+		        
+    			if (contents[int]==objectIndex[obj])
+    			{
+    				unfound = false;
+    			}
+		    }
+		    if (unfound)
+		    {
+		         debugger;   
+		    }
+		}
+	}
+	
+	
+	
 
     // move the balls
     this.moveBalls = function() {
@@ -817,11 +870,18 @@ Boid.Agent = function()
 // reset pigeonholes for objects
 		for(var i=numObjects-1; i>=0; i--)
 		{
+<<<<<<< HEAD
 			var pigeonIndex =   Math.floor(objectX[i]/perceptionRange) + Math.floor(objectY[i]/perceptionRange)*pigeonholeWidth;
 			
 			// pigeon = Math.floor(objectX[i]/self.perceptionRange),
 			// + (Math.floor(objectY[i]/self.perceptionRange)) * self.pigeonholeWidth;
 			self.PigeonHoles[pigeonIndex].push(objectIndex[i]);			
+=======
+			
+			pigeon = Math.floor(objectX[i]/self.perceptionRange)+ (Math.floor(objectY[i]/self.perceptionRange)) * self.pigeonholeWidth;
+			self.PigeonHoles[pigeon].push(objectIndex[i]);		
+			objectPigeonhole[i] = pigeon;		
+>>>>>>> e078b4d6547a3fc0ddaa74388d0a369842c3ad39
 		
 		}
 		
@@ -835,19 +895,42 @@ Boid.Agent = function()
             // theBalls.push(b);
             // self.addAgent = false;
 
+<<<<<<< HEAD
 			objectX[numObjects] = self.addAgentX;
 			objectY[numObjects] = self.addAgentY;
+=======
+			x =  self.addAgentX;
+			y =  self.addAgentY;
+			
+			x = Math.min( Math.max(x , 1) , (theCanvas.width-1));
+			y = Math.min( Math.max(y , 1) , (theCanvas.height-1));
+			
+			objectX[numObjects] = x;
+			objectY[numObjects] = y;
+>>>>>>> e078b4d6547a3fc0ddaa74388d0a369842c3ad39
 			objectIndex[numObjects] = - 6 - numObjects;
 
 			self.addAgent = 0;
 
+<<<<<<< HEAD
 			pigeon =   Math.floor(objectX[numObjects] / self.perceptionRange),
 					+ (Math.floor(objectY[numObjects] / self.perceptionRange)) * self.pigeonholeWidth;
 			self.PigeonHoles[pigeon].push(objectIndex[numObjects]);			
+=======
+			pigeon = Math.floor(objectX[numObjects]/ self.perceptionRange) + (Math.floor(objectY[numObjects]/self.perceptionRange)) * self.pigeonholeWidth;
+			self.PigeonHoles[pigeon].push(objectIndex[numObjects]);
+			objectPigeonhole[numObjects] = pigeon;
+>>>>>>> e078b4d6547a3fc0ddaa74388d0a369842c3ad39
 			numObjects++;
 
         }
+		
+		
+		this.testObjectPigeonholes();
+		
     }
+	
+	
 
 
     // what to do when things get clicked
@@ -855,11 +938,23 @@ Boid.Agent = function()
         // a catch - we need to adjust for where the canvas is!
         // this is quite ugly without some degree of support from
         // a library
+<<<<<<< HEAD
       //  var theCanvas = self.theCanvas;
 
         this.addAgent = true;
         this.addAgentX = evt.pageX - this.theCanvas.offsetLeft;
         this.addAgentY = evt.pageY - this.theCanvas.offsetTop;
+=======
+        var theCanvas = self.theCanvas;
+		
+		// aha! - lock this function so no multiple updates can occur!
+		if (!self.addAgent)
+		{
+			self.addAgent = true;
+			self.addAgentX = evt.pageX - theCanvas.offsetLeft;
+			self.addAgentY = evt.pageY - theCanvas.offsetTop;
+		}
+>>>>>>> e078b4d6547a3fc0ddaa74388d0a369842c3ad39
 		
     }
 
@@ -957,7 +1052,11 @@ Boid.Agent = function()
 		objectY = [];
 		numObjects = 0;
 		objectIndex = [];
+<<<<<<< HEAD
 		
+=======
+		objectPigeonhole = [];
+>>>>>>> e078b4d6547a3fc0ddaa74388d0a369842c3ad39
 
 		//this.genericSpeed = perceptionRange/4;
 		//perceptionRange/2; // this is just the speed at which I want to initialise all my Balls	
@@ -992,10 +1091,14 @@ Boid.Agent = function()
 			theBalls.push(b);
 		}
 //		theCanvas.addEventListener("mousemove",this.doClick,false);	
+<<<<<<< HEAD
 		theCanvas.addEventListener("click",this.doClick.bind(this),false);
 		
 	
 		
+=======
+		theCanvas.addEventListener("mousemove",this.doClick,false);	
+>>>>>>> e078b4d6547a3fc0ddaa74388d0a369842c3ad39
 		this.running = 1;
 		
 		//self.loop();
