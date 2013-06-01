@@ -712,6 +712,7 @@ Boid.Agent = function()
 							// AlignmentX += bj.vX;
 							// AlignmentY += bj.vY;
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 							// // Cohesion: steer to move toward the average position of local flockmates
 							
@@ -737,6 +738,9 @@ Boid.Agent = function()
 
 =======
 
+=======
+
+>>>>>>> e078b4d6547a3fc0ddaa74388d0a369842c3ad39
 							// // Cohesion: steer to move toward the average position of local flockmates
 							
 							// // vector from i to j
@@ -759,6 +763,9 @@ Boid.Agent = function()
 							AlignmentX += bj.vX;
 							AlignmentY += bj.vY;
 
+<<<<<<< HEAD
+>>>>>>> e078b4d6547a3fc0ddaa74388d0a369842c3ad39
+=======
 >>>>>>> e078b4d6547a3fc0ddaa74388d0a369842c3ad39
 							// Cohesion: steer to move toward the average position of local flockmates
 							
@@ -871,16 +878,22 @@ Boid.Agent = function()
 		for(var i=numObjects-1; i>=0; i--)
 		{
 <<<<<<< HEAD
+<<<<<<< HEAD
 			var pigeonIndex =   Math.floor(objectX[i]/perceptionRange) + Math.floor(objectY[i]/perceptionRange)*pigeonholeWidth;
 			
 			// pigeon = Math.floor(objectX[i]/self.perceptionRange),
 			// + (Math.floor(objectY[i]/self.perceptionRange)) * self.pigeonholeWidth;
 			self.PigeonHoles[pigeonIndex].push(objectIndex[i]);			
 =======
+=======
+>>>>>>> e078b4d6547a3fc0ddaa74388d0a369842c3ad39
 			
 			pigeon = Math.floor(objectX[i]/self.perceptionRange)+ (Math.floor(objectY[i]/self.perceptionRange)) * self.pigeonholeWidth;
 			self.PigeonHoles[pigeon].push(objectIndex[i]);		
 			objectPigeonhole[i] = pigeon;		
+<<<<<<< HEAD
+>>>>>>> e078b4d6547a3fc0ddaa74388d0a369842c3ad39
+=======
 >>>>>>> e078b4d6547a3fc0ddaa74388d0a369842c3ad39
 		
 		}
@@ -896,9 +909,12 @@ Boid.Agent = function()
             // self.addAgent = false;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 			objectX[numObjects] = self.addAgentX;
 			objectY[numObjects] = self.addAgentY;
 =======
+=======
+>>>>>>> e078b4d6547a3fc0ddaa74388d0a369842c3ad39
 			x =  self.addAgentX;
 			y =  self.addAgentY;
 			
@@ -907,15 +923,24 @@ Boid.Agent = function()
 			
 			objectX[numObjects] = x;
 			objectY[numObjects] = y;
+<<<<<<< HEAD
+>>>>>>> e078b4d6547a3fc0ddaa74388d0a369842c3ad39
+=======
 >>>>>>> e078b4d6547a3fc0ddaa74388d0a369842c3ad39
 			objectIndex[numObjects] = - 6 - numObjects;
 
 			self.addAgent = 0;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 			pigeon =   Math.floor(objectX[numObjects] / self.perceptionRange),
 					+ (Math.floor(objectY[numObjects] / self.perceptionRange)) * self.pigeonholeWidth;
 			self.PigeonHoles[pigeon].push(objectIndex[numObjects]);			
+=======
+			pigeon = Math.floor(objectX[numObjects]/ self.perceptionRange) + (Math.floor(objectY[numObjects]/self.perceptionRange)) * self.pigeonholeWidth;
+			self.PigeonHoles[pigeon].push(objectIndex[numObjects]);
+			objectPigeonhole[numObjects] = pigeon;
+>>>>>>> e078b4d6547a3fc0ddaa74388d0a369842c3ad39
 =======
 			pigeon = Math.floor(objectX[numObjects]/ self.perceptionRange) + (Math.floor(objectY[numObjects]/self.perceptionRange)) * self.pigeonholeWidth;
 			self.PigeonHoles[pigeon].push(objectIndex[numObjects]);
@@ -939,12 +964,15 @@ Boid.Agent = function()
         // this is quite ugly without some degree of support from
         // a library
 <<<<<<< HEAD
+<<<<<<< HEAD
       //  var theCanvas = self.theCanvas;
 
         this.addAgent = true;
         this.addAgentX = evt.pageX - this.theCanvas.offsetLeft;
         this.addAgentY = evt.pageY - this.theCanvas.offsetTop;
 =======
+=======
+>>>>>>> e078b4d6547a3fc0ddaa74388d0a369842c3ad39
         var theCanvas = self.theCanvas;
 		
 		// aha! - lock this function so no multiple updates can occur!
@@ -954,6 +982,9 @@ Boid.Agent = function()
 			self.addAgentX = evt.pageX - theCanvas.offsetLeft;
 			self.addAgentY = evt.pageY - theCanvas.offsetTop;
 		}
+<<<<<<< HEAD
+>>>>>>> e078b4d6547a3fc0ddaa74388d0a369842c3ad39
+=======
 >>>>>>> e078b4d6547a3fc0ddaa74388d0a369842c3ad39
 		
     }
@@ -1053,7 +1084,11 @@ Boid.Agent = function()
 		numObjects = 0;
 		objectIndex = [];
 <<<<<<< HEAD
+<<<<<<< HEAD
 		
+=======
+		objectPigeonhole = [];
+>>>>>>> e078b4d6547a3fc0ddaa74388d0a369842c3ad39
 =======
 		objectPigeonhole = [];
 >>>>>>> e078b4d6547a3fc0ddaa74388d0a369842c3ad39
@@ -1092,10 +1127,14 @@ Boid.Agent = function()
 		}
 //		theCanvas.addEventListener("mousemove",this.doClick,false);	
 <<<<<<< HEAD
+<<<<<<< HEAD
 		theCanvas.addEventListener("click",this.doClick.bind(this),false);
 		
 	
 		
+=======
+		theCanvas.addEventListener("mousemove",this.doClick,false);	
+>>>>>>> e078b4d6547a3fc0ddaa74388d0a369842c3ad39
 =======
 		theCanvas.addEventListener("mousemove",this.doClick,false);	
 >>>>>>> e078b4d6547a3fc0ddaa74388d0a369842c3ad39
