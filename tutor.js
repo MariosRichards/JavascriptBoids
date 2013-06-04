@@ -96,8 +96,8 @@ Boid.Agent = function()
 	
 
 // PLAYER STUFF
-	this.numberPlayers= 2;
-	this.thePlayers = [];
+	// this.numberPlayers= 2;
+	// this.thePlayers = [];
 
 
 	var self = this;
@@ -133,9 +133,15 @@ Boid.Agent = function()
 	
 	
 	// Rule coefficients
-	this.RepCoeff  = 1; // repulsion coefficient
-    this.AliCoeff  = 1;	// alignment coefficient
-	this.CohCoeff  = 0;	// cohesion coefficient	
+    // this.AliCoeff  = 1;	// alignment coefficient	
+	// this.RepCoeff  = 1; // repulsion coefficient
+	// this.CohCoeff  = 0;	// cohesion coefficient	
+	
+	this.ruleCoeffs = [];
+	this.ruleCoeffs[0] = 1; // alignment coefficient
+	this.ruleCoeffs[1] = 1; // repulsion coefficient
+	this.ruleCoeffs[2] = 0; // cohesion coefficient
+	this.ruleColours = ['rgba(0,0,255,1)', 'rgba(0,255,255,1)', 'rgba(255,0,255,1)'];	
 
 
 
@@ -195,6 +201,9 @@ Boid.Agent = function()
         y : 100,
         vX : 10,
         vY : 10,
+		vXrule : [0, 0, 0],
+		vYrule : [0, 0, 0],
+		id : 0,
         pigeon : 0, // pigeonhole
         speed : self.genericSpeed,
         radius : self.genericRadius,
@@ -202,13 +211,72 @@ Boid.Agent = function()
         stroke : self.genericStroke,
 
         draw : function() {
-            theContext.strokeStyle = this.stroke;
+            // theContext.strokeStyle = this.stroke;
+			
+			theContext.strokeStyle = 'rgba(255,0,0,0.1)';
+			theContext.lineWidth = 5;
             theContext.beginPath();
-            theContext.arc(this.x,this.y, self.perceptionRange,0, circ,true);
-            theContext.moveTo(this.x,this.y);
-            theContext.lineTo(this.x + self.directionIndicatorLength*this.vX/this.speed, this.y + self.directionIndicatorLength*this.vY/this.speed);
+            theContext.arc(this.x,this.y, self.perceptionRange-theContext.lineWidth/2,0, circ,true);
+            // theContext.moveTo(this.x,this.y);
+            // theContext.lineTo(this.x + self.directionIndicatorLength*this.vX/this.speed, this.y + self.directionIndicatorLength*this.vY/this.speed);
             theContext.closePath();
             theContext.stroke();
+
+			theContext.strokeStyle = 'rgba(0,255,0,1)';			
+			theContext.lineWidth = 1;			
+            theContext.beginPath();			
+			var ratio = self.perceptionRange/this.speed;			
+			theContext.moveTo(this.x+(this.vX*ratio),this.y+(this.vY*ratio));
+			var theta = 140*Math.PI/180;
+
+			theContext.lineTo(this.x+(this.vX*Math.cos(theta)-this.vY*Math.sin(theta))*ratio , this.y+(this.vX*Math.sin(theta)+this.vY*Math.cos(theta))*ratio);
+			theta = (140+80)*Math.PI/180;
+			theContext.lineTo(this.x+(this.vX*Math.cos(theta)-this.vY*Math.sin(theta))*ratio , this.y+(this.vX*Math.sin(theta)+this.vY*Math.cos(theta))*ratio);
+			theContext.lineTo(this.x+(this.vX*ratio),this.y+(this.vY*ratio));
+					
+            theContext.closePath();
+            theContext.stroke();
+			
+			var arrowX;
+			var arrowY;
+			
+			
+			
+			
+			for (var rule = 0; rule < self.ruleCoeffs.length; rule ++)
+			{
+			
+				theContext.strokeStyle = self.ruleColours[rule];
+				theContext.beginPath();
+				theContext.moveTo(this.x,this.y);
+				arrowX = this.vXrule[rule]*ratio*self.ruleCoeffs[rule];
+				arrowY = this.vYrule[rule]*ratio*self.ruleCoeffs[rule];
+				theContext.lineTo(this.x+arrowX,this.y+arrowY);
+				
+				var arrowRatio = .2;
+				theta = 150*Math.PI/180;
+				theContext.lineTo( this.x+arrowX+arrowRatio*( arrowX*Math.cos(theta)-arrowY*Math.sin(theta) ),this.y +arrowY+ arrowRatio*( arrowX*Math.sin(theta) + arrowY*Math.cos(theta) ) );
+				theta = 210*Math.PI/180;
+				theContext.lineTo( this.x+arrowX+arrowRatio*( arrowX*Math.cos(theta)-arrowY*Math.sin(theta) ),this.y +arrowY+ arrowRatio*( arrowX*Math.sin(theta) + arrowY*Math.cos(theta) ) );
+				theContext.lineTo( this.x+arrowX,this.y +arrowY );			
+				theContext.closePath();
+				theContext.stroke();			
+			
+			
+			
+			}
+			
+	
+			
+			theContext.fillText(this.id +","+ this.pigeon,this.x, this.y);
+			
+			this.vXrule = [0, 0, 0];
+			this.vYrule = [0, 0, 0];
+			
+
+			
+			
+			
         },
 
         // make 'em "bounce" when they go over the edge
@@ -315,6 +383,7 @@ Boid.Agent = function()
         ball.stroke = stroke;
 		ball.speed = speed;
 
+
         // make Ball note which pigeonhole it is in
         ball.pigeon = Math.floor(x/ this.perceptionRange) + (Math.floor(y/this.perceptionRange)) * this.pigeonholeWidth;
 		
@@ -328,6 +397,8 @@ Boid.Agent = function()
         // 0 : pigeonholeWidth*pigeonholeHeight-1
         // Assumes Balls are *always* added instantly after creation *and* that they are always added at the end
 
+		ball.id = this.theBalls.length;
+		
         this.PigeonHoles[ball.pigeon].push(this.theBalls.length);
 
         return ball;
@@ -589,8 +660,8 @@ Boid.Agent = function()
 		
             var bi = ballList[interactor1];
 			// initialises the new velocity array!
-			newVX[interactor1] = bi.vX;
-			newVY[interactor1] = bi.vY;			
+			// newVX[interactor1] = bi.vX;
+			// newVY[interactor1] = bi.vY;			
 
 			// will probably remove this crude weighting!
 			
@@ -750,15 +821,32 @@ Boid.Agent = function()
 				
 				// preparing these vectors for separate representation!
 				// all of these defined as mean
-				RepulsionX /= Interactions;				
-				RepulsionY /= Interactions;
-				AlignmentX /= Interactions;
-				AlignmentY /= Interactions;
-				CohesionX  /= Interactions;
-				CohesionY  /= Interactions;				
+	
+				bi.vXrule[0] = (AlignmentX / Interactions);
+				bi.vYrule[0] = (AlignmentY / Interactions);
+
+	
+				bi.vXrule[1] = RepulsionX / Interactions;
+				bi.vYrule[1] = RepulsionY / Interactions;
+
+
+				bi.vXrule[2] = CohesionX / Interactions;
+				bi.vYrule[2] = CohesionY / Interactions;
+				
+				
+				// bi.vXR = RepulsionX / Interactions;
+				// bi.vYR = RepulsionY / Interactions;
+				
+				// bi.vXA = AlignmentX / Interactions;
+				// bi.vYA = AlignmentY / Interactions;
+				
+				// bi.vXC = CohesionX / Interactions;
+				// bi.vYC = CohesionY / Interactions;
+				
 			
-				newVX[interactor1] += self.RepCoeff*RepulsionX + self.AliCoeff*AlignmentX + self.CohCoeff*CohesionX;
-				newVY[interactor1] += self.RepCoeff*RepulsionY + self.AliCoeff*AlignmentY + self.CohCoeff*CohesionY;		
+			
+				// newVX[interactor1] += self.RepCoeff*bi.vXR + self.AliCoeff*bi.vXA + self.CohCoeff*bi.vXC;
+				// newVY[interactor1] += self.RepCoeff*bi.vYR + self.AliCoeff*bi.vYA + self.CohCoeff*bi.vYC;		
 				
 			}
         }
@@ -809,12 +897,20 @@ Boid.Agent = function()
 		
 		// confirms update!
 		for(var i=theBalls.length-1; i>=0; i--) {
-			var nvx = newVX[i];
-			var nvy = newVY[i];
+			// var nvx = newVX[i];
+			// var nvy = newVY[i];
 			// any chance of zero velocity?
+
+			// newVX[interactor1] = bi.vX;
+			// newVY[interactor1] = bi.vY;	
+			var bi = theBalls[i];
+			
+			var nvx = bi.vX + this.ruleCoeffs[0]*bi.vXrule[0] + this.ruleCoeffs[1]*bi.vXrule[1] + this.ruleCoeffs[2]*bi.vXrule[2];
+			var nvy = bi.vY + this.ruleCoeffs[0]*bi.vYrule[0] + this.ruleCoeffs[1]*bi.vYrule[1] + this.ruleCoeffs[2]*bi.vYrule[2];	
+			
 			var z = Math.sqrt(nvx*nvx + nvy*nvy);
 			if (z<.001) {
-				//Marios: Note - very unlikely to enter this loop ... but still
+				//Marios: Note - very unlikely to enter this loop ... but just in case the vectors cancel out 
 				
 				var randomAngleInRadians = Math.random()*Math.PI*2;
 				theBalls[i].vX = Math.cos(randomAngleInRadians) * theBalls[i].speed;
