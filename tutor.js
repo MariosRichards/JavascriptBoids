@@ -80,7 +80,7 @@ Boid.Agent = function()
 	// WARNING: WALL COLLISION PLACES A CONSTRAINT ON MAXIMUM SPEED OF 1/4 PERCEPTION RANGE
 	// WHY 1/4?
 	var wallCollision = 0;
-	var wallRepulsion = 100;
+	var wallRepulsion = 1000;
 	// use negative indices to refer to objects
 	var wallLeft = -1;// -1 = left wall
 	var wallRight = -2;// -2 = right wall
@@ -270,8 +270,8 @@ Boid.Agent = function()
 			
 			theContext.fillText(this.id +","+ this.pigeon,this.x, this.y);
 			
-			this.vXrule = [0, 0, 0];
-			this.vYrule = [0, 0, 0];
+			// this.vXrule = [0, 0, 0];
+			// this.vYrule = [0, 0, 0];
 			
 
 			
@@ -323,9 +323,43 @@ Boid.Agent = function()
 					this.vY = -this.vY;
 					this.y += 2*penetrationLower;
 				}
+				
+				
+				// IF BOUNCE NOT APPROPRIATE JUST 'SMACK'
+				
+				// if (penetrationUpper > 0) {
+					// this.vX = 0;
+					// this.x -= penetrationUpper;
+				// } // mutually exclusive events
+				// // ASSUMES RADIUS SMALLER THAN HALF THE SCREEN
+				// else if    (penetrationLower > 0) {
+					// this.vX = 0;
+					// this.x += penetrationLower;
+				// }
+
+				// penetrationUpper = this.y + this.radius - theCanvas.height;
+				// penetrationLower = this.radius - this.y;
+				// if (penetrationUpper > 0) {
+					// this.vY = 0;
+					// this.y -= penetrationUpper;
+				// }
+				// else if (penetrationLower > 0) {
+					// this.vY = 0;
+					// this.y += penetrationLower;
+				// }				
+				
+				
+				
+				
+				
 			}
 			else // repulsion
 			{
+				
+				this.x = Math.min( Math.max(this.x , 1) , (theCanvas.width-1));
+				this.y = Math.min( Math.max(this.y , 1) , (theCanvas.height-1));					
+			
+			
 			}
         }
 
@@ -382,7 +416,9 @@ Boid.Agent = function()
 //        ball.colour = colour;
         ball.stroke = stroke;
 		ball.speed = speed;
-
+		ball.vXrule = [0,0,0];
+		ball.vYrule = [0,0,0];
+		
 
         // make Ball note which pigeonhole it is in
         ball.pigeon = Math.floor(x/ this.perceptionRange) + (Math.floor(y/this.perceptionRange)) * this.pigeonholeWidth;
@@ -566,7 +602,7 @@ Boid.Agent = function()
 					}
 				}
 			}
-			else //wallCollision==1 by repulsion
+			else if (wallCollision ==2)//wallCollision==2 by repulsion
 			{
 			
 
@@ -644,6 +680,10 @@ Boid.Agent = function()
 					}
 				}			
 			}
+			else
+			{
+				debugger;
+			}
 			
 		
 			self.InteractionList = InteractionList;
@@ -694,28 +734,28 @@ Boid.Agent = function()
 						if (interactor2 ==-1) {
 						
 							var bxs = bi.x;
-							RepulsionX += wallRepulsion*bxs/(1+Math.abs(bxs));
+							RepulsionX += wallRepulsion*(1)/(1+Math.abs(bxs));
 						
 						}
 						
 						else if(interactor2 ==-2) {
 						
 							var bxs = bi.x - this.theCanvas.width;
-							RepulsionX += wallRepulsion*bxs/(1+Math.abs(bxs));
+							RepulsionX += wallRepulsion*(-1)/(1+Math.abs(bxs));
 						
 						}
 						
 						else if(interactor2 ==-3) {		
 
 							var bys = bi.y - this.theCanvas.height;
-							RepulsionY += wallRepulsion*bys/(1+Math.abs(bys));
+							RepulsionY += wallRepulsion*(-1)/(1+Math.abs(bys));
 						
 						}
 						
 						else if(interactor2 ==-4) {
 						
 							var bys = bi.y;
-							RepulsionY += wallRepulsion*bys/(1+Math.abs(bys));
+							RepulsionY += wallRepulsion*(1)/(1+Math.abs(bys));
 						
 						}
 						
@@ -733,8 +773,22 @@ Boid.Agent = function()
 						
 							var bxs = bi.x-obstacleX;
 							var bys = bi.y-obstacleY;							
-							RepulsionX += obstacleRepulsion*bxs/(1+Math.abs(bxs));						
-							RepulsionY += obstacleRepulsion*bys/(1+Math.abs(bys));						
+
+							if (bxs==0 && bys ==0)
+							{
+								var randomAngleInRadians = Math.random()*Math.PI*2;
+								RepulsionX += obstacleRepulsion*Math.cos(randomAngleInRadians)/(1+Math.abs(bxs));						
+								RepulsionY += obstacleRepulsion*Math.sin(randomAngleInRadians)/(1+Math.abs(bys));						
+							
+							}
+							else
+							{
+								RepulsionX += obstacleRepulsion*bxs/(1+Math.abs(bxs));						
+								RepulsionY += obstacleRepulsion*bys/(1+Math.abs(bys));							
+							
+							}
+
+							
 
 					}
 					else // interaction with another Ball
@@ -849,6 +903,21 @@ Boid.Agent = function()
 				// newVY[interactor1] += self.RepCoeff*bi.vYR + self.AliCoeff*bi.vYA + self.CohCoeff*bi.vYC;		
 				
 			}
+			else // no interaction
+			{
+				bi.vXrule[0] = 0;
+				bi.vYrule[0] = 0;
+
+	
+				bi.vXrule[1] = 0;
+				bi.vYrule[1] = 0;
+
+
+				bi.vXrule[2] = 0;
+				bi.vYrule[2] = 0;			
+			
+			}
+			
         }
     }
 
@@ -988,7 +1057,7 @@ Boid.Agent = function()
         }
 		
 		
-		this.testObjectPigeonholes();
+	//	this.testObjectPigeonholes();
 		
     }
 	
@@ -998,6 +1067,7 @@ Boid.Agent = function()
     // what to do when things get clicked
     this.doClick = function(evt){
         // a catch - we need to adjust for where the canvas is!
+		
         // this is quite ugly without some degree of support from
         // a library
       //  var theCanvas = self.theCanvas;
@@ -1051,26 +1121,26 @@ Boid.Agent = function()
 
     }
 
-    this.loop = function()
-    {
+    // this.loop = function()
+    // {
 
-		var s = 'BoidAgents[' + self.id + '].drawLoop()';
-		// var s = 'BoidAgents[' + self.id + '].drawLoop';
-		self.pid = window.setInterval(s, 50);
+		// var s = 'BoidAgents[' + self.id + '].drawLoop()';
+		// // var s = 'BoidAgents[' + self.id + '].drawLoop';
+		// self.pid = window.setInterval(s, 50);
 		
-		// var reqFrame =
-		// window.requestAnimationFrame ||
-			  // window.webkitRequestAnimationFrame ||
-			  // window.mozRequestAnimationFrame ||
-			  // window.oRequestAnimationFrame ||
-			  // window.msRequestAnimationFrame ||
-			  // function(/* function FrameRequestCallback */ callback, /* DOMElement Element */ element){
-				// window.setTimeout(callback, 1000 / 60);
-				// };
+		// // var reqFrame =
+		// // window.requestAnimationFrame ||
+			  // // window.webkitRequestAnimationFrame ||
+			  // // window.mozRequestAnimationFrame ||
+			  // // window.oRequestAnimationFrame ||
+			  // // window.msRequestAnimationFrame ||
+			  // // function(/* function FrameRequestCallback */ callback, /* DOMElement Element */ element){
+				// // window.setTimeout(callback, 1000 / 60);
+				// // };
 				
-		// reqFrame(eval(s));
+		// // reqFrame(eval(s));
 					
-    }
+    // }
 
 	// function setclicks()
 	// {
@@ -1126,7 +1196,13 @@ Boid.Agent = function()
 		this.pigeonholeHeight = Math.ceil(this.theCanvas.height/this.perceptionRange);		
 		
 		this.restartNow = 0;
-		this.init();
+		// this.init();
+		
+		for (var i=self.pigeonholeWidth*self.pigeonholeHeight-1; i>=0; i--)
+        {
+			this.PigeonHoles[i] = [];
+        }				
+		
 		this.start();
 	
 	}
@@ -1148,7 +1224,7 @@ Boid.Agent = function()
 							  self.genericStroke );
 			theBalls.push(b);
 		}
-//		theCanvas.addEventListener("mousemove",this.doClick,false);	
+
 		theCanvas.addEventListener("click",this.doClick.bind(this),false);
 		
 		this.running = 1;
@@ -1168,7 +1244,7 @@ Boid.Agent = function()
         }
     }
 
-    self.init();
+     self.init();
 
 }
 
