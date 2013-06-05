@@ -1,14 +1,16 @@
 
 $(document).ready(function(){ 
 	$("#stopbutton").click(stopButtonCB);
-	$("#restartbutton").click(restartButtonCB);	
+	// $("#restartbutton").click(restartButtonCB);	
 	c = new Boid.Agent();
 	c.start();
 				
 	makeSlider("Alignment:",c.ruleColours[0],function(v){c.ruleCoeffs[0] = v}, {value:1, min:0, max:10, step:.05});
 	makeSlider("Repulsion:",c.ruleColours[1],function(v){c.ruleCoeffs[1] = v}, {value:1, min:0, max:10, step:.05});
 	makeSlider("Cohesion:",c.ruleColours[2],function(v){c.ruleCoeffs[2] = v}, {value:0, min:0, max:10, step:.05});
-
+	makeSlider("Sim Speed:",NaN,function(v){c.simulationSpeed = v}, {value:1, min:0.05, max:10, step:.05});
+	
+	
 	$("#trigger").click(checkbutton);	
 	$("form").submit(function () { return false; }); // prevent premature submission/auto page reload!
 	

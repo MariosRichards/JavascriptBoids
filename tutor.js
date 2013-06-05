@@ -193,6 +193,10 @@ Boid.Agent = function()
 	this.newWallCollision = wallCollision;
 	this.newObstacles = Obstacles;
 	
+	
+	
+	this.simulationSpeed = .1;
+	
 
 
 
@@ -987,7 +991,7 @@ Boid.Agent = function()
 				
 			}
 			else {				
-				normalisingCoefficient = theBalls[i].speed/z;
+				normalisingCoefficient = theBalls[i].speed*this.simulationSpeed/z;
 				theBalls[i].vX = nvx*normalisingCoefficient;
 				theBalls[i].vY = nvy*normalisingCoefficient;
 			}
