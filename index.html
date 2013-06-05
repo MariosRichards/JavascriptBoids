@@ -25,25 +25,47 @@
         	<canvas id="mycanvas" class = "boxed" width=700 height=500></canvas>
         </div>
 		
-        <div id="panel" class="boxed inset panel">
+        <div id="panel" class="inset panel">
         	<h4>Real-time Controls</h4>
         	<div id="controls" class="inset">
         		<button id="stopbutton">stop</button>
         	</div>
         </div>
 		
-        <div id="panel2" class="boxed inset panel">
+        <div id="panel2" class="inset panel">
         	<h4>Require Restart Controls</h4>
 			<div id="controls2" class="inset">
 <!-- 				<button id="restartbutton">Restart</button>	 -->
 
 				<form class="numlabel"> 
-
-					Initial Population <input id="initpop" type="number" /><br>
-					Speed <input id="speed" type="number" /><br>
-					Perception Range <input id="percRange" type="number" /><br>
-					Obstacles on/off <input id="obstacles" type="number" /><br>
-					Wall Collision Type <input id="wallColl" type="number" /><br>
+					<table>
+						<tr>
+							<td>Initial Population</td>
+							<td><input id="initpop" type="number" /></td>
+						</tr>
+						<tr>
+							<td>Speed</td>
+							<td><input id="speed" type="number" /></td>
+						</tr>
+						<tr>
+							<td>Perception Range</td>
+							<td><input id="percRange" type="number" /></td>
+						</tr>
+						<tr>
+							<td>Obstacles on/off</td>
+							<td><input id="obstacles" type="number" /></td>
+						</tr>
+						<tr>
+							<td>Wall Collision Type</td>
+							<td><input id="wallColl" type="number" /></td>
+						</tr>	
+						
+					</table>
+					 
+					 <br>
+					<p></p> <br>
+					<p></p> <br>
+					<p></p> <br>
 					
 					
 					<input type="button" id="trigger" value="Restart Button"/>		

@@ -4,6 +4,14 @@ $(document).ready(function(){
 	// $("#restartbutton").click(restartButtonCB);	
 	c = new Boid.Agent();
 	c.start();
+	
+	//Colour of rules Override:
+	
+	c.ruleColours[0] = "black";
+	c.ruleColours[1] = "black";
+	c.ruleColours[2] = "black";
+	
+	
 				
 	makeSlider("Alignment:",c.ruleColours[0],function(v){c.ruleCoeffs[0] = v}, {value:1, min:0, max:10, step:.05});
 	makeSlider("Repulsion:",c.ruleColours[1],function(v){c.ruleCoeffs[1] = v}, {value:1, min:0, max:10, step:.05});
