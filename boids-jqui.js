@@ -6,7 +6,9 @@ $(document).ready(function(){
 	$("#canvas_info_pigeonholes").click(pigeonholesButtonCB);
 	$("#canvas_info_perceptionrange").click(perceptionrangeButtonCB);
 	$("#canvas_info_boidids").click(boididsButtonCB);
-	
+	$("input #Alignment .checkbox_input").click(toggleAlignment);
+
+	//$('#Alignment').css('color','purple');
 	
 	var w = $("#dummy_pane").width();	
 	var h = $("#dummy_pane").height();
@@ -23,10 +25,10 @@ $(document).ready(function(){
 	
 	
 				
-	makeSlider("Alignment:",c.ruleColours[0],function(v){c.ruleCoeffs[0] = v}, {value:1, min:0, max:10, step:.05});
-	makeSlider("Repulsion:",c.ruleColours[1],function(v){c.ruleCoeffs[1] = v}, {value:1, min:0, max:10, step:.05});
-	makeSlider("Cohesion:",c.ruleColours[2],function(v){c.ruleCoeffs[2] = v}, {value:0, min:0, max:10, step:.05});
-	makeSlider("Sim Speed:",NaN,function(v){c.simulationSpeed = v}, {value:1, min:0.05, max:10, step:.05});
+	makeSlider("Alignment",c.ruleColours[0],function(v){c.ruleCoeffs[0] = v}, {value:1, min:0, max:10, step:.05});
+	makeSlider("Repulsion",c.ruleColours[1],function(v){c.ruleCoeffs[1] = v}, {value:1, min:0, max:10, step:.05});
+	makeSlider("Cohesion",c.ruleColours[2],function(v){c.ruleCoeffs[2] = v}, {value:0, min:0, max:10, step:.05});
+	makeSlider("Sim Speed",NaN,function(v){c.simulationSpeed = v}, {value:1, min:0.05, max:10, step:.05});
 	
 	
 	$("#trigger").click(checkbutton);	
@@ -112,7 +114,18 @@ function boididsButtonCB()
 	}
 }
 
-displayBoidIDs
+function toggleAlignment() 
+{
+	alert("Heyyyy");
+	if (c.ruleVectorVisible[0]) {
+		alert("Its true");
+		c.ruleVectorVisible[0] = false;
+	}
+	else{
+		alert("Its false");
+		c.ruleVectorVisible[0] = true;
+	}
+}
 
 
 function restartButtonCB()
