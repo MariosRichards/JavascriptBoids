@@ -202,7 +202,7 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 	
 	
 	// graphics controls
-	this.pigeonholesVisible = true;
+	this.pigeonholesVisible = false;
 	this.perceptionRangeVisible = true;
 	this.ruleVectorVisible = [true, true, true];	
 	this.displayBoidIDs = true;	
