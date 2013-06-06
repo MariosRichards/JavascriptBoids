@@ -1,51 +1,106 @@
 @charset "utf-8";
 
+head {
+	font-family: Open Sans,Verdana, Geneva, sans-serif;
+	font-weight:800;
+}
+
  body {
 
 	font-family: Verdana, Geneva, sans-serif;
 	width: 650px;
 	
 	
-}
-h2 {
-	font-family: Georgia, "Times New Roman", Times, serif;
 	
+}
+
+
+h2 {
+	font-family: Open Sans,Georgia, "Times New Roman", Times, serif;
+	font-weight:400;
 } 
 
 h4 {
-	font-family: Georgia, "Times New Roman", Times, serif;
+	font-family: Open Sans,Georgia, "Times New Roman", Times, serif;
 	text-align:center;
+	font-weight:800;
 	
 } 
 
 .repo {
-	font-family: "Courier New", Courier, monospace;
+	font-family: Open Sans,"Courier New", Courier, monospace;
 	
 }
 
+
+.toolcontainer {
+	
+	position:absolute;
+	float:left;
+	width:25%;
+	height:80%;
+	display:block;
+	left:4%;
+	top:1%;
+}
 
 .inset {
 	margin: 5px;
 	padding: 5px;
+	height:30%;
 	
 }
+
+canvas {
+	
+	position:absolute;
+	left:32%;
+	top:3%;
+	
+}
+
+#canvas_infopanel {
+	
+	background-color:darkgrey;
+	position:absolute;
+	left:86.8%;
+	top:31%;
+	width:10%;
+	height:17%;
+	text-align:center;
+	border-radius:2%;
+	
+}
+
+#canvas_info {
+	position:absolute;
+	left:86.8%;
+	top:43%;
+	width:10%;
+	text-align:center;
+	font-family: Open Sans,Georgia, "Times New Roman", Times, serif;
+	font-weight:400;
+}
+
 .boxed {
-	position:relative;
+	
 	border: thin solid #666;
-	width:100%px;
-	float:left;
 	border-radius:1%;
+	
+	
 }
 .panel {
 /* 	position:absolute;
 	left:300px; */
 	position:relative;
-	float:left;
+	float:none;
 	border: thin solid #666;	
 	background-color: #CCC;
-	width: 18em;
-	height: 20em;
+	width: 85%;
+	height: 49%;
 	border-radius:10%;
+	margin-top:0.2em;
+	
 }
 /*  .panel2 {
  	position:absolute;
@@ -58,9 +113,12 @@ h4 {
 
 .slidermarg {
 	margin: 5px;
+
 }
+
+
 .numlabel {
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: Open Sans,Arial, Helvetica, sans-serif;
 	font-size: 10px;
 
 	
@@ -73,7 +131,7 @@ h4 {
 } */
 .numinput {
 	width:4em;
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: Open Sans,Arial, Helvetica, sans-serif;
 	font-size: 10px;
 	font-weight: bold;
 	color:red;
@@ -86,23 +144,26 @@ input {
 	text-align:center;
 }
 
+
 #stopbutton {
 	position:relative;
 	margin-left: 40%;
-	float:bottom;
+	
 }
 
 #trigger {
 	position:relative;
-	margin-left: 40%;
-	float:bottom;
+	margin-left: 28%;
+	margin-top:5%;
+	float:none;
+
 }
 
 
 
 tr {
 	position:relative;
-	float:left;
+	float:none;
 	text-align:center;
 	width:100%;
 	
@@ -110,7 +171,7 @@ tr {
 
 td:nth-child(1) {
 	
-	
+	text-align:left;
 }
 
 td:nth-child(2) {
@@ -121,5 +182,9 @@ td:nth-child(2) {
 
 table {
 	
-	vertical-align:middle;
 	
+	margin-top: 0,2em;
+}
+
+
+
