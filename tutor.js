@@ -220,7 +220,7 @@ Boid.Agent = function()
 			theContext.strokeStyle = 'rgba(255,0,0,0.1)';
 			theContext.lineWidth = 5;
             theContext.beginPath();
-            theContext.arc(this.x,this.y, self.perceptionRange-theContext.lineWidth/2,0, this.circ,true);
+            theContext.arc(this.x,this.y, self.perceptionRange-theContext.lineWidth/2,0, self.circ,true);
 
             theContext.closePath();
             theContext.stroke();
