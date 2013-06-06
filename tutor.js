@@ -228,7 +228,7 @@ Boid.Agent = function()
 			theContext.strokeStyle = 'rgba(0,255,0,1)';			
 			theContext.lineWidth = 1;			
             theContext.beginPath();			
-			var ratio = self.perceptionRange/(this.speed*self.simulationSpeed);
+			var ratio = self.perceptionRange/(this.speed);
 			theContext.moveTo(this.x+(this.vX*ratio),this.y+(this.vY*ratio));
 			var theta = 140*Math.PI/180;
 
@@ -242,6 +242,8 @@ Boid.Agent = function()
 			
 			var arrowX;
 			var arrowY;
+			
+			// ratio = self.perceptionRange/this.speed;
 
 			for (var rule = 0; rule < self.ruleCoeffs.length; rule ++)
 			{
@@ -272,9 +274,13 @@ Boid.Agent = function()
         // make 'em "bounce" when they go over the edge
         // no loss of velocity
         move: function() {
-            this.x += this.vX;
-            this.y += this.vY;
+            this.x += this.vX*self.simulationSpeed;
+            this.y += this.vY*self.simulationSpeed;
 
+			// this.x += this.vX;
+            // this.y += this.vY;
+			
+			
             // Marios: Wouldn't need to check velocity if you could *only* hit the wall when moving in that direction
             // Marios: Could remove wall issues by using wallCollision space
             // Marios: My modifications implicitly assume you won't *appear* in the wall
@@ -939,7 +945,7 @@ Boid.Agent = function()
 				
 			}
 			else {				
-				normalisingCoefficient = theBalls[i].speed*this.simulationSpeed/z;
+				normalisingCoefficient = theBalls[i].speed/z;
 				theBalls[i].vX = nvx*normalisingCoefficient;
 				theBalls[i].vY = nvy*normalisingCoefficient;
 			}

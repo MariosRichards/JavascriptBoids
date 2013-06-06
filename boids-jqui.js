@@ -7,9 +7,9 @@ $(document).ready(function(){
 	
 	//Colour of rules Override:
 	
-	c.ruleColours[0] = "black";
-	c.ruleColours[1] = "black";
-	c.ruleColours[2] = "black";
+	c.ruleColours[0] = "yellow";
+	c.ruleColours[1] = "red";
+	c.ruleColours[2] = "blue";
 	
 	
 				
