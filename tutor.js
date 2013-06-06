@@ -200,6 +200,13 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 	
 	this.simulationSpeed = 1;
 	
+	
+	// graphics controls
+	this.pigeonholesVisible = true;
+	this.perceptionRangeVisible = true;
+	this.ruleVectorVisible = [true, true, true];	
+	this.displayBoidIDs = true;	
+	
 
 
 
@@ -221,34 +228,66 @@ Boid.Agent = function(canvasWidth, canvasHeight)
             // theContext.strokeStyle = this.stroke;
 			
 			var theContext = self.theContext;
-			
-			// draw pigeonhole grid on screen
-			
-			// for (var i = 0; i<=self.pigeonholeWidth; i++)
-			// {
-				// theContext.moveTo( );
-				// theContext.lineTo( );
-			// }
 
-			// for (var i = 0; i<=self.pigeonholeWidth; i++)
-			// {
-				// theContext.moveTo( );
-				// theContext.lineTo( );
-			// }
-			
-			// add pigeonhole numbers
-			
-			
-			
-			
-			theContext.strokeStyle = 'rgba(255,0,0,0.1)';
-			theContext.lineWidth = 5;
-            theContext.beginPath();
-            theContext.arc(this.x,this.y, self.perceptionRange-theContext.lineWidth/2,0, self.circ,true);
+			theContext.font="lighter 8px verdana";
+			theContext.textAlign="center";
+			theContext.textBaseline="middle"; 		
 
-            theContext.closePath();
-            theContext.stroke();
 
+			
+			if (self.pigeonholesVisible)
+				{
+				
+				// draw pigeonhole grid on screen
+				theContext.strokeStyle = 'rgba(0,0,0,0.2)';
+				theContext.lineWidth = .05;			
+				theContext.beginPath();			
+				for (var i = 0; i<self.pigeonholeWidth; i++)
+				{
+					theContext.moveTo( i*self.perceptionRange , 0);
+					theContext.lineTo( i*self.perceptionRange , self.theCanvas.height );
+				}
+				
+				theContext.moveTo( self.theCanvas.width  , 0 );
+				theContext.lineTo( self.theCanvas.width  , self.theCanvas.height);
+
+				for (var i = 0; i<self.pigeonholeHeight; i++)
+				{
+					theContext.moveTo( 0, i*self.perceptionRange );
+					theContext.lineTo( self.theCanvas.width, i*self.perceptionRange  );
+				}
+				
+				theContext.moveTo( 0, self.theCanvas.height );
+				theContext.lineTo( self.theCanvas.width, self.theCanvas.height );
+
+				theContext.closePath();
+				theContext.stroke();			
+				// add pigeonhole numbers
+				
+				for (var i = 0; i<self.pigeonholeWidth*self.pigeonholeHeight; i++)
+				{
+			
+					theContext.fillText(i,
+										((i%self.pigeonholeWidth)+.5)      *self.perceptionRange,
+										(Math.floor(i/self.pigeonholeWidth)+.5) *self.perceptionRange );
+				
+				}
+			}
+
+			
+			// show perception Range
+			
+			if (self.perceptionRangeVisible)
+			{
+				theContext.strokeStyle = 'rgba(255,0,0,0.1)';
+				theContext.lineWidth = 5;
+				theContext.beginPath();
+				theContext.arc(this.x,this.y, self.perceptionRange-theContext.lineWidth/2,0, self.circ,true);
+				theContext.closePath();
+				theContext.stroke();
+			}
+			
+			// draw boid triangle
 			theContext.strokeStyle = 'rgba(0,255,0,1)';			
 			theContext.lineWidth = 1;			
             theContext.beginPath();			
@@ -271,26 +310,30 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 
 			for (var rule = 0; rule < self.ruleCoeffs.length; rule ++)
 			{
-			
-				theContext.strokeStyle = self.ruleColours[rule];
-				theContext.beginPath();
-				theContext.moveTo(this.x,this.y);
-				arrowX = this.vXrule[rule]*ratio*self.ruleCoeffs[rule];
-				arrowY = this.vYrule[rule]*ratio*self.ruleCoeffs[rule];
-				theContext.lineTo(this.x+arrowX,this.y+arrowY);
-				
-				var arrowRatio = .2;
-				theta = 150*Math.PI/180;
-				theContext.lineTo( this.x+arrowX+arrowRatio*( arrowX*Math.cos(theta)-arrowY*Math.sin(theta) ),this.y +arrowY+ arrowRatio*( arrowX*Math.sin(theta) + arrowY*Math.cos(theta) ) );
-				theta = 210*Math.PI/180;
-				theContext.lineTo( this.x+arrowX+arrowRatio*( arrowX*Math.cos(theta)-arrowY*Math.sin(theta) ),this.y +arrowY+ arrowRatio*( arrowX*Math.sin(theta) + arrowY*Math.cos(theta) ) );
-				theContext.lineTo( this.x+arrowX,this.y +arrowY );			
-				theContext.closePath();
-				theContext.stroke();			
-			
+				if (self.ruleVectorVisible[rule])
+				{
+					theContext.strokeStyle = self.ruleColours[rule];
+					theContext.beginPath();
+					theContext.moveTo(this.x,this.y);
+					arrowX = this.vXrule[rule]*ratio*self.ruleCoeffs[rule];
+					arrowY = this.vYrule[rule]*ratio*self.ruleCoeffs[rule];
+					theContext.lineTo(this.x+arrowX,this.y+arrowY);
+					
+					var arrowRatio = .2;
+					theta = 150*Math.PI/180;
+					theContext.lineTo( this.x+arrowX+arrowRatio*( arrowX*Math.cos(theta)-arrowY*Math.sin(theta) ),this.y +arrowY+ arrowRatio*( arrowX*Math.sin(theta) + arrowY*Math.cos(theta) ) );
+					theta = 210*Math.PI/180;
+					theContext.lineTo( this.x+arrowX+arrowRatio*( arrowX*Math.cos(theta)-arrowY*Math.sin(theta) ),this.y +arrowY+ arrowRatio*( arrowX*Math.sin(theta) + arrowY*Math.cos(theta) ) );
+					theContext.lineTo( this.x+arrowX,this.y +arrowY );			
+					theContext.closePath();
+					theContext.stroke();			
+				}
 			}
 			
-			theContext.fillText(this.id +","+ this.pigeon,this.x, this.y);
+			if (self.displayBoidIDs)
+			{
+				theContext.fillText(this.id +","+ this.pigeon,this.x, this.y);
+			}
 			
 			
         },
