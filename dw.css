@@ -176,12 +176,13 @@ tr {
 td:nth-child(1) {
 	
 	text-align:left;
+	width:40%;
 }
 
 td:nth-child(2) {
 	
 	text-align:right;
-	
+	width:40%;
 }
 
 table {
@@ -190,5 +191,16 @@ table {
 	margin-top: 0,2em;
 }
 
+#dummy_pane {
+	position:absolute;
+	width:60%;
+	height:40%;
+	margin:auto;
+	left:0;
+	right:0;
+	top:0;
+	bottom:0;
+	display:none;
+}
 
 
