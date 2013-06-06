@@ -5,11 +5,16 @@ head {
 	font-weight:800;
 }
 
+html { 
+	font-size:100.01%;
+}
+
  body {
 
 	font-family: Verdana, Geneva, sans-serif;
-	width: 650px;
-	font-size: 100%;	
+	width: 65%;
+	height:60%:
+	font-size: 100%;
 	
 }
 
@@ -41,13 +46,14 @@ h4 {
 	display:block;
 	left:4%;
 	top:1%;
-	background-color:green;
+	/*background-color:green;*/
 }
 
 .inset {
-	margin: 5px;
-	padding: 5px;
+	margin: 1.5%;
+	padding: 1.5%;
 	height:30%;
+	width:95%;
 	
 }
 
@@ -99,8 +105,8 @@ canvas {
 	width: 85%;
 	height: 49%;
 	border-radius:10%;
-	margin-top:0.2em;
-	background-color:blue;
+	margin-top:0.6%;
+	/*background-color:blue;*/
 }
 
 
@@ -114,7 +120,7 @@ canvas {
 
 
 .slidermarg {
-	margin: 5px;
+	margin: 1.5%;
 	height:30%;
 
 }
@@ -158,8 +164,9 @@ input {
 #trigger {
 	position:relative;
 	margin-left: 28%;
-	margin-top:5%;
+	margin-top:8%;
 	float:none;
+	font-size:120%;
 
 }
 
