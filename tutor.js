@@ -120,7 +120,7 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 	// create an array of pigeonholes
 	this.PigeonHoles = [];
 	// create the interaction list array;
-	this.InteractionList = [];
+//	this.InteractionList = [];
 	// temp velocity variables
 
 	this.theCanvas = document.getElementById("mycanvas");
@@ -145,7 +145,7 @@ Boid.Agent = function(canvasWidth, canvasHeight)
     this.addAgentX = 0;
     this.addAgentY = 0;	
 
-	this.genericStroke = "#728FCE";        // steel blue outline
+	//this.genericStroke = "#728FCE";        // steel blue outline
 	this.circ = Math.PI*2;            // complete circle
 
 	// Rule coefficients
@@ -163,8 +163,8 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 	var Obstacles = 1; // turn obstacle interaction on(1)/off(0)
 	// obstacle is a circle
 	var obstacleRadius = 20;
-	var obstacleX = this.theCanvas.width/2;
-	var obstacleY = this.theCanvas.height/2;
+	var obstacleX = this.canvasWidth/2;
+	var obstacleY = this.canvasHeight/2;
 	var obstacleIndex = -5;
 	var obstacleRepulsion =100;
 	
@@ -185,28 +185,31 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 
 
 	this.perceptionRange = 20;
+	this.initialPopulation = 100;	
+	this.simulationSpeed = 1;	
+	
 
 	this.perceptionRangeSquared = this.perceptionRange*this.perceptionRange;
-	this.directionIndicatorLength = this.perceptionRange;
+//	this.directionIndicatorLength = this.perceptionRange;
 
 
-	this.genericSpeed = 1;
+	//this.genericSpeed = 1;
 	
-	this.initialPopulation = 100;
+
 
    // note - am assuming canvas won't change size!!
-    this.pigeonholeWidth = Math.ceil(this.theCanvas.width/this.perceptionRange);
-    this.pigeonholeHeight = Math.ceil(this.theCanvas.height/this.perceptionRange);
+    this.pigeonholeWidth = Math.ceil(this.canvasWidth/this.perceptionRange);
+    this.pigeonholeHeight = Math.ceil(this.canvasHeight/this.perceptionRange);
 
 	this.newInitialPopulation = this.initialPopulation;
-	this.newGenericSpeed = this.genericSpeed;
+//	this.newGenericSpeed = this.genericSpeed;
 	this.newPerceptionRange = this.perceptionRange;
 	this.newWallCollision = wallCollision;
 	this.newObstacles = Obstacles;
 	
 	
 	
-	this.simulationSpeed = 1;
+
 	
 	
 	// graphics controls
@@ -227,8 +230,9 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 		vYrule : [0, 0, 0],
 		id : 0,
         pigeon : 0, // pigeonhole
-        speed : self.genericSpeed,
+        speed : 1,
 		perceptionRange : self.perceptionRange,
+		perceptionRangeSquared: self.perceptionRange*self.perceptionRange,
     //    stroke : self.genericStroke,
 
         draw : function() {
@@ -241,7 +245,7 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 			theContext.textBaseline="middle"; 		
 
 
-			
+			// would relate to 'global' perceptionRange
 			if (self.pigeonholesVisible)
 				{
 				
@@ -252,20 +256,20 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 				for (var i = 0; i<self.pigeonholeWidth; i++)
 				{
 					theContext.moveTo( i*self.perceptionRange , 0);
-					theContext.lineTo( i*self.perceptionRange , self.theCanvas.height );
+					theContext.lineTo( i*self.perceptionRange , self.canvasHeight );
 				}
 				
-				theContext.moveTo( self.theCanvas.width  , 0 );
-				theContext.lineTo( self.theCanvas.width  , self.theCanvas.height);
+				theContext.moveTo( self.canvasWidth  , 0 );
+				theContext.lineTo( self.canvasWidth  , self.canvasHeight);
 
 				for (var i = 0; i<self.pigeonholeHeight; i++)
 				{
 					theContext.moveTo( 0, i*self.perceptionRange );
-					theContext.lineTo( self.theCanvas.width, i*self.perceptionRange  );
+					theContext.lineTo( self.canvasWidth, i*self.perceptionRange  );
 				}
 				
-				theContext.moveTo( 0, self.theCanvas.height );
-				theContext.lineTo( self.theCanvas.width, self.theCanvas.height );
+				theContext.moveTo( 0, self.canvasHeight );
+				theContext.lineTo( self.canvasWidth, self.canvasHeight );
 
 				theContext.closePath();
 				theContext.stroke();			
@@ -289,7 +293,7 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 				theContext.strokeStyle = 'rgba(255,0,0,0.1)';
 				theContext.lineWidth = 5;
 				theContext.beginPath();
-				theContext.arc(this.x,this.y, self.perceptionRange-theContext.lineWidth/2,0, self.circ,true);
+				theContext.arc(this.x,this.y, this.perceptionRange-theContext.lineWidth/2,0, self.circ,true);
 				theContext.closePath();
 				theContext.stroke();
 			}
@@ -298,7 +302,7 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 			theContext.strokeStyle = 'rgba(0,255,0,1)';			
 			theContext.lineWidth = 1;			
             theContext.beginPath();			
-			var ratio = self.perceptionRange/(this.speed);
+			var ratio = this.perceptionRange/(this.speed);
 			theContext.moveTo(this.x+(this.vX*ratio),this.y+(this.vY*ratio));
 			var theta = 140*Math.PI/180;
 
@@ -313,7 +317,6 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 			var arrowX;
 			var arrowY;
 			
-			// ratio = self.perceptionRange/this.speed;
 
 			for (var rule = 0; rule < self.ruleCoeffs.length; rule ++)
 			{
@@ -364,14 +367,14 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 			if (wallCollision==1) // toroidal
 			{
 
-				this.x = (this.x+self.theCanvas.width)%self.theCanvas.width;
-				this.y = (this.y+self.theCanvas.height)%self.theCanvas.height;
+				this.x = (this.x+self.canvasWidth)%self.canvasWidth;
+				this.y = (this.y+self.canvasHeight)%self.canvasHeight;
 
 			}
 			else if (wallCollision==0) // hard bounce
 			{
 
-				var penetrationUpper = this.x + this.perceptionRange - self.theCanvas.width;
+				var penetrationUpper = this.x + this.perceptionRange - self.canvasWidth;
 				var penetrationLower = this.perceptionRange - this.x;
 				if (penetrationUpper > 0) {
 					this.vX = -this.vX;
@@ -383,7 +386,7 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 					this.x += 2*penetrationLower;
 				}
 
-				penetrationUpper = this.y + this.perceptionRange - self.theCanvas.height;
+				penetrationUpper = this.y + this.perceptionRange - self.canvasHeight;
 				penetrationLower = this.perceptionRange - this.y;
 				if (penetrationUpper > 0) {
 					this.vY = -this.vY;
@@ -426,8 +429,8 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 			else // repulsion
 			{
 				
-				this.x = Math.min( Math.max(this.x , 1) , (self.theCanvas.width-1));
-				this.y = Math.min( Math.max(this.y , 1) , (self.theCanvas.height-1));					
+				this.x = Math.min( Math.max(this.x , 1) , (self.canvasWidth-1));
+				this.y = Math.min( Math.max(this.y , 1) , (self.canvasHeight-1));					
 			
 			
 			}
@@ -454,8 +457,8 @@ Boid.Agent = function(canvasWidth, canvasHeight)
         var ball = new Empty();
 
         // Prevent balls from being created overlapping with walls
-        x = Math.min( Math.max(x , perceptionRange) , (this.theCanvas.width-perceptionRange));
-        y = Math.min( Math.max(y , perceptionRange) , (this.theCanvas.height-perceptionRange));
+        x = Math.min( Math.max(x , perceptionRange) , (this.canvasWidth-perceptionRange));
+        y = Math.min( Math.max(y , perceptionRange) , (this.canvasHeight-perceptionRange));
 		
 		// Prevent balls from being created inside obstacles
 		// ugly random positioning solution!
@@ -465,11 +468,11 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 			while ( Math.sqrt((obstacleX - x)*(obstacleX - x) + (obstacleY - y)*(obstacleY - y) ) < (obstacleRadius) )
 			{
 
-				x = Math.random()*this.theCanvas.width;
-				y = Math.random()*this.theCanvas.height;
+				x = Math.random()*this.canvasWidth;
+				y = Math.random()*this.canvasHeight;
 				
-				x = Math.min( Math.max(x , perceptionRange) , (this.theCanvas.width-perceptionRange));
-				y = Math.min( Math.max(y , perceptionRange) , (this.theCanvas.height-perceptionRange));				
+				x = Math.min( Math.max(x , perceptionRange) , (this.canvasWidth-perceptionRange));
+				y = Math.min( Math.max(y , perceptionRange) , (this.canvasHeight-perceptionRange));				
 						
 
 						
@@ -483,7 +486,7 @@ Boid.Agent = function(canvasWidth, canvasHeight)
         ball.vX = vX;
         ball.vY = vY;
         ball.perceptionRange = perceptionRange;
-//        ball.colour = colour;
+		ball.perceptionRangeSquared = perceptionRange*perceptionRange;
         ball.stroke = stroke;
 		ball.speed = speed;
 		ball.vXrule = [0,0,0];
@@ -498,10 +501,6 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 			debugger;
 		}
 		
-        // 0 : pigeonholeWidth*pigeonholeHeight-1
-        // add ball to pigeonhole
-        // 0 : pigeonholeWidth*pigeonholeHeight-1
-        // Assumes Balls are *always* added instantly after creation *and* that they are always added at the end
 
 		ball.id = this.theBalls.length;
 		
@@ -516,7 +515,7 @@ Boid.Agent = function(canvasWidth, canvasHeight)
     this.drawBalls = function() {
         // clear the window
         var theContext = self.theContext;
-        theContext.clearRect(0, 0, this.theCanvas.width, this.theCanvas.height);
+        theContext.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
         // draw the balls - too bad we can't use for i in theBalls
         for (var i=self.theBalls.length-1; i>=0; i--) {
             self.theBalls[i].draw();
@@ -556,7 +555,7 @@ Boid.Agent = function(canvasWidth, canvasHeight)
     {
 
         // clean InteractionList array of arrays!
-   //     self.InteractionList = [];
+
         var InteractionList     = [];
 
         var pigeonholeWidth     = this.pigeonholeWidth;
@@ -583,23 +582,21 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 			if (Obstacles==1)
 			{
 			
-				if ( ((obstacleX - bix)*(obstacleX - bix) + (obstacleY - biy)*(obstacleY - biy)) < ((obstacleRadius + this.perceptionRange)*(obstacleRadius + this.perceptionRange)) )
+				if ( ((obstacleX - bix)*(obstacleX - bix) + (obstacleY - biy)*(obstacleY - biy)) < ((obstacleRadius + bi.perceptionRange)*(obstacleRadius + bi.perceptionRange)) )
 				{
 					InteractionList[i].push(obstacleIndex);
 				}
 				
 			}
-			
 
-			
 			
             // loop through the 9 tiles without trying access tiles that are outside of the canvas			
 			if (wallCollision==1)
 			{
 				for(var holeX = pigeonX+1; holeX>= pigeonX-1; holeX--) {
-				//	holeX = (holeX+pigeonholeWidth)%pigeonholeWidth;
+
 					for(var holeY = pigeonY+1; holeY>= pigeonY-1; holeY--) {
-						//holeY = (holeY+pigeonholeHeight)%pigeonholeHeight;
+
 						
 						pigeonhole = ((holeX+pigeonholeWidth)%pigeonholeWidth) + pigeonholeWidth*((holeY+pigeonholeHeight)%pigeonholeHeight);
 						// now iterate through the Balls in this pigeon if any
@@ -630,15 +627,15 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 									
 								}
 								
-								if ( 2*Math.abs(dx) > this.theCanvas.width ) {
-									dx = this.theCanvas.width - Math.abs(dx);
+								if ( 2*Math.abs(dx) > this.canvasWidth ) {
+									dx = this.canvasWidth - Math.abs(dx);
 								}
 								
-								if ( 2*Math.abs(dy) > this.theCanvas.height ) {
-									dy = this.theCanvas.height - Math.abs(dy);
+								if ( 2*Math.abs(dy) > this.canvasHeight ) {
+									dy = this.canvasHeight - Math.abs(dy);
 								}								
 									
-								if ( (dx*dx + dy*dy) <= this.perceptionRangeSquared ) {
+								if ( (dx*dx + dy*dy) <= bi.perceptionRangeSquared ) {
 								   // debugger;
 									InteractionList[i].push(j);
 								}
@@ -681,7 +678,7 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 									dy = bj.y - biy;
 									
 								}
-								if ( (dx*dx + dy*dy) <= this.perceptionRangeSquared ) {
+								if ( (dx*dx + dy*dy) <= (bi.perceptionRangeSquared) ) {
 									InteractionList[i].push(j);
 								}
 							}
@@ -700,8 +697,8 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 
 				// left/right wall near?
 
-				var penetrationUpper = bix + this.perceptionRange - this.theCanvas.width;
-				var penetrationLower = this.perceptionRange - bix;
+				var penetrationUpper = bix + bi.perceptionRange - this.canvasWidth;
+				var penetrationLower = bi.perceptionRange - bix;
 				if (penetrationUpper > 0) { // right wall
 					
 					InteractionList[i].push(wallRight);
@@ -714,8 +711,8 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 					
 				}
 
-				penetrationUpper = biy + this.perceptionRange - this.theCanvas.height;
-				penetrationLower = this.perceptionRange - biy;
+				penetrationUpper = biy + bi.perceptionRange - this.canvasHeight;
+				penetrationLower = bi.perceptionRange - biy;
 				if (penetrationUpper > 0) {
 				
 					InteractionList[i].push(wallTop);
@@ -762,7 +759,7 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 									dy = bj.y - biy;
 									
 								}
-								if ( (dx*dx + dy*dy) <= this.perceptionRangeSquared ) {
+								if ( (dx*dx + dy*dy) <= (bi.perceptionRangeSquared) ) {
 									InteractionList[i].push(j);
 								}
 							}
@@ -825,14 +822,14 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 						
 						else if(interactor2 ==-2) {
 						
-							var bxs = bi.x - this.theCanvas.width;
+							var bxs = bi.x - this.canvasWidth;
 							RepulsionX += wallRepulsion*(-1)/(1+Math.abs(bxs));
 						
 						}
 						
 						else if(interactor2 ==-3) {		
 
-							var bys = bi.y - this.theCanvas.height;
+							var bys = bi.y - this.canvasHeight;
 							RepulsionY += wallRepulsion*(-1)/(1+Math.abs(bys));
 						
 						}
@@ -896,12 +893,12 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 						// Repulsion: steer to avoid crowding local flockmates
 						
 						if (wallCollision==1) { // toroidal wall collision
-							if ( 2*Math.abs(bxs) > this.theCanvas.width ) {
-								bxs = this.theCanvas.width - bxs;
+							if ( 2*Math.abs(bxs) > this.canvasWidth ) {
+								bxs = this.canvasWidth - bxs;
 							}
 							
-							if ( 2*Math.abs(bys) > this.theCanvas.height ) {
-								bys = this.theCanvas.height - bys;
+							if ( 2*Math.abs(bys) > this.canvasHeight ) {
+								bys = this.canvasHeight - bys;
 							}
 						}
 						
@@ -1006,7 +1003,7 @@ Boid.Agent = function(canvasWidth, canvasHeight)
    
         var pigeonholeWidth = self.pigeonholeWidth;
         var pigeonholeHeight = self.pigeonholeHeight;
-        var perceptionRange  = self.perceptionRange;
+  //      var perceptionRange  = self.perceptionRange;
 
         // what can interact with what
         InteractionList = self.createInteractionList(theBalls);
@@ -1085,8 +1082,8 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 			x =  this.addAgentX;
 			y =  this.addAgentY;
 			
-			x = Math.min( Math.max(x , 1) , (this.theCanvas.width-1));
-			y = Math.min( Math.max(y , 1) , (this.theCanvas.height-1));
+			x = Math.min( Math.max(x , 1) , (this.canvasWidth-1));
+			y = Math.min( Math.max(y , 1) , (this.canvasHeight-1));
 			
 			objectX[numObjects] = x;
 			objectY[numObjects] = y;
@@ -1208,14 +1205,14 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 		// temp velocity variables		
 		
 		this.initialPopulation = this.newInitialPopulation;
-		this.genericSpeed = this.newGenericSpeed;
+		//this.genericSpeed = this.newGenericSpeed;
 		this.perceptionRange = this.newPerceptionRange;
 
 
 	
 
 		this.perceptionRangeSquared = this.perceptionRange*this.perceptionRange;
-		this.directionIndicatorLength = this.perceptionRange;
+//		this.directionIndicatorLength = this.perceptionRange;
 		
 		wallCollision = this.newWallCollision;
 		Obstacles = this.newObstacles;	
@@ -1232,8 +1229,8 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 
 
 	   // note - am assuming canvas won't change size!!
-		this.pigeonholeWidth = Math.ceil(this.theCanvas.width/this.perceptionRange);
-		this.pigeonholeHeight = Math.ceil(this.theCanvas.height/this.perceptionRange);		
+		this.pigeonholeWidth = Math.ceil(this.canvasWidth/this.perceptionRange);
+		this.pigeonholeHeight = Math.ceil(this.canvasHeight/this.perceptionRange);		
 		
 		this.restartNow = 0;
 		
@@ -1253,16 +1250,19 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 
 			var randomAngleInRadians = Math.random()*Math.PI*2;
 
-			b = this.makeBall(this.theCanvas.width*Math.random(),
-							  this.theCanvas.height*Math.random(),
-							  Math.cos(randomAngleInRadians) * this.genericSpeed,
-							  Math.sin(randomAngleInRadians) * this.genericSpeed,
-							  this.genericSpeed,
-							  this.perceptionRange,
-							  this.genericStroke );
+			var speed = 1;
+			
+			b = this.makeBall(this.canvasWidth*Math.random(),
+							  this.canvasHeight*Math.random(),
+							  Math.cos(randomAngleInRadians) * speed,
+							  Math.sin(randomAngleInRadians) * speed,
+							  speed,
+							  this.perceptionRange );
 			this.theBalls.push(b);
 			
-							  // this.genericSpeed*(1+Math.random()*.6-.3),			
+							  // this.genericSpeed*(1+Math.random()*.6-.3),		
+							  
+							  //this.genericStroke
 		}
 
 		this.theCanvas.addEventListener("click",this.doClick.bind(this),false);
