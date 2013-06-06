@@ -88,12 +88,14 @@ function makeSlider(label,colour,slidefun,slideparams)
 	var outer = $("<div />").addClass("inset").appendTo("#controls");
 	$("<span \>").text(label+":").css("color",colour).addClass("numlabel").appendTo(outer);
 	var inp = $("<input \>").addClass("numinput").attr('type','number').appendTo(outer);
+	var checkbox = $("<input \>").addClass("checkbox_input").attr('type','checkbox').appendTo(outer);
 	var sdi = $("<div \>").addClass("slidermarg").appendTo(outer);
 	sdi.slider(slideparams).bind("slide",
 								 function( event, ui ) {
 									inp.val( ui.value );
 									slidefun(ui.value)
 									} );
+	checkbox.attr("checked",true);								
 	inp.val(slideparams.value);
 	slidefun(slideparams.value);
 }

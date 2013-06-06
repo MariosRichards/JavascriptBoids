@@ -9,8 +9,7 @@ head {
 
 	font-family: Verdana, Geneva, sans-serif;
 	width: 650px;
-	
-	
+	font-size: 100%;	
 	
 }
 
@@ -57,7 +56,6 @@ canvas {
 	position:absolute;
 	left:32%;
 	top:3%;
-	
 }
 
 #canvas_infopanel {
@@ -117,13 +115,14 @@ canvas {
 
 .slidermarg {
 	margin: 5px;
+	height:30%;
 
 }
 
 
 .numlabel {
 	font-family: Open Sans,Arial, Helvetica, sans-serif;
-	font-size: 10px;
+	font-size: 70%;
 
 	
 }
@@ -136,7 +135,7 @@ canvas {
 .numinput {
 	width:4em;
 	font-family: Open Sans,Arial, Helvetica, sans-serif;
-	font-size: 10px;
+	font-size: 55%;
 	font-weight: bold;
 	color:red;
 }
@@ -146,6 +145,7 @@ input {
 	position:relative;
 	float:right;
 	text-align:center;
+	font-size: 100%;
 }
 
 
