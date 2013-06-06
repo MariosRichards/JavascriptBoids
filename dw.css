@@ -200,9 +200,9 @@ table {
 
 #dummy_pane {
 	position:absolute;
-	width:60%;
-	height:40%;
-	margin:auto;
+	width:1200px;
+	height:1100px;
+
 	left:0;
 	right:0;
 	top:0;
