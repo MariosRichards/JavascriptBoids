@@ -6,8 +6,6 @@ $(document).ready(function(){
 	var w = $("#dummy_pane").width();	
 	var h = $("#dummy_pane").height();
 
-	alert(w);
-	alert(h);
 	
 	c = new Boid.Agent(w,h);
 	c.start();
@@ -32,12 +30,6 @@ $(document).ready(function(){
 });
 
 
-function dummy_check(){
-	
-	/*alert($('#dummy_pane').width());
-	alert($('#dummy_pane').height());*/
-	
-}
 
 function checkbutton()
 {

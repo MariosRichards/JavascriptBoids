@@ -61,7 +61,7 @@ canvas {
 	
 	position:absolute;
 	left:32%;
-	top:3%;
+	top:1%;
 }
 
 #canvas_infopanel {
@@ -200,9 +200,8 @@ table {
 
 #dummy_pane {
 	position:absolute;
-	width:1200px;
-	height:1100px;
-
+	width:60%;
+	height:80%;
 	left:0;
 	right:0;
 	top:0;
