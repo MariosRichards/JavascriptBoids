@@ -31,7 +31,7 @@ function checkbutton()
 	// no input testing at all!
 
 	if ($("#initpop")[0].value) c.newInitialPopulation = $("#initpop")[0].valueAsNumber;
-	if ($("#speed")[0].value) c.newGenericSpeed = $("#speed")[0].valueAsNumber;
+	//if ($("#speed")[0].value) c.newGenericSpeed = $("#speed")[0].valueAsNumber;
 	if ($("#percRange")[0].value) c.newPerceptionRange = $("#percRange")[0].valueAsNumber;
 	if ($("#obstacles")[0].value) c.newObstacles = $("#obstacles")[0].valueAsNumber;
 	if ($("#wallColl")[0].value) c.newWallCollision = $("#wallColl")[0].valueAsNumber;
