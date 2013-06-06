@@ -42,6 +42,7 @@ h4 {
 	display:block;
 	left:4%;
 	top:1%;
+	background-color:green;
 }
 
 .inset {
@@ -89,6 +90,7 @@ canvas {
 	
 	
 }
+
 .panel {
 /* 	position:absolute;
 	left:300px; */
@@ -100,8 +102,10 @@ canvas {
 	height: 49%;
 	border-radius:10%;
 	margin-top:0.2em;
-	
+	background-color:blue;
 }
+
+
 /*  .panel2 {
  	position:absolute;
 	left:350px; 
