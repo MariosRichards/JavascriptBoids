@@ -2,7 +2,12 @@
 $(document).ready(function(){ 
 	$("#stopbutton").click(stopButtonCB);
 	// $("#restartbutton").click(restartButtonCB);	
-	c = new Boid.Agent();
+	
+	var w = $("dummy_pane").width;	
+	var h = $("dummy_pane").height;
+
+	
+	c = new Boid.Agent(w,h);
 	c.start();
 	
 	//Colour of rules Override:

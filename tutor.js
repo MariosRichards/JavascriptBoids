@@ -58,7 +58,7 @@ var BoidAgents       = [];
 
 
 
-Boid.Agent = function()
+Boid.Agent = function(canvasWidth, canvasHeight)
 {
 
 // PLAYER STUFF
@@ -125,6 +125,11 @@ Boid.Agent = function()
 
 	this.theCanvas = document.getElementById("mycanvas");
 	this.theContext = this.theCanvas.getContext("2d");
+	this.theCanvas.width = canvasWidth;
+	this.theCanvas.width = canvasHeight;
+
+	
+	
 	// these are effectively the constants	
 
 	
@@ -216,6 +221,25 @@ Boid.Agent = function()
             // theContext.strokeStyle = this.stroke;
 			
 			var theContext = self.theContext;
+			
+			// draw pigeonhole grid on screen
+			
+			// for (var i = 0; i<=self.pigeonholeWidth; i++)
+			// {
+				// theContext.moveTo( );
+				// theContext.lineTo( );
+			// }
+
+			// for (var i = 0; i<=self.pigeonholeWidth; i++)
+			// {
+				// theContext.moveTo( );
+				// theContext.lineTo( );
+			// }
+			
+			// add pigeonhole numbers
+			
+			
+			
 			
 			theContext.strokeStyle = 'rgba(255,0,0,0.1)';
 			theContext.lineWidth = 5;
