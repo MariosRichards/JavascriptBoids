@@ -126,7 +126,7 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 	this.theCanvas = document.getElementById("mycanvas");
 	this.theContext = this.theCanvas.getContext("2d");
 	this.theCanvas.width = canvasWidth;
-	this.theCanvas.width = canvasHeight;
+	this.theCanvas.height = canvasHeight;
 
 	
 	
