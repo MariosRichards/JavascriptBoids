@@ -1,7 +1,12 @@
 
 $(document).ready(function(){ 
 	$("#stopbutton").click(stopButtonCB);
-	// $("#restartbutton").click(restartButtonCB);	
+	// $("#restartbutton").click(restartButtonCB);
+	$("#canvas_info_numberboids").click(numberboidsButtonCB);
+	$("#canvas_info_pigeonholes").click(pigeonholesButtonCB);
+	$("#canvas_info_perceptionrange").click(perceptionrangeButtonCB);
+	$("#canvas_info_boidids").click(boididsButtonCB);
+	
 	
 	var w = $("#dummy_pane").width();	
 	var h = $("#dummy_pane").height();
@@ -60,6 +65,55 @@ function stopButtonCB()
 	}
 }
 
+function numberboidsButtonCB()
+{
+	
+	var isVisible = $('#canvas_info').css('visibility');
+	
+	
+	if (isVisible==="visible") {
+		$('#canvas_info').css('visibility','hidden');
+	}
+	else{
+		$('#canvas_info').css('visibility','visible');
+	}
+	
+}
+
+function pigeonholesButtonCB()
+{	
+	if (c.pigeonholesVisible) {
+		c.pigeonholesVisible = false;
+	}
+	else{
+		c.pigeonholesVisible = true;
+	}
+}
+
+function perceptionrangeButtonCB()
+{	
+	
+	if (c.perceptionRangeVisible) {
+		c.perceptionRangeVisible = false;
+	}
+	else{
+		c.perceptionRangeVisible = true;
+	}
+}
+
+function boididsButtonCB()
+{	
+	
+	if (c.displayBoidIDs) {
+		c.displayBoidIDs = false;
+	}
+	else{
+		c.displayBoidIDs = true;
+	}
+}
+
+displayBoidIDs
+
 
 function restartButtonCB()
 {
@@ -96,7 +150,8 @@ function makeSlider(label,colour,slidefun,slideparams)
 									inp.val( ui.value );
 									slidefun(ui.value)
 									} );
-	checkbox.attr("checked",true);								
+	checkbox.attr("checked",true);
+	checkbox.attr("id",label);							
 	inp.val(slideparams.value);
 	slidefun(slideparams.value);
 }

@@ -60,7 +60,7 @@ h4 {
 canvas {
 	
 	position:absolute;
-	left:32%;
+	left:30%;
 	top:1%;
 }
 
@@ -69,15 +69,105 @@ canvas {
 	background-color:darkgrey;
 	position:absolute;
 	left:86.8%;
-	top:31%;
+	top:1%;
 	width:10%;
-	height:17%;
+	height:80%;
 	text-align:center;
-	border-radius:2%;
+	border-radius:4%;
+	border: thin solid #666;	
+	background-color: #CCC;
 	
 }
 
 #canvas_info {
+	position:absolute;
+	left:75%;
+	top:81%;
+	width:10%;
+	text-align:center;
+	font-family: Open Sans,Georgia, "Times New Roman", Times, serif;
+	font-weight:400;
+	visibility:visible;
+}
+
+
+
+#canvas_info_numberboids{
+	position:relative;
+	width:90%;
+	height:25%;
+	text-align:center;
+	margin:auto;
+	
+	font-family: Open Sans,Georgia, "Times New Roman", Times, serif;
+	font-weight:400;
+
+}
+
+#canvas_info_pigeonholes{
+	position:relative;
+	width:90%;
+	height:25%;
+	text-align:center;
+	margin:auto;
+	
+	font-family: Open Sans,Georgia, "Times New Roman", Times, serif;
+	font-weight:400;
+}
+
+#canvas_info_perceptionrange{
+	position:relative;
+	width:90%;
+	height:25%;
+	text-align:center;
+	margin:auto;
+	
+	font-family: Open Sans,Georgia, "Times New Roman", Times, serif;
+	font-weight:400;
+}
+
+#canvas_info_boidids{
+	position:relative;
+	width:90%;
+	height:25%;
+	text-align:center;
+	margin:auto;
+	
+	font-family: Open Sans,Georgia, "Times New Roman", Times, serif;
+	font-weight:400;
+}
+
+#button_numberboids{
+	position:relative;
+	width:100%;
+	height:100%;
+	text-align:center;
+	margin:auto;
+	font-family: Open Sans,Georgia, "Times New Roman", Times, serif;
+	font-weight:400;
+}
+
+#button_pigeonholes{
+	position:relative;
+	width:100%;
+	height:100%;
+	text-align:center;
+	margin:auto;
+	font-family: Open Sans,Georgia, "Times New Roman", Times, serif;
+	font-weight:400;
+}
+
+#button_perceptionrange{
+	position:relative;
+	width:100%;
+	height:100%;
+	text-align:center;
+	margin:auto;
+	font-family: Open Sans,Georgia, "Times New Roman", Times, serif;
+	font-weight:400;
+}
+
+/*#canvas_info {
 	position:absolute;
 	left:86.8%;
 	top:43%;
@@ -85,7 +175,7 @@ canvas {
 	text-align:center;
 	font-family: Open Sans,Georgia, "Times New Roman", Times, serif;
 	font-weight:400;
-}
+}*/
 
 .boxed {
 	
