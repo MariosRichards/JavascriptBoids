@@ -538,9 +538,23 @@ Boid.Agent = function()
 							if(j != i) { //
 
 							// test if within perceptionRange
-								var bj = ballList[j];
-								var dx = bj.x - bix;
-								var dy = bj.y - biy;
+								var dx,dy;
+								if (j<=-6) // is it an object?
+								{
+
+									dx = objectX[-6-j] - bix;
+									dy = objectY[-6-j] - biy;
+								
+								}
+								else // no, it's a boid
+								{
+							
+									// test if within perceptionRange
+									bj = ballList[j];
+									dx = bj.x - bix;
+									dy = bj.y - biy;
+									
+								}
 								
 								if ( 2*Math.abs(dx) > this.theCanvas.width ) {
 									dx = this.theCanvas.width - Math.abs(dx);
@@ -574,21 +588,23 @@ Boid.Agent = function()
 
 							// here is where you'd add an if statement to cut work in half!
 							if(j != i) { //
-
-								if (j<=-6)
+							
+							
+								var dx,dy;
+								if (j<=-6) // is it an object?
 								{
 
-									var dx = objectX[-6-j] - bix;
-									var dy = objectY[-6-j] - biy;
+									dx = objectX[-6-j] - bix;
+									dy = objectY[-6-j] - biy;
 								
 								}
-								else
+								else // no, it's a boid
 								{
 							
 									// test if within perceptionRange
-									var bj = ballList[j];
-									var dx = bj.x - bix;
-									var dy = bj.y - biy;
+									bj = ballList[j];
+									dx = bj.x - bix;
+									dy = bj.y - biy;
 									
 								}
 								if ( (dx*dx + dy*dy) <= this.perceptionRangeSquared ) {
@@ -665,10 +681,22 @@ Boid.Agent = function()
 							// here is where you'd add an if statement to cut work in half!
 							if(j != i) { //
 
-							// test if within perceptionRange
-								var bj = ballList[j];
-								var dx = bj.x - bix;
-								var dy = bj.y - biy;
+								var dx,dy;
+								if (j<=-6) // is it an object?
+								{
+
+									dx = objectX[-6-j] - bix;
+									dy = objectY[-6-j] - biy;
+								
+								}
+								else // no, it's a boid
+								{
+	
+									bj = ballList[j];
+									dx = bj.x - bix;
+									dy = bj.y - biy;
+									
+								}
 								if ( (dx*dx + dy*dy) <= this.perceptionRangeSquared ) {
 									InteractionList[i].push(j);
 								}
@@ -803,12 +831,12 @@ Boid.Agent = function()
 						// Repulsion: steer to avoid crowding local flockmates
 						
 						if (wallCollision==1) { // toroidal wall collision
-							if ( 2*Math.abs(bxs) > theCanvas.width ) {
-								bxs = theCanvas.width - bxs;
+							if ( 2*Math.abs(bxs) > this.theCanvas.width ) {
+								bxs = this.theCanvas.width - bxs;
 							}
 							
-							if ( 2*Math.abs(bys) > theCanvas.height ) {
-								bys = theCanvas.height - bys;
+							if ( 2*Math.abs(bys) > this.theCanvas.height ) {
+								bys = this.theCanvas.height - bys;
 							}
 						}
 						
