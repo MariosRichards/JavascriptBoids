@@ -3,8 +3,8 @@ $(document).ready(function(){
 	$("#stopbutton").click(stopButtonCB);
 	// $("#restartbutton").click(restartButtonCB);	
 	
-	var w = $("dummy_pane").width;	
-	var h = $("dummy_pane").height;
+	var w = $("#dummy_pane").width();	
+	var h = $("#dummy_pane").height();
 
 	
 	c = new Boid.Agent(w,h);
