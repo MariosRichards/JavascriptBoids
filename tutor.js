@@ -187,6 +187,18 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 	this.ruleVectorVisible = [true, true, true];	
 	this.displayBoidIDs = true;	
 	
+	
+	// precomputed sin/cos functions
+	this.sin140 = Math.sin(140*Math.PI/180);
+	this.cos140 = Math.cos(140*Math.PI/180);
+	this.sin220 = Math.sin(220*Math.PI/180);
+	this.cos220 = Math.cos(220*Math.PI/180);
+	
+	this.sin150 = Math.sin(150*Math.PI/180);
+	this.cos150 = Math.cos(150*Math.PI/180);
+	this.sin210 = Math.sin(210*Math.PI/180);
+	this.cos210 = Math.cos(210*Math.PI/180);	
+	
 
     this.aBall = {
         x : 100,
@@ -522,12 +534,15 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 		}
 		
 		
-		
+
+
+	
+
 
 
 		for (var i=this.theBalls.length-1; i>=0; i--) 
 		{
-			bi = this.theBalls[i];
+			var bi = this.theBalls[i];
 			// show perception Range
 			
 			if (this.perceptionRangeVisible)
@@ -545,57 +560,66 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 			theContext.lineWidth = 1;			
 			theContext.beginPath();			
 			var ratio = this.perceptionRange/(bi.speed);
-			theContext.moveTo( (bi.x+(bi.vX*ratio) )<<0,( bi.y+(bi.vY*ratio) )<<0 );
-			var theta = 140*Math.PI/180;
-			var sinTheta, cosTheta;
+			
+			var boidX = bi.x;
+			var boidY = bi.y;
+			var normVx = bi.vX*ratio;
+			var normVy = bi.vY*ratio;
+			
+			theContext.moveTo( ( boidX+normVx )<<0
+			                 , ( boidY+normVy )<<0 );
 
-			theContext.lineTo( ( bi.x+(bi.vX*Math.cos(theta)-bi.vY*Math.sin(theta))*ratio )<<0 
-							 , ( bi.y+(bi.vX*Math.sin(theta)+bi.vY*Math.cos(theta))*ratio )<<0 );
-			theta = (140+80)*Math.PI/180;
-			theContext.lineTo( ( bi.x+(bi.vX*Math.cos(theta)-bi.vY*Math.sin(theta))*ratio )<<0
-							 , ( bi.y+(bi.vX*Math.sin(theta)+bi.vY*Math.cos(theta))*ratio )<<0 );
-			theContext.lineTo( ( bi.x+(bi.vX*ratio) )<<0 
-							 , ( bi.y+(bi.vY*ratio) )<<0 ) ;
+			theContext.lineTo( ( boidX + normVx*this.cos140 - normVy*this.sin140 )<<0 
+							 , ( boidY + normVx*this.sin140 + normVy*this.cos140 )<<0 );
+	
+			theContext.lineTo( ( boidX + normVx*this.cos220 - normVy*this.sin220 )<<0
+							 , ( boidY + normVx*this.sin220 + normVy*this.cos220 )<<0 );
+							 
+			theContext.lineTo( ( boidX + normVx )<<0 
+							 , ( boidY + normVy )<<0 ) ;
 					
 			theContext.closePath();
 			theContext.stroke();
 			
 			var arrowX;
 			var arrowY;
+			var arrowRatio = .2;
 			
 			// draw desire vector arrows
-			for (var rule = self.ruleCoeffs.length-1; rule >=0; rule --)
+			for (var rule = this.ruleCoeffs.length-1; rule >=0; rule --)
 			{
-				if (self.ruleVectorVisible[rule])
+				if (this.ruleVectorVisible[rule] && this.ruleCoeffs[rule]!=0)
 				{
-					theContext.strokeStyle = self.ruleColours[rule];
+					theContext.strokeStyle = this.ruleColours[rule];
 					theContext.beginPath();
-					theContext.moveTo( (bi.x)<<0 
-									 , (bi.y)<<0 );
-					arrowX = bi.vXrule[rule]*ratio*self.ruleCoeffs[rule];
-					arrowY = bi.vYrule[rule]*ratio*self.ruleCoeffs[rule];
-					theContext.lineTo( ( bi.x+arrowX )<<0 
-									 , ( bi.y+arrowY )<<0 );
-					
-					var arrowRatio = .2;
-					theta = 150*Math.PI/180;
-					// sinTheta = Math.sin(theta);
-					// cosTheta = Math.cos(theta);
-					theContext.lineTo( ( bi.x +arrowX+ arrowRatio*( arrowX*Math.cos(theta) - arrowY*Math.sin(theta) ) )<<0,
-									   ( bi.y +arrowY+ arrowRatio*( arrowX*Math.sin(theta) + arrowY*Math.cos(theta) ) )<<0 );
-					theta = 210*Math.PI/180;
-					theContext.lineTo( ( bi.x +arrowX+ arrowRatio*( arrowX*Math.cos(theta) - arrowY*Math.sin(theta) ) )<<0 
-									 , ( bi.y +arrowY+ arrowRatio*( arrowX*Math.sin(theta) + arrowY*Math.cos(theta) ) )<<0 );
-					theContext.lineTo( ( bi.x +arrowX )<<0
-									 , ( bi.y +arrowY )<<0 );	
+					theContext.moveTo( boidX<<0 
+									 , boidY<<0 );
+									 
+									 
+					arrowX = bi.vXrule[rule]*ratio*this.ruleCoeffs[rule];
+					arrowY = bi.vYrule[rule]*ratio*this.ruleCoeffs[rule];
+					theContext.lineTo( ( boidX+arrowX )<<0 
+									 , ( boidY+arrowY )<<0 );
+
+
+
+					theContext.lineTo( ( boidX + arrowX + arrowX*arrowRatio*this.cos150 - arrowY*arrowRatio*this.sin150  )<<0,
+									   ( boidY + arrowY + arrowX*arrowRatio*this.sin150 + arrowY*arrowRatio*this.cos150  )<<0 );
+
+					theContext.lineTo( ( boidX + arrowX + arrowX*arrowRatio*this.cos210 - arrowY*arrowRatio*this.sin210  )<<0 
+									 , ( boidY + arrowY + arrowX*arrowRatio*this.sin210 + arrowY*arrowRatio*this.cos210  )<<0 );
+									 
+					theContext.lineTo( ( boidX + arrowX )<<0
+									 , ( boidY + arrowY )<<0 );	
+									 
 					theContext.closePath();
 					theContext.stroke();			
 				}
 			}
 			
-			if (self.displayBoidIDs)
+			if (this.displayBoidIDs)
 			{
-				theContext.fillText(bi.id +","+ bi.pigeon,bi.x<<0, bi.y<<0);
+				theContext.fillText(bi.id +","+ bi.pigeon,boidX<<0, boidY<<0);
 			}		
 		}
 		
