@@ -207,9 +207,9 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 			
 			var theContext = self.theContext;
 
-			theContext.font="lighter 8px verdana";
-			theContext.textAlign="center";
-			theContext.textBaseline="middle"; 		
+			// theContext.font="lighter 8px verdana";
+			// theContext.textAlign="center";
+			// theContext.textBaseline="middle"; 		
 
 
 
@@ -227,7 +227,7 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 			}
 			
 			// draw boid triangle
-			theContext.strokeStyle = 'rgba(0,255,0,1)';			
+			theContext.strokeStyle = 'rgba(0,255,0,1)';
 			theContext.lineWidth = 1;			
             theContext.beginPath();			
 			var ratio = this.perceptionRange/(this.speed);
@@ -248,7 +248,7 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 			var arrowX;
 			var arrowY;
 			
-
+			// draw desire vector arrows
 			for (var rule = 0; rule < self.ruleCoeffs.length; rule ++)
 			{
 				if (self.ruleVectorVisible[rule])
@@ -434,8 +434,14 @@ Boid.Agent = function(canvasWidth, canvasHeight)
     // this function will do the drawing
     this.drawBalls = function() {
         // clear the window
-        var theContext = self.theContext;
-        theContext.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+
+		
+		
+      //  theContext.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+		this.theCanvas.width = this.canvasWidth; // this has the effect of clearing the canvas!
+		
+        var theContext = this.theContext;		
+		
         // draw the balls - too bad we can't use for i in theBalls
 		theContext.font="lighter 7px verdana";
 		theContext.textAlign="center";
@@ -483,9 +489,9 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 		
 		
 		
-        for (var i=self.theBalls.length-1; i>=0; i--) {
-            self.theBalls[i].draw();
-        }
+        // for (var i=self.theBalls.length-1; i>=0; i--) {
+            // self.theBalls[i].draw();
+        // }
 		
 		
 		
@@ -501,16 +507,120 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 		}
 		
 		// draw objects
-		for (var obj = numObjects-1; obj>=0; obj--)
+		if (numObjects>0)
 		{
-
+		
 			theContext.strokeStyle = "#00FF00";
-			theContext.beginPath();
-			theContext.arc(objectX[obj]<<0,objectY[obj]<<0, 1,0, this.circ,true);
+			theContext.beginPath();		
+			for (var obj = numObjects-1; obj>=0; obj--)
+			{
+				theContext.moveTo(objectX[obj]<<0,objectY[obj]<<0);
+				theContext.arc(objectX[obj]<<0,objectY[obj]<<0, 1,0, this.circ,true);							
+			}
 			theContext.closePath();
 			theContext.stroke();			
-							
 		}
+		
+		
+		
+
+
+		for (var i=this.theBalls.length-1; i>=0; i--) 
+		{
+			bi = this.theBalls[i];
+			// show perception Range
+			
+			if (this.perceptionRangeVisible)
+			{
+				theContext.strokeStyle = 'rgba(255,0,0,0.1)';
+				theContext.lineWidth = 5;
+				theContext.beginPath();
+				theContext.arc((bi.x)<<0,(bi.y)<<0, this.perceptionRange-2.5,0, this.circ,true); // decrement radius by half of line width
+				theContext.closePath();
+				theContext.stroke();
+			}
+			
+			// draw boid triangle
+			theContext.strokeStyle = 'rgba(0,255,0,1)';
+			theContext.lineWidth = 1;			
+			theContext.beginPath();			
+			var ratio = this.perceptionRange/(bi.speed);
+			theContext.moveTo( (bi.x+(bi.vX*ratio) )<<0,( bi.y+(bi.vY*ratio) )<<0 );
+			var theta = 140*Math.PI/180;
+			var sinTheta, cosTheta;
+
+			theContext.lineTo( ( bi.x+(bi.vX*Math.cos(theta)-bi.vY*Math.sin(theta))*ratio )<<0 
+							 , ( bi.y+(bi.vX*Math.sin(theta)+bi.vY*Math.cos(theta))*ratio )<<0 );
+			theta = (140+80)*Math.PI/180;
+			theContext.lineTo( ( bi.x+(bi.vX*Math.cos(theta)-bi.vY*Math.sin(theta))*ratio )<<0
+							 , ( bi.y+(bi.vX*Math.sin(theta)+bi.vY*Math.cos(theta))*ratio )<<0 );
+			theContext.lineTo( ( bi.x+(bi.vX*ratio) )<<0 
+							 , ( bi.y+(bi.vY*ratio) )<<0 ) ;
+					
+			theContext.closePath();
+			theContext.stroke();
+			
+			var arrowX;
+			var arrowY;
+			
+			// draw desire vector arrows
+			for (var rule = self.ruleCoeffs.length-1; rule >=0; rule --)
+			{
+				if (self.ruleVectorVisible[rule])
+				{
+					theContext.strokeStyle = self.ruleColours[rule];
+					theContext.beginPath();
+					theContext.moveTo( (bi.x)<<0 
+									 , (bi.y)<<0 );
+					arrowX = bi.vXrule[rule]*ratio*self.ruleCoeffs[rule];
+					arrowY = bi.vYrule[rule]*ratio*self.ruleCoeffs[rule];
+					theContext.lineTo( ( bi.x+arrowX )<<0 
+									 , ( bi.y+arrowY )<<0 );
+					
+					var arrowRatio = .2;
+					theta = 150*Math.PI/180;
+					// sinTheta = Math.sin(theta);
+					// cosTheta = Math.cos(theta);
+					theContext.lineTo( ( bi.x +arrowX+ arrowRatio*( arrowX*Math.cos(theta) - arrowY*Math.sin(theta) ) )<<0,
+									   ( bi.y +arrowY+ arrowRatio*( arrowX*Math.sin(theta) + arrowY*Math.cos(theta) ) )<<0 );
+					theta = 210*Math.PI/180;
+					theContext.lineTo( ( bi.x +arrowX+ arrowRatio*( arrowX*Math.cos(theta) - arrowY*Math.sin(theta) ) )<<0 
+									 , ( bi.y +arrowY+ arrowRatio*( arrowX*Math.sin(theta) + arrowY*Math.cos(theta) ) )<<0 );
+					theContext.lineTo( ( bi.x +arrowX )<<0
+									 , ( bi.y +arrowY )<<0 );	
+					theContext.closePath();
+					theContext.stroke();			
+				}
+			}
+			
+			if (self.displayBoidIDs)
+			{
+				theContext.fillText(bi.id +","+ bi.pigeon,bi.x<<0, bi.y<<0);
+			}		
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
     }
 
