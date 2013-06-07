@@ -1,9 +1,6 @@
 Boid = {};
 var BoidAgents       = [];
 
-
-
-
 // Boid.Players         = [];
 
 // Boid.Player = function(name, id ){
@@ -57,14 +54,12 @@ var BoidAgents       = [];
 // }
 
 
-
 Boid.Agent = function(canvasWidth, canvasHeight)
 {
 
 // PLAYER STUFF
 	// this.numberPlayers= 2;
 	// this.thePlayers = [];
-
 
 	// shim layer with setTimeout fallback
 	reqFrame =window.requestAnimationFrame ||
@@ -90,8 +85,7 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 	var wallCollision = 0;
 	var wallRepulsion = 1000;
 	
-	
-	
+		
 	// How to label items in the pigeonholes
 	// use negative indices to refer to objects
 	var wallLeft = -1;// -1 = left wall
@@ -103,15 +97,6 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 	// -6 and down for Objects
 	
 	
-
-	
-	
-	
-
-	
-
-
-
 	var self = this;
 	// this.id   = null;
 
@@ -119,8 +104,7 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 	this.theBalls = [];
 	// create an array of pigeonholes
 	this.PigeonHoles = [];
-	// create the interaction list array;
-//	this.InteractionList = [];
+
 	// temp velocity variables
 
 	this.theCanvas = document.getElementById("mycanvas");
@@ -134,11 +118,8 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 	
 //	this.canvasScale = Math.min(canvasWidth,canvasHeight);
 //	alert(this.canvasScale);
-
-	
 	
 	// these are effectively the constants	
-
 	
     // Semaphore variable to add agent
     this.addAgent = false;
@@ -156,9 +137,6 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 	this.ruleCoeffs[2] = 0; // cohesion coefficient
 	this.ruleColours = ['rgba(0,0,255,1)', 'rgba(0,255,255,1)', 'rgba(255,0,255,1)'];	
 
-
-
-	
 	
 	var Obstacles = 1; // turn obstacle interaction on(1)/off(0)
 	// obstacle is a circle
@@ -168,7 +146,6 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 	var obstacleIndex = -5;
 	var obstacleRepulsion =100;
 	
-	
 	var Objects = 1; // Objects turned on
 	var objectX = [];
 	var objectY = [];
@@ -177,9 +154,6 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 	var objectPigeonhole = [];
 	this.objectRepulsion = 1000;
 	
-	
-	
-
 	// make everything go the same speed
 	// Marios: This is where I'm dumping any new parameters
 
@@ -190,26 +164,19 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 	
 
 	this.perceptionRangeSquared = this.perceptionRange*this.perceptionRange;
-//	this.directionIndicatorLength = this.perceptionRange;
-
 
 	//this.genericSpeed = 1;
+	//	this.newGenericSpeed = this.genericSpeed;
 	
-
-
    // note - am assuming canvas won't change size!!
     this.pigeonholeWidth = Math.ceil(this.canvasWidth/this.perceptionRange);
     this.pigeonholeHeight = Math.ceil(this.canvasHeight/this.perceptionRange);
 
 	this.newInitialPopulation = this.initialPopulation;
-//	this.newGenericSpeed = this.genericSpeed;
+
 	this.newPerceptionRange = this.perceptionRange;
 	this.newWallCollision = wallCollision;
 	this.newObstacles = Obstacles;
-	
-	
-	
-
 	
 	
 	// graphics controls
@@ -218,8 +185,6 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 	this.ruleVectorVisible = [true, true, true];	
 	this.displayBoidIDs = true;	
 	
-
-
 
     this.aBall = {
         x : 100,
@@ -353,9 +318,6 @@ Boid.Agent = function(canvasWidth, canvasHeight)
         move: function() {
             this.x += this.vX*self.simulationSpeed;
             this.y += this.vY*self.simulationSpeed;
-
-			// this.x += this.vX;
-            // this.y += this.vY;
 			
 			
             // Marios: Wouldn't need to check velocity if you could *only* hit the wall when moving in that direction
@@ -420,26 +382,17 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 					// this.vY = 0;
 					// this.y += penetrationLower;
 				// }				
-				
-				
-				
-				
-				
+		
 			}
 			else // repulsion
 			{
 				
 				this.x = Math.min( Math.max(this.x , 1) , (self.canvasWidth-1));
 				this.y = Math.min( Math.max(this.y , 1) , (self.canvasHeight-1));					
-			
-			
+
 			}
         }
-
     };
-
-
-
 
 
 	this.addBall = function()
@@ -447,6 +400,7 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 		self.addAgent = true;
     }
 
+	
 	this.makeBall = function(x, y, vX, vY, speed, perceptionRange , stroke) {
 
         var theCanvas = this.theCanvas;
@@ -464,7 +418,6 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 		// ugly random positioning solution!
 		if (Obstacles==1)
 		{
-
 			while ( Math.sqrt((obstacleX - x)*(obstacleX - x) + (obstacleY - y)*(obstacleY - y) ) < (obstacleRadius) )
 			{
 
@@ -473,11 +426,8 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 				
 				x = Math.min( Math.max(x , perceptionRange) , (this.canvasWidth-perceptionRange));
 				y = Math.min( Math.max(y , perceptionRange) , (this.canvasHeight-perceptionRange));				
-						
-
-						
+									
 			}
-
 		}
 		
 
@@ -501,7 +451,6 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 			debugger;
 		}
 		
-
 		ball.id = this.theBalls.length;
 		
         this.PigeonHoles[ball.pigeon].push(this.theBalls.length);
@@ -557,12 +506,11 @@ Boid.Agent = function(canvasWidth, canvasHeight)
         // clean InteractionList array of arrays!
 
         var InteractionList     = [];
-
+		
         var pigeonholeWidth     = this.pigeonholeWidth;
         var pigeonholeHeight    = this.pigeonholeHeight;
 		
-        var pigeonhole, j, bi, bix, biy, pigeonX, pigeonY;
-  
+        var pigeonhole, j, bi, bix, biy, pigeonX, pigeonY; 
 
         // 600 array positions
         for(var i=ballList.length-1; i>=0; i--) {
@@ -580,13 +528,11 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 			
 			// Check for obstacles
 			if (Obstacles==1)
-			{
-			
+			{			
 				if ( ((obstacleX - bix)*(obstacleX - bix) + (obstacleY - biy)*(obstacleY - biy)) < ((obstacleRadius + bi.perceptionRange)*(obstacleRadius + bi.perceptionRange)) )
 				{
 					InteractionList[i].push(obstacleIndex);
-				}
-				
+				}				
 			}
 
 			
@@ -659,8 +605,7 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 
 							// here is where you'd add an if statement to cut work in half!
 							if(j != i) { //
-							
-							
+														
 								var dx,dy;
 								if (j<=-6) // is it an object?
 								{
@@ -687,8 +632,7 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 				}
 			}
 			else if (wallCollision ==2)//wallCollision==2 by repulsion
-			{
-			
+			{		
 
 				//var wallLeft = -1;// -1 = left wall
 				//var wallRight = -2;// -2 = right wall
@@ -699,37 +643,29 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 
 				var penetrationUpper = bix + bi.perceptionRange - this.canvasWidth;
 				var penetrationLower = bi.perceptionRange - bix;
-				if (penetrationUpper > 0) { // right wall
-					
+				
+				if (penetrationUpper > 0) { // right wall				
 					InteractionList[i].push(wallRight);
-
 				} // mutually exclusive events
 
-				else if (penetrationLower > 0) {
-					
-					InteractionList[i].push(wallLeft);
-					
+				else if (penetrationLower > 0) {					
+					InteractionList[i].push(wallLeft);					
 				}
 
 				penetrationUpper = biy + bi.perceptionRange - this.canvasHeight;
 				penetrationLower = bi.perceptionRange - biy;
-				if (penetrationUpper > 0) {
 				
+				if (penetrationUpper > 0) {				
 					InteractionList[i].push(wallTop);
-
 				}
-				else if (penetrationLower > 0) {
 				
+				else if (penetrationLower > 0) {				
 					InteractionList[i].push(wallBottom);
-
 				}				
 				
 				
-
-				
 				// upper/lower wall near?
-				
-			
+							
 				for(var holeX = Math.min(pigeonX+1,pigeonholeWidth-1); holeX>= Math.max(pigeonX-1,0); holeX--) {
 
 					for(var holeY = Math.min(pigeonY+1,pigeonholeHeight-1); holeY>= Math.max(pigeonY-1,0); holeY--) {
