@@ -212,45 +212,6 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 			theContext.textBaseline="middle"; 		
 
 
-			// would relate to 'global' perceptionRange
-			if (self.pigeonholesVisible)
-				{
-				
-				// draw pigeonhole grid on screen
-				theContext.strokeStyle = 'rgba(0,0,0,0.2)';
-				theContext.lineWidth = .05;			
-				theContext.beginPath();			
-				for (var i = 0; i<self.pigeonholeWidth; i++)
-				{
-					theContext.moveTo( i*self.perceptionRange , 0);
-					theContext.lineTo( i*self.perceptionRange , self.canvasHeight );
-				}
-				
-				theContext.moveTo( self.canvasWidth  , 0 );
-				theContext.lineTo( self.canvasWidth  , self.canvasHeight);
-
-				for (var i = 0; i<self.pigeonholeHeight; i++)
-				{
-					theContext.moveTo( 0, i*self.perceptionRange );
-					theContext.lineTo( self.canvasWidth, i*self.perceptionRange  );
-				}
-				
-				theContext.moveTo( 0, self.canvasHeight );
-				theContext.lineTo( self.canvasWidth, self.canvasHeight );
-
-				theContext.closePath();
-				theContext.stroke();			
-				// add pigeonhole numbers
-				
-				for (var i = 0; i<self.pigeonholeWidth*self.pigeonholeHeight; i++)
-				{
-			
-					theContext.fillText(i,
-										((i%self.pigeonholeWidth)+.5)      *self.perceptionRange,
-										(Math.floor(i/self.pigeonholeWidth)+.5) *self.perceptionRange );
-				
-				}
-			}
 
 			
 			// show perception Range
@@ -260,7 +221,7 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 				theContext.strokeStyle = 'rgba(255,0,0,0.1)';
 				theContext.lineWidth = 5;
 				theContext.beginPath();
-				theContext.arc(this.x,this.y, this.perceptionRange-theContext.lineWidth/2,0, self.circ,true);
+				theContext.arc((this.x)<<0,(this.y)<<0, this.perceptionRange-theContext.lineWidth/2,0, self.circ,true);
 				theContext.closePath();
 				theContext.stroke();
 			}
@@ -270,13 +231,16 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 			theContext.lineWidth = 1;			
             theContext.beginPath();			
 			var ratio = this.perceptionRange/(this.speed);
-			theContext.moveTo(this.x+(this.vX*ratio),this.y+(this.vY*ratio));
+			theContext.moveTo( (this.x+(this.vX*ratio) )<<0,( this.y+(this.vY*ratio) )<<0 );
 			var theta = 140*Math.PI/180;
 
-			theContext.lineTo(this.x+(this.vX*Math.cos(theta)-this.vY*Math.sin(theta))*ratio , this.y+(this.vX*Math.sin(theta)+this.vY*Math.cos(theta))*ratio);
+			theContext.lineTo( ( this.x+(this.vX*Math.cos(theta)-this.vY*Math.sin(theta))*ratio )<<0 
+			                 , ( this.y+(this.vX*Math.sin(theta)+this.vY*Math.cos(theta))*ratio )<<0 );
 			theta = (140+80)*Math.PI/180;
-			theContext.lineTo(this.x+(this.vX*Math.cos(theta)-this.vY*Math.sin(theta))*ratio , this.y+(this.vX*Math.sin(theta)+this.vY*Math.cos(theta))*ratio);
-			theContext.lineTo(this.x+(this.vX*ratio),this.y+(this.vY*ratio));
+			theContext.lineTo( ( this.x+(this.vX*Math.cos(theta)-this.vY*Math.sin(theta))*ratio )<<0
+                 			 , ( this.y+(this.vX*Math.sin(theta)+this.vY*Math.cos(theta))*ratio )<<0 );
+			theContext.lineTo( ( this.x+(this.vX*ratio) )<<0 
+			                 , ( this.y+(this.vY*ratio) )<<0 ) ;
 					
             theContext.closePath();
             theContext.stroke();
@@ -291,17 +255,22 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 				{
 					theContext.strokeStyle = self.ruleColours[rule];
 					theContext.beginPath();
-					theContext.moveTo(this.x,this.y);
+					theContext.moveTo( (this.x)<<0 
+					                 , (this.y)<<0 );
 					arrowX = this.vXrule[rule]*ratio*self.ruleCoeffs[rule];
 					arrowY = this.vYrule[rule]*ratio*self.ruleCoeffs[rule];
-					theContext.lineTo(this.x+arrowX,this.y+arrowY);
+					theContext.lineTo( ( this.x+arrowX )<<0 
+					                 , ( this.y+arrowY )<<0 );
 					
 					var arrowRatio = .2;
 					theta = 150*Math.PI/180;
-					theContext.lineTo( this.x+arrowX+arrowRatio*( arrowX*Math.cos(theta)-arrowY*Math.sin(theta) ),this.y +arrowY+ arrowRatio*( arrowX*Math.sin(theta) + arrowY*Math.cos(theta) ) );
+					theContext.lineTo( ( this.x +arrowX+ arrowRatio*( arrowX*Math.cos(theta) - arrowY*Math.sin(theta) ) )<<0,
+					                   ( this.y +arrowY+ arrowRatio*( arrowX*Math.sin(theta) + arrowY*Math.cos(theta) ) )<<0 );
 					theta = 210*Math.PI/180;
-					theContext.lineTo( this.x+arrowX+arrowRatio*( arrowX*Math.cos(theta)-arrowY*Math.sin(theta) ),this.y +arrowY+ arrowRatio*( arrowX*Math.sin(theta) + arrowY*Math.cos(theta) ) );
-					theContext.lineTo( this.x+arrowX,this.y +arrowY );			
+					theContext.lineTo( ( this.x +arrowX+ arrowRatio*( arrowX*Math.cos(theta) - arrowY*Math.sin(theta) ) )<<0 
+					                 , ( this.y +arrowY+ arrowRatio*( arrowX*Math.sin(theta) + arrowY*Math.cos(theta) ) )<<0 );
+					theContext.lineTo( ( this.x +arrowX )<<0
+					                 , ( this.y +arrowY )<<0 );	
 					theContext.closePath();
 					theContext.stroke();			
 				}
@@ -309,7 +278,7 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 			
 			if (self.displayBoidIDs)
 			{
-				theContext.fillText(this.id +","+ this.pigeon,this.x, this.y);
+				theContext.fillText(this.id +","+ this.pigeon,this.x<<0, this.y<<0);
 			}
 			
 			
@@ -468,16 +437,64 @@ Boid.Agent = function(canvasWidth, canvasHeight)
         var theContext = self.theContext;
         theContext.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
         // draw the balls - too bad we can't use for i in theBalls
+		theContext.font="lighter 7px verdana";
+		theContext.textAlign="center";
+		theContext.textBaseline="middle"; 	
+		// draw pigeonhole grid on screen
+		// would relate to 'global' perceptionRange
+		if (this.pigeonholesVisible)
+			{
+			
+			
+			theContext.strokeStyle = 'rgba(0,0,0,1)';
+			theContext.lineWidth = .1;			
+			theContext.beginPath();			
+			for (var i = 0; i<this.pigeonholeWidth; i++)
+			{
+				theContext.moveTo( (i*this.perceptionRange)<<0 , 0);
+				theContext.lineTo( (i*this.perceptionRange)<<0 , this.canvasHeight );
+			}
+			
+			theContext.moveTo( this.canvasWidth  , 0 );
+			theContext.lineTo( this.canvasWidth  , this.canvasHeight);
+
+			for (var i = 0; i<this.pigeonholeHeight; i++)
+			{
+				theContext.moveTo( 0, (i*this.perceptionRange)<<0 );
+				theContext.lineTo( this.canvasWidth, (i*this.perceptionRange)<<0 );
+			}
+			
+			theContext.moveTo( 0, this.canvasHeight );
+			theContext.lineTo( this.canvasWidth, this.canvasHeight );
+
+			theContext.closePath();
+			theContext.stroke();			
+			// add pigeonhole numbers
+			
+			for (var i = 0; i<this.pigeonholeWidth*this.pigeonholeHeight; i++)
+			{
+		
+				theContext.fillText(i,
+									( ( (i%this.pigeonholeWidth)+.5)       *this.perceptionRange )<<0,
+									( ( ((i/this.pigeonholeWidth)<<0) +.5) *this.perceptionRange )<<0 );
+			
+			}
+		}		
+		
+		
+		
         for (var i=self.theBalls.length-1; i>=0; i--) {
             self.theBalls[i].draw();
         }
+		
+		
 		
 		// draw obstacles
 		if (Obstacles==1) {
 		
             theContext.strokeStyle = "#FF0000";
             theContext.beginPath();
-            theContext.arc(obstacleX,obstacleY, obstacleRadius,0, this.circ,true);
+            theContext.arc(obstacleX<<0,obstacleY<<0, obstacleRadius,0, this.circ,true);
             theContext.closePath();
             theContext.stroke();
 
@@ -489,7 +506,7 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 
 			theContext.strokeStyle = "#00FF00";
 			theContext.beginPath();
-			theContext.arc(objectX[obj],objectY[obj], 1,0, this.circ,true);
+			theContext.arc(objectX[obj]<<0,objectY[obj]<<0, 1,0, this.circ,true);
 			theContext.closePath();
 			theContext.stroke();			
 							
@@ -1186,10 +1203,10 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 							  this.canvasHeight*Math.random(),
 							  Math.cos(randomAngleInRadians) * speed,
 							  Math.sin(randomAngleInRadians) * speed,
-							  speed,
+							  (1+Math.random()*.8-.4),	
 							  this.perceptionRange );
 			this.theBalls.push(b);
-			
+								// speed
 							  // this.genericSpeed*(1+Math.random()*.6-.3),		
 							  
 							  //this.genericStroke
