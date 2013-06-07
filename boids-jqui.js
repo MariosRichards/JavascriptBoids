@@ -6,7 +6,20 @@ $(document).ready(function(){
 	$("#canvas_info_pigeonholes").click(pigeonholesButtonCB);
 	$("#canvas_info_perceptionrange").click(perceptionrangeButtonCB);
 	$("#canvas_info_boidids").click(boididsButtonCB);
-	$("input #Alignment .checkbox_input").click(toggleAlignment);
+	
+	
+	/*$("#checkboxalignment").click(toggleAlignmentButtonCB);
+	$("#checkboxrepulsion").click(toggleRepulsionButtonCB);
+	$("#checkboxcohesion").click(toggleCohesionButtonCB);
+	$("#checkboxsimspeed").click(toggleSimSpeedButtonCB);*/
+
+	
+	
+	$("#eyealignment").click(toggleVisibility_AlignmentButtonCB);
+	$("#eyerepulsion").click(toggleVisibility_RepulsionButtonCB);
+	$("#eyecohesion").click(toggleVisibility_CohesionButtonCB);
+
+	//$("#Alignment").click(toggleAlignment);
 
 	//$('#Alignment').css('color','purple');
 	
@@ -23,17 +36,20 @@ $(document).ready(function(){
 	c.ruleColours[1] = "red";
 	c.ruleColours[2] = "blue";
 	
+	controlmySliders();
 	
 				
-	makeSlider("Alignment",c.ruleColours[0],function(v){c.ruleCoeffs[0] = v}, {value:1, min:0, max:10, step:.05});
+	/*makeSlider("Alignment",c.ruleColours[0],function(v){c.ruleCoeffs[0] = v}, {value:1, min:0, max:10, step:.05});
 	makeSlider("Repulsion",c.ruleColours[1],function(v){c.ruleCoeffs[1] = v}, {value:1, min:0, max:10, step:.05});
 	makeSlider("Cohesion",c.ruleColours[2],function(v){c.ruleCoeffs[2] = v}, {value:0, min:0, max:10, step:.05});
-	makeSlider("Sim Speed",NaN,function(v){c.simulationSpeed = v}, {value:1, min:0.05, max:10, step:.05});
+	makeSlider("Sim Speed",NaN,function(v){c.simulationSpeed = v}, {value:1, min:0.05, max:10, step:.05});*/
 	
 	
 	$("#trigger").click(checkbutton);	
 	$("form").submit(function () { return false; }); // prevent premature submission/auto page reload!
 	
+	
+
 });
 
 
@@ -114,19 +130,6 @@ function boididsButtonCB()
 	}
 }
 
-function toggleAlignment() 
-{
-	alert("Heyyyy");
-	if (c.ruleVectorVisible[0]) {
-		alert("Its true");
-		c.ruleVectorVisible[0] = false;
-	}
-	else{
-		alert("Its false");
-		c.ruleVectorVisible[0] = true;
-	}
-}
-
 
 function restartButtonCB()
 {
@@ -145,9 +148,8 @@ function restartButtonCB()
 }
 
 
-function makeSlider(label,colour,slidefun,slideparams)
-{
-	if (typeof(label)=="undefined")      label="nolabel";
+
+	/*if (typeof(label)=="undefined")      label="nolabel";
 	if (typeof(colour)=="undefined")     colour="#000000";
 	if (typeof(slideparams)=="undefined") slideparams={};
 
@@ -163,9 +165,91 @@ function makeSlider(label,colour,slidefun,slideparams)
 									inp.val( ui.value );
 									slidefun(ui.value)
 									} );
-	checkbox.attr("checked",true);
+	//checkbox.attr("checked",true);
 	checkbox.attr("id",label);							
 	inp.val(slideparams.value);
-	slidefun(slideparams.value);
+	slidefun(slideparams.value);*/
+
+
+function controlmySliders()
+{
+
+    createmySlider(1,0,10,"alignment",c.ruleColours[0],0.05,function(v){c.ruleCoeffs[0] = v});
+    createmySlider(1,0,10,"repulsion",c.ruleColours[1],0.05,function(v){c.ruleCoeffs[1] = v});
+    createmySlider(1,0,10,"cohesion",c.ruleColours[2],0.05,function(v){c.ruleCoeffs[2] = v});
+    createmySlider(1,-10,10,"simspeed","black",0.05,function(v){c.simulationSpeed = v}); 
+        
+} 
+
+function createmySlider(initialvalue,min,max,id,labelcolor,stepamount,slidefun)
+{
+	if(typeof id == "string")
+	{
+		  $( ".my_slider"+id).slider({
+	      range: "min",
+	      value: initialvalue,
+	      min: min,
+	      max: max,
+	      step: stepamount,
+	      animate:true,
+	      slide: function( event, ui ) {
+	        $( "#amount"+id ).val(ui.value);
+	        slidefun(ui.value);
+	      }
+	    });
+	    $( "#amount"+id ).val($( ".my_slider"+id ).slider( "value" ) );
+	    $( "#amount"+id ).attr('disabled','disabled');
+	   
+	}
 }
+
+
+
+function toggleVisibility_AlignmentButtonCB()
+{	
+	if (c.ruleVectorVisible[0]) {
+		
+		$('#eyealignment img').attr("src","closedeye.svg");
+		c.ruleVectorVisible[0] = false;
+	}
+	else{
+		$('#eyealignment img').attr("src","openedeye.svg");
+		c.ruleVectorVisible[0] = true;
+	}
+	
+}
+	
+	
+
+function toggleVisibility_RepulsionButtonCB()
+{	
+	if (c.ruleVectorVisible[1]) {
+		
+		$('#eyerepulsion img').attr("src","closedeye.svg");
+		c.ruleVectorVisible[1] = false;
+	}
+	else{
+		$('#eyerepulsion img').attr("src","openedeye.svg");
+		c.ruleVectorVisible[1] = true;
+	}
+}
+
+
+function toggleVisibility_CohesionButtonCB()
+{	
+	if (c.ruleVectorVisible[2]) {
+		
+		$('#eyecohesion img').attr("src","closedeye.svg");
+		c.ruleVectorVisible[2] = false;
+	}
+	else{
+		$('#eyecohesion img').attr("src","openedeye.svg");
+		c.ruleVectorVisible[2] = true;
+	}
+}
+	
+	
+	
+	
+
 
