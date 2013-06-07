@@ -211,6 +211,10 @@ function toggleVisibility_AlignmentButtonCB()
 		
 		$('#eyealignment img').attr("src","closedeye.svg");
 		c.ruleVectorVisible[0] = false;
+		/*$('#eyealignment img').attr("height","100%");
+		$('#eyealignment img').attr("width","100%");*/
+
+
 	}
 	else{
 		$('#eyealignment img').attr("src","openedeye.svg");
