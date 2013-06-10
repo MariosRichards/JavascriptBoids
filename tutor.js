@@ -609,8 +609,7 @@ Boid.Agent = function(canvasWidth, canvasHeight)
     {
 
         // clean InteractionList array of arrays!
-
-			
+	
         var pigeonhole, j, bi, bix, biy, pigeonX, pigeonY; 
 
         for(var i=theBalls.length-1; i>=0; i--) {
@@ -630,118 +629,12 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 			{			
 				if ( ((obstacleX - bix)*(obstacleX - bix) + (obstacleY - biy)*(obstacleY - biy)) < ((obstacleRadius + bi.perceptionRange)*(obstacleRadius + bi.perceptionRange)) ) // could precompute!
 				{
-						this.applyRulesNow(bi, -5, obstacleX - bix, obstacleY - biy);					
+					this.applyRulesNow(bi, -5, obstacleX - bix, obstacleY - biy);					
 				}				
 			}
-
 			
-            // loop through the 9 tiles without trying access tiles that are outside of the canvas			
-			if (wallCollision==1)
+			if (wallCollision==2)
 			{
-				for(var holeX = pigeonX+1; holeX>= pigeonX-1; holeX--) {
-
-					for(var holeY = pigeonY+1; holeY>= pigeonY-1; holeY--) {
-
-						
-						pigeonhole = ((holeX+pigeonholeWidth)%pigeonholeWidth) + pigeonholeWidth*((holeY+pigeonholeHeight)%pigeonholeHeight);
-						// now iterate through the Balls in this pigeon if any
-
-						for(var interactant = self.PigeonHoles[pigeonhole].length-1; interactant>=0; interactant--) {
-
-							j = self.PigeonHoles[pigeonhole][interactant];
-
-							// here is where you'd add an if statement to cut work in half!
-							if(j != i) { //
-
-							// test if within perceptionRange
-								var dx,dy;
-								if (j<=-6) // is it an object?
-								{
-
-									dx = objectX[-6-j] - bix;
-									dy = objectY[-6-j] - biy;
-								
-								}
-								else // no, it's a boid
-								{
-							
-									// test if within perceptionRange
-									bj = theBalls[j];
-									dx = bj.x - bix;
-									dy = bj.y - biy;
-									
-								}
-								
-								if ( 2*Math.abs(dx) > canvasWidth ) {
-									dx = canvasWidth - Math.abs(dx);
-								}
-								
-								if ( 2*Math.abs(dy) > canvasHeight ) {
-									dy = canvasHeight - Math.abs(dy);
-								}								
-									
-								if ( (dx*dx + dy*dy) <= bi.perceptionRangeSquared ) {
-									this.applyRulesNow(bi, j, dx, dy);
-								}
-							}
-						}	
-					}
-				}
-			}
-			else if (wallCollision ==0)
-			{		
-
-				for(var holeX = Math.min(pigeonX+1,pigeonholeWidth-1); holeX>= Math.max(pigeonX-1,0); holeX--) {
-
-					for(var holeY = Math.min(pigeonY+1,pigeonholeHeight-1); holeY>= Math.max(pigeonY-1,0); holeY--) {
-
-						pigeonhole = holeX + pigeonholeWidth*holeY;
-						// now iterate through the Balls in this pigeon if any
-						for(var interactant = self.PigeonHoles[pigeonhole].length-1; interactant>=0; interactant--) {
-
-							j = self.PigeonHoles[pigeonhole][interactant];
-
-							// here is where you'd add an if statement to cut work in half!
-							if(j != i) { //
-														
-								var dx,dy;
-								if (j<=-6) // is it an object?
-								{
-
-									dx = objectX[-6-j] - bix;
-									dy = objectY[-6-j] - biy;
-								
-								}
-								else // no, it's a boid
-								{
-							
-									// test if within perceptionRange
-									bj = theBalls[j];
-									dx = bj.x - bix;
-									dy = bj.y - biy;
-									
-								}
-								if ( (dx*dx + dy*dy) <= (bi.perceptionRangeSquared) ) {
-									this.applyRulesNow(bi, j, dx, dy);									
-								}
-							}
-						}
-					}
-				}
-			}
-			else if (wallCollision ==2)//wallCollision==2 by repulsion
-			{		
-
-				//var wallLeft = -1;// -1 = left wall
-				//var wallRight = -2;// -2 = right wall
-				//var wallTop = -3;// -3 = upper wall
-				//var wallBottom = -4;// -4 = lower wall
-
-				
-				
-
-				// left/right wall near?
-
 				var penetrationUpper = bix + bi.perceptionRange - canvasWidth;
 				var penetrationLower = bi.perceptionRange - bix;
 				var dx =0, dy=0;
@@ -770,55 +663,67 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 					this.applyRulesNow(bi, -1, dx, dy);
 				}
 				
-				// -1 now equivalent to 'collided with one or more walls'
-				
-				
-				// upper/lower wall near?
+			}
+			
+			
+
+			
+            // loop through the 9 tiles without trying access tiles that are outside of the canvas			
+			
+			for(var holeX = pigeonX+1; holeX>= pigeonX-1; holeX--) {
+
+				for(var holeY = pigeonY+1; holeY>= pigeonY-1; holeY--) {
+
+					
+					pigeonhole = ((holeX+pigeonholeWidth)%pigeonholeWidth) + pigeonholeWidth*((holeY+pigeonholeHeight)%pigeonholeHeight);
+					// now iterate through the Balls in this pigeon if any
+
+					for(var interactant = this.PigeonHoles[pigeonhole].length-1; interactant>=0; interactant--) {
+
+						j = this.PigeonHoles[pigeonhole][interactant];
+
+						// here is where you'd add an if statement to cut work in half!
+						if(j != i) { //
+
+						// test if within perceptionRange
+							var dx,dy;
+							if (j<=-6) // is it an object?
+							{
+
+								dx = objectX[-6-j] - bix;
+								dy = objectY[-6-j] - biy;
 							
-				for(var holeX = Math.min(pigeonX+1,pigeonholeWidth-1); holeX>= Math.max(pigeonX-1,0); holeX--) {
-
-					for(var holeY = Math.min(pigeonY+1,pigeonholeHeight-1); holeY>= Math.max(pigeonY-1,0); holeY--) {
-
-						pigeonhole = holeX + pigeonholeWidth*holeY;
-						// now iterate through the Balls in this pigeon if any
-						for(var interactant = this.PigeonHoles[pigeonhole].length-1; interactant>=0; interactant--) {
-
-							j = this.PigeonHoles[pigeonhole][interactant];
-
-							// here is where you'd add an if statement to cut work in half!
-							if(j != i) { //
-
-								var dx,dy;
-								if (j<=-6) // is it an object?
-								{
-
-									dx = objectX[-6-j] - bix;
-									dy = objectY[-6-j] - biy;
+							}
+							else // no, it's a boid
+							{
+						
+								// test if within perceptionRange
+								bj = theBalls[j];
+								dx = bj.x - bix;
+								dy = bj.y - biy;
 								
+							}
+							
+							if (wallCollision==1) // toroidal least distance
+							{
+							
+								if ( 2*Math.abs(dx) > canvasWidth ) {
+									dx = canvasWidth - Math.abs(dx);
 								}
-								else // no, it's a boid
-								{
-	
-									bj = theBalls[j];
-									dx = bj.x - bix;
-									dy = bj.y - biy;
-									
-								}
-								if ( (dx*dx + dy*dy) <= (bi.perceptionRangeSquared) ) {
-									this.applyRulesNow(bi, j, dx, dy);
-								}
+								
+								if ( 2*Math.abs(dy) > canvasHeight ) {
+									dy = canvasHeight - Math.abs(dy);
+								}								
+							}
+								
+							if ( (dx*dx + dy*dy) <= bi.perceptionRangeSquared ) {
+								this.applyRulesNow(bi, j, dx, dy);
 							}
 						}
-					}
-				}			
+					}	
+				}
 			}
-			else
-			{
-				debugger;
-			}
-
         }
-
     }
 	
 	
@@ -884,7 +789,7 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 	{
 		for (obj = numObjects-1; obj>=0; obj--)
 		{	
-		    var contents = self.PigeonHoles[objectPigeonhole[obj]];
+		    var contents = this.PigeonHoles[objectPigeonhole[obj]];
 		    unfound = true;
 		    for (int = contents.length-1; int >=0; int--)
 		    {
@@ -936,10 +841,8 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 				bi.vYrule[2] /= bi.interactions[2];
 			}
 			
-			
 			var nvx = bi.vX + this.ruleCoeffs[0]*bi.vXrule[0] + this.ruleCoeffs[1]*bi.vXrule[1] + this.ruleCoeffs[2]*bi.vXrule[2];
 			var nvy = bi.vY + this.ruleCoeffs[0]*bi.vYrule[0] + this.ruleCoeffs[1]*bi.vYrule[1] + this.ruleCoeffs[2]*bi.vYrule[2];	
-
 			
 			var z = Math.sqrt(nvx*nvx + nvy*nvy);
 			if (z<.001) {
@@ -957,8 +860,7 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 			}
 		}					
 
-        // clean array
-
+        // clean pigeonhole array
 		for(var i=pigeonholeWidth*pigeonholeHeight-1; i>=0; i--) {		
             this.PigeonHoles[i].length=0;
         }
@@ -974,11 +876,9 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 		// reset pigeonholes for objects
 		for(var i=numObjects-1; i>=0; i--)
 		{
-
 			var pigeonIndex =   Math.floor(objectX[i]/this.perceptionRange) + Math.floor(objectY[i]/this.perceptionRange)*pigeonholeWidth;
 			this.PigeonHoles[pigeonIndex].push(objectIndex[i]);			
 			objectPigeonhole[i] = pigeonIndex;		
-		
 		}
 		
         // Note - this prevents new agent creation in the middle of a cycle
@@ -1014,11 +914,8 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 
 			numObjects++;
 
-        }
-		
-		
+        }	
 	//	this.testObjectPigeonholes();
-		
     }
 	
 	
@@ -1044,9 +941,7 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 		{	
 			this.moveBalls();    // new position
 			this.drawBalls();    // show things
-			
 			reqFrame(this.drawLoop.bind(this));
-			
 		}
 		else if (this.restartNow == 1)
 		{
@@ -1102,9 +997,7 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 		for (var i=this.initialPopulation-1; i>=0; i--) {
 
 			var randomAngleInRadians = Math.random()*Math.PI*2;
-
 			var speed = 1;
-			
 			b = this.makeBall(this.canvasWidth*Math.random(),
 							  this.canvasHeight*Math.random(),
 							  Math.cos(randomAngleInRadians) * speed,
@@ -1117,13 +1010,10 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 							  				//			  (1+Math.random()*.8-.4),	
 							  //this.genericStroke
 	  
- 
 		}
 		
 		this.theCanvas.addEventListener("click",this.doClick.bind(this),false);
-		
 		this.running = 1;
-		
 		reqFrame(this.drawLoop.bind(this));
     }
 
