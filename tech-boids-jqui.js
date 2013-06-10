@@ -236,7 +236,6 @@ function resize()
 	var width = screen.width;
 	var height = screen.height;
 	
-	alert(height);
 	
 	switch(height)
 	{
@@ -256,13 +255,13 @@ function resize()
 			$("body").css('font-size','80%');
 			break;
 		case 768:
-			$("body").css('font-size','200%');
+			$("body").css('font-size','180%');
 			break;
 		case 720:
 			$("body").css('font-size','60%');
 			break;
 		default:
-			$("body").css('font-size','60%');
+			$("body").css('font-size','150%');
 			break;
 
 	}
