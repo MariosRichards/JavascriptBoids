@@ -1,0 +1,173 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+		<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+		<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+
+
+		<link href="techui.css" rel="stylesheet" type="text/css" />		
+        <script type="text/javascript" src="tutor.js"></script>
+		<script type="text/javascript" src="tech-boids-jqui.js"></script>
+        <title>Boids Experim - with JQuery</title>
+		
+		<!--Extra fonts from Google-->
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,600,700,800,300' rel='stylesheet' type='text/css'>
+
+		
+    </head>
+    <body>
+    	
+    <div id="background">
+	
+        <!--<h1>Boids Experiment - with JQuery</h1>-->
+		
+		<div id="dummy_pane"></div>
+		
+        <div>
+        	<canvas id="mycanvas" width=700px height=600px></canvas>
+        </div>
+		
+		<div id="canvas_infopanel">
+			<div id="canvas_info_numberboids"><button id="button_numberboids">Toggle Number of Boids<div id="canvas_info"></div></button></div>
+			<div id="canvas_info_pigeonholes"><button id="button_pigeonholes">Toggle Pigeon Holes</button></div>
+			<div id="canvas_info_perceptionrange"><button id="button_perceptionrange">Toggle Perception Range</button></div>
+			<div id="canvas_info_boidids"><button id="button_perceptionrange">Toggle Boid Ids</button></div>
+		</div>
+		
+		<div class="toolcontainer">
+		
+	        
+	        <!--<input id="demo_box_1" class="css-checkbox" type="checkbox" /> -->
+	        	
+	        <div class="panel" id="panel1">
+	        	<div class="panelheader"><div class="panelheadertext">Require Restart Controls</div></div>
+				<div class="panelinset" id="controls2">
+				<!--<button id="restartbutton">Restart</button>	 -->
+	
+					
+					<form class="panelinput"> 
+						<table>
+							<tr>
+								<td class="panelinputlabel">Initial Population</td>
+								<td class="panelinputnumber"><input class="panelinputfield" id="initpop" type="number" /></td>
+							</tr>
+							<!--<tr>
+								<td>Speed</td>
+								<td><input id="speed" type="number" /></td>
+							</tr> -->
+							<tr>
+								<td class="panelinputlabel">Perception Range</td>
+								<td class="panelinputnumber"><input class="panelinputfield" id="percRange" type="number" /></td>
+							</tr>
+							<tr>
+								<td class="panelinputlabel">Obstacles on/off</td>
+								<td class="panelinputnumber"><input class="panelinputfield" id="obstacles" type="number" /></td>
+							</tr>
+							<tr>
+								<td class="panelinputlabel">Wall Collision Type</td>
+								<td class="panelinputnumber"><input class="panelinputfield" id="wallColl" type="number" /></td>
+							</tr>	
+							
+						</table>
+						 						
+					</form>  
+				
+					</div>
+					<div class="panelbottom">
+						<div id="restartbuttonpanel">
+							<input class="panelbutton" type="button" id="restartbutton" value="Restart Button"/>	
+						</div>		
+					</div>
+	        	</div>	
+	        	
+	        	<div class="panel" id="panel2">
+	        		<div class="panelheader"><div class="panelheadertext">Real-time Controls</div></div>
+	        		<div class="panelbottom">
+	        			<div id="stopbuttonpanel">
+	        				<button class="panelbutton" id="stopbutton">stop</button>
+	        			</div>
+	        		</div>
+	        		<div class="panelinset" id="controls" >
+	        			
+	        			<div id="allslidersbox">
+	        				<div class="sliderbox">
+			        			<div class="sliderinputsbar">
+	
+			        				<div class="slidereye" id="eyealignment"> <img src="openedeye.svg"/> </div>		
+				        			<div class="sliderlabel">
+			  							<label for="amountalignment" id="labelalignment">Alignment:</label>
+									</div>
+									<div class="slideramount">
+			  							<input class="slideramountfield" type="text" id="amountalignment"/>										
+									</div>
+								</div>
+								<div class="slider">
+				        			<div class="my_slideralignment">
+				        				
+				        			</div>
+			        			</div>
+			        		</div>
+		        			
+		        			<div class="sliderbox">
+			        			<div class="sliderinputsbar">
+			        				<div class="slidereye" id="eyerepulsion"> <img src="openedeye.svg"/> </div>		
+	
+			        				
+				        			<div class="sliderlabel">
+			  							<label for="amountrepulsion" id="labelrepulsion">Repulsion:</label>
+									</div>
+									<div class="slideramount">
+			  							<input class="slideramountfield" type="text" id="amountrepulsion"/>
+									</div>
+								</div>
+								<div class="slider">
+				        			<div class="my_sliderrepulsion">
+				        				
+				        			</div>
+			        			</div>
+			        		</div>
+		        			<div class="sliderbox">
+			        			<div class="sliderinputsbar">
+			        				<div class="sliderlabel">	
+			  							<label for="amountcohesion" id="labelcohesion">Cohesion:</label>
+			  						</div>
+									<div class="slideramount">
+										<input class="slideramountfield" type="text" id="amountcohesion"/>	
+									</div>
+									<div class="slidereye" id="eyecohesion"> <img src="openedeye.svg"/> </div>
+								</div>
+								<div class="slider">
+				        			<div class="my_slidercohesion">
+				        				
+				        			</div>
+			        			</div>
+		        			</div>
+		        			<div class="sliderbox">
+			        			<div class="sliderinputsbar">
+			        				<div class="sliderlabel">	
+			  							<label for="amountsimspeed" id="labelsimspeed">SimSpeed:</label>
+			  						</div>
+									<div class="slideramount">
+										<input class="slideramountfield" type="text" id="amountsimspeed"/>	
+									</div>
+								</div>
+								<div class="slider">
+				        			<div class="my_slidersimspeed">
+				        				
+				        			</div>
+			        			</div>
+		       
+			        		</div>
+		        		</div>
+	        		</div>
+	        	</div>
+	        </div>	
+	</div>	
+    </body>
+</html>

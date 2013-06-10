@@ -1,7 +1,7 @@
 
 $(document).ready(function(){ 
 	$("#stopbutton").click(stopButtonCB);
-	// $("#restartbutton").click(restartButtonCB);
+	//$("#restartbutton").click(restartButtonCB);
 	$("#canvas_info_numberboids").click(numberboidsButtonCB);
 	$("#canvas_info_pigeonholes").click(pigeonholesButtonCB);
 	$("#canvas_info_perceptionrange").click(perceptionrangeButtonCB);
@@ -37,7 +37,7 @@ $(document).ready(function(){
 	c.ruleColours[2] = "blue";
 	
 	controlmySliders();
-	
+	resize();
 				
 	/*makeSlider("Alignment",c.ruleColours[0],function(v){c.ruleCoeffs[0] = v}, {value:1, min:0, max:10, step:.05});
 	makeSlider("Repulsion",c.ruleColours[1],function(v){c.ruleCoeffs[1] = v}, {value:1, min:0, max:10, step:.05});
@@ -45,7 +45,7 @@ $(document).ready(function(){
 	makeSlider("Sim Speed",NaN,function(v){c.simulationSpeed = v}, {value:1, min:0.05, max:10, step:.05});*/
 	
 	
-	$("#trigger").click(checkbutton);	
+	$("#restartbutton").click(checkbutton);	
 	$("form").submit(function () { return false; }); // prevent premature submission/auto page reload!
 	
 	
@@ -149,28 +149,6 @@ function restartButtonCB()
 
 
 
-	/*if (typeof(label)=="undefined")      label="nolabel";
-	if (typeof(colour)=="undefined")     colour="#000000";
-	if (typeof(slideparams)=="undefined") slideparams={};
-
-	if (typeof(slideparams.value)=="undefined") slideparams.value=5;
-	
-	var outer = $("<div />").addClass("inset").appendTo("#controls");
-	$("<span \>").text(label+":").css("color",colour).addClass("numlabel").appendTo(outer);
-	var inp = $("<input \>").addClass("numinput").attr('type','number').appendTo(outer);
-	var checkbox = $("<input \>").addClass("checkbox_input").attr('type','checkbox').appendTo(outer);
-	var sdi = $("<div \>").addClass("slidermarg").appendTo(outer);
-	sdi.slider(slideparams).bind("slide",
-								 function( event, ui ) {
-									inp.val( ui.value );
-									slidefun(ui.value)
-									} );
-	//checkbox.attr("checked",true);
-	checkbox.attr("id",label);							
-	inp.val(slideparams.value);
-	slidefun(slideparams.value);*/
-
-
 function controlmySliders()
 {
 
@@ -252,7 +230,45 @@ function toggleVisibility_CohesionButtonCB()
 	}
 }
 	
+function resize()
+{
 	
+	var width = screen.width;
+	var height = screen.height;
+	
+	alert(height);
+	
+	switch(height)
+	{
+		case 1080:
+			$("body").css('font-size','200%');
+			break;
+		case 1050:
+			$("body").css('font-size','120%');
+			break;
+		case 1024:
+			$("body").css('font-size','100%');
+			break;
+		case 900:
+			$("body").css('font-size','80%');
+			break;
+		case 800:
+			$("body").css('font-size','80%');
+			break;
+		case 768:
+			$("body").css('font-size','200%');
+			break;
+		case 720:
+			$("body").css('font-size','60%');
+			break;
+		default:
+			$("body").css('font-size','60%');
+			break;
+
+	}
+	
+	
+}
 	
 	
 
