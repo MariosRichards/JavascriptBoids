@@ -240,28 +240,28 @@ function resize()
 	switch(height)
 	{
 		case 1080:
-			$("body").css('font-size','200%');
+			$("body").css('font-size','200%');  //Good in 200%
 			break;
 		case 1050:
-			$("body").css('font-size','120%');
+			$("body").css('font-size','180%'); 
 			break;
 		case 1024:
-			$("body").css('font-size','100%');
-			break;
-		case 900:
-			$("body").css('font-size','80%');
-			break;
-		case 800:
-			$("body").css('font-size','80%');
-			break;
-		case 768:
 			$("body").css('font-size','180%');
 			break;
+		case 900:
+			$("body").css('font-size','180%');
+			break;
+		case 800:
+			$("body").css('font-size','180%');
+			break;
+		case 768:
+			$("body").css('font-size','180%'); //Good in 180%
+			break;
 		case 720:
-			$("body").css('font-size','60%');
+			$("body").css('font-size','200%'); //Good in 200%
 			break;
 		default:
-			$("body").css('font-size','150%');
+			$("body").css('font-size','150%'); //Good in 150% for 600 height
 			break;
 
 	}
