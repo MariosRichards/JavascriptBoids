@@ -4,14 +4,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
 
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
 
-		<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
-		<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-		<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+		<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" >
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
+		<script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 
 
-		<link href="techui.css" rel="stylesheet" type="text/css" />		
+		<link href="techui.css" rel="stylesheet" type="text/css" >		
         <script type="text/javascript" src="tutor.js"></script>
 		<script type="text/javascript" src="tech-boids-jqui.js"></script>
         <title>Boids Experim - with JQuery</title>
@@ -27,17 +27,25 @@
 	
         <!--<h1>Boids Experiment - with JQuery</h1>-->
 		
-		<div id="dummy_pane"></div>
+		<div id="dummy_pane">
+			
+		</div>
 		
         <div>
-        	<canvas id="mycanvas" width=700px height=600px></canvas>
+        	<canvas id="mycanvas" width=700px height=600px>
+        		
+        	</canvas>
         </div>
 		
 		<div id="canvas_infopanel">
-			<div id="canvas_info_numberboids"><button id="button_numberboids">Toggle Number of Boids<div id="canvas_info"></div></button></div>
+			<div id="canvas_info_numberboids"><button id="button_numberboids">Toggle Number of Boids<div id="canvas_info">
+				
+			</div></button></div>
 			<div id="canvas_info_pigeonholes"><button id="button_pigeonholes">Toggle Pigeon Holes</button></div>
-			<div id="canvas_info_perceptionrange"><button id="button_perceptionrange">Toggle Perception Range</button></div>
-			<div id="canvas_info_boidids"><button id="button_perceptionrange">Toggle Boid Ids</button></div>
+			<div id="canvas_info_perceptionrange"><button class="button_perceptionrange">Toggle Perception Range</button></div>
+			<div id="canvas_info_boidids">
+				<button class="button_perceptionrange">Toggle Boid Ids</button>
+			</div>
 		</div>
 		
 		<div class="toolcontainer">
