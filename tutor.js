@@ -104,8 +104,7 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 	this.theBalls = [];
 	// create an array of pigeonholes
 	this.PigeonHoles = [];
-	// create the interaction tracking array
-	this.InteractionList = [];
+
 
 	// temp velocity variables
 
@@ -128,7 +127,6 @@ Boid.Agent = function(canvasWidth, canvasHeight)
     this.addAgentX = 0;
     this.addAgentY = 0;	
 
-	//this.genericStroke = "#728FCE";        // steel blue outline
 	this.circ = Math.PI*2;            // complete circle
 
 	// Rule coefficients
@@ -166,9 +164,6 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 	
 
 	this.perceptionRangeSquared = this.perceptionRange*this.perceptionRange;
-
-	//this.genericSpeed = 1;
-	//	this.newGenericSpeed = this.genericSpeed;
 	
    // note - am assuming canvas won't change size!!
     this.pigeonholeWidth = Math.ceil(this.canvasWidth/this.perceptionRange);
@@ -213,20 +208,11 @@ Boid.Agent = function(canvasWidth, canvasHeight)
         speed : 1,
 		perceptionRange : self.perceptionRange,
 		perceptionRangeSquared: self.perceptionRange*self.perceptionRange,
-    //    stroke : self.genericStroke,
 
         draw : function() {
-            // theContext.strokeStyle = this.stroke;
-			
+
 			var theContext = self.theContext;
 
-			// theContext.font="lighter 8px verdana";
-			// theContext.textAlign="center";
-			// theContext.textBaseline="middle"; 		
-
-
-
-			
 			// show perception Range
 			
 			if (self.perceptionRangeVisible)
@@ -449,14 +435,12 @@ Boid.Agent = function(canvasWidth, canvasHeight)
     this.drawBalls = function() {
         // clear the window
 
-		
-		
       //  theContext.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
 		this.theCanvas.width = this.canvasWidth; // this has the effect of clearing the canvas!
 		
         var theContext = this.theContext;		
 		
-        // draw the balls - too bad we can't use for i in theBalls
+        // draw the balls 
 		theContext.font="lighter 7px verdana";
 		theContext.textAlign="center";
 		theContext.textBaseline="middle"; 	
@@ -465,8 +449,7 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 		if (this.pigeonholesVisible)
 			{
 			
-			
-			theContext.strokeStyle = 'rgba(0,0,0,1)';
+			theContext.strokeStyle = 'rgba(0,0,0,.1)';
 			theContext.lineWidth = .1;			
 			theContext.beginPath();			
 			for (var i = 0; i<this.pigeonholeWidth; i++)
@@ -502,17 +485,10 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 		}		
 		
 		
-		
-        // for (var i=self.theBalls.length-1; i>=0; i--) {
-            // self.theBalls[i].draw();
-        // }
-		
-		
-		
 		// draw obstacles
 		if (Obstacles==1) {
 		
-            theContext.strokeStyle = "#FF0000";
+            theContext.strokeStyle = 'rgba(255,0,0,1)';
             theContext.beginPath();
             theContext.arc(obstacleX<<0,obstacleY<<0, obstacleRadius,0, this.circ,true);
             theContext.closePath();
@@ -524,7 +500,7 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 		if (numObjects>0)
 		{
 		
-			theContext.strokeStyle = "#00FF00";
+			theContext.strokeStyle = 'rgba(0,255,0,1)';
 			theContext.beginPath();		
 			for (var obj = numObjects-1; obj>=0; obj--)
 			{
@@ -534,12 +510,6 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 			theContext.closePath();
 			theContext.stroke();			
 		}
-		
-		
-
-
-	
-
 
 
 		for (var i=this.theBalls.length-1; i>=0; i--) 
@@ -640,14 +610,13 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 
         // clean InteractionList array of arrays!
 
-        //this.InteractionList     = [];
 			
         var pigeonhole, j, bi, bix, biy, pigeonX, pigeonY; 
 
         for(var i=theBalls.length-1; i>=0; i--) {
 
 			// could cause problems if number of agents changes mid game!
-			this.InteractionList[i].length = 0;
+
 		
             bi = theBalls[i];
             bix = bi.x;
@@ -661,7 +630,6 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 			{			
 				if ( ((obstacleX - bix)*(obstacleX - bix) + (obstacleY - biy)*(obstacleY - biy)) < ((obstacleRadius + bi.perceptionRange)*(obstacleRadius + bi.perceptionRange)) ) // could precompute!
 				{
-					// this.InteractionList[i].push(obstacleIndex);
 						this.applyRulesNow(bi, -5, obstacleX - bix, obstacleY - biy);					
 				}				
 			}
@@ -713,8 +681,6 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 								}								
 									
 								if ( (dx*dx + dy*dy) <= bi.perceptionRangeSquared ) {
-								   // debugger;
-									// this.InteractionList[i].push(j);
 									this.applyRulesNow(bi, j, dx, dy);
 								}
 							}
@@ -756,7 +722,6 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 									
 								}
 								if ( (dx*dx + dy*dy) <= (bi.perceptionRangeSquared) ) {
-									// this.InteractionList[i].push(j);
 									this.applyRulesNow(bi, j, dx, dy);									
 								}
 							}
@@ -781,15 +746,11 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 				var penetrationLower = bi.perceptionRange - bix;
 				var dx =0, dy=0;
 				
-				if (penetrationUpper > 0) { // right wall				
-					// this.InteractionList[i].push(wallRight);
-					//this.applyRulesNow(bi, -1, penetrationUpper, 0);	
+				if (penetrationUpper > 0) { // right wall					
 					dx = penetrationUpper;
 				} // mutually exclusive events
 
 				else if (penetrationLower > 0) {					
-					// this.InteractionList[i].push(wallLeft);	
-					// this.applyRulesNow(bi, -2, -penetrationLower, 0);
 					dx = -penetrationLower;					
 				}
 
@@ -797,14 +758,10 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 				penetrationLower = bi.perceptionRange - biy;
 				
 				if (penetrationUpper > 0) {				
-					// this.InteractionList[i].push(wallTop);
-					// this.applyRulesNow(bi, -3, 0, penetrationUpper);	
 					dy = penetrationUpper;
 				}
 				
-				else if (penetrationLower > 0) {				
-					// this.InteractionList[i].push(wallBottom);
-					//this.applyRulesNow(bi, -4, 0, -penetrationLower);					
+				else if (penetrationLower > 0) {								
 					dy = -penetrationLower;
 				}				
 				
@@ -848,7 +805,6 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 									
 								}
 								if ( (dx*dx + dy*dy) <= (bi.perceptionRangeSquared) ) {
-									// this.InteractionList[i].push(j);
 									this.applyRulesNow(bi, j, dx, dy);
 								}
 							}
@@ -863,7 +819,6 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 
         }
 
-		//return InteractionList;		
     }
 	
 	
@@ -875,7 +830,6 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 
 		if (theObject<0 && theObject>-5) //wall collision by repulsion
 		{
-
 			// Repulsion
 			theBall.vXrule[1] -= this.objectRepulsion*(dx?dx<0?-1:1:0)*(1+Math.abs(dx));
 			theBall.vYrule[1] -= this.objectRepulsion*(dy?dy<0?-1:1:0)*(1+Math.abs(dy));
@@ -884,7 +838,6 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 		} // repulsion from 4 walls
 		else if (theObject==-5)
 		{
-
 			// Repulsion
 			theBall.vXrule[1] -= this.objectRepulsion*dx*invdistsq;
 			theBall.vYrule[1] -= this.objectRepulsion*dy*invdistsq;
@@ -895,7 +848,6 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 		{
 			if (theObject<=-6) // interacting with an object
 			{
-
 				// Repulsion
 				theBall.vXrule[1] -= this.objectRepulsion*dx*invdistsq;
 				theBall.vYrule[1] -= this.objectRepulsion*dy*invdistsq;
@@ -920,205 +872,11 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 				theBall.vYrule[2] += dy*Math.sqrt(invdistsq);	
 				theBall.interactions[2] ++;
 
-
 			} // All three rules
 		}
 	}
 	
 
-
-    this.applyRules = function(theBalls)
-    {
-
-		var interactor2;
-
-        for(var interactor1 = theBalls.length-1; interactor1>=0; interactor1--) {
-		
-            var bi = theBalls[interactor1];
-			
-			AlignmentX = 0;
-			AlignmentY = 0;
-			
-			CohesionX = 0;
-			CohesionY = 0;
-			
-			RepulsionX = 0;
-			RepulsionY = 0;		
-		
-		
-			var Interactions = this.InteractionList[interactor1].length;
-		
-            // add your own velocity
-			if (Interactions > 0) {
-			
-				for(var j = Interactions-1; j>=0; j--) {
-
-					interactor2 = this.InteractionList[interactor1][j];
-				
-					if (wallCollision==2 && interactor2<0 && interactor2>-5) { //wall collision by repulsion
-
-						// var wallLeft = -1;// -1 = left wall
-						// var wallRight = -2;// -2 = right wall
-						// var wallTop = -3;// -3 = upper wall
-						// var wallBottom = -4;// -4 = lower wall					
-						
-						if (interactor2 ==-1) {
-						
-							var bxs = bi.x;
-							RepulsionX += wallRepulsion*(1)/(1+Math.abs(bxs));
-						
-						}
-						
-						else if(interactor2 ==-2) {
-						
-							var bxs = bi.x - canvasWidth;
-							RepulsionX += wallRepulsion*(-1)/(1+Math.abs(bxs));
-						
-						}
-						
-						else if(interactor2 ==-3) {		
-
-							var bys = bi.y - canvasHeight;
-							RepulsionY += wallRepulsion*(-1)/(1+Math.abs(bys));
-						
-						}
-						
-						else if(interactor2 ==-4) {
-						
-							var bys = bi.y;
-							RepulsionY += wallRepulsion*(1)/(1+Math.abs(bys));
-						
-						}
-						
-						else
-						{
-							debugger;
-						}
-						
-						break;
-						//dreaded break command!
-						// filthy filthy filthy
-					}
-					else if (Obstacles ==1 && interactor2==-5)
-					{
-						
-							var bxs = bi.x-obstacleX;
-							var bys = bi.y-obstacleY;							
-
-							if (bxs==0 && bys ==0)
-							{
-								var randomAngleInRadians = Math.random()*Math.PI*2;
-								RepulsionX += obstacleRepulsion*Math.cos(randomAngleInRadians)/(1+Math.abs(bxs));						
-								RepulsionY += obstacleRepulsion*Math.sin(randomAngleInRadians)/(1+Math.abs(bys));						
-							
-							}
-							else
-							{
-								RepulsionX += obstacleRepulsion*bxs/(1+Math.abs(bxs));						
-								RepulsionY += obstacleRepulsion*bys/(1+Math.abs(bys));							
-							
-							}
-
-					}
-					else // interaction with another Ball
-					{
-						
-						if (interactor2<=-6)
-						{
-						
-							var bxs = bi.x - objectX[-6-interactor2] ;
-							var bys = bi.y - objectY[-6-interactor2] ;
-						
-						}
-						else
-						{
-							// test if within perceptionRange
-							var bj = theBalls[interactor2];
-							var bxs = bi.x - bj.x;
-							var bys = bi.y - bj.y;
-							
-						}						
-
-						// Repulsion: steer to avoid crowding local flockmates
-						
-						if (wallCollision==1) { // toroidal nearest distance
-							if ( 2*Math.abs(bxs) > canvasWidth ) {
-								bxs = canvasWidth - bxs;
-							}
-							
-							if ( 2*Math.abs(bys) > canvasHeight ) {
-								bys = canvasHeight - bys;
-							}
-						}
-						
-						if (interactor2<=-6)
-						{
-						
-							var invdistsq = 4/(1 + bxs*bxs + bys*bys);
-
-							// vector from j to i weighted by inverse square distance
-							RepulsionX += this.objectRepulsion*bxs*invdistsq;
-							RepulsionY += this.objectRepulsion*bys*invdistsq;
-							
-						}
-						else // interacting with an agent
-						{
-							
-							var invdistsq = 4/(1 + bxs*bxs + bys*bys);
-
-							// vector from j to i weighted by inverse square distance
-							RepulsionX += bxs*invdistsq;
-							RepulsionY += bys*invdistsq;
-
-							// Alignment: steer towards the average heading of local flockmates
-							// add to the sum
-							
-							AlignmentX += bj.vX;
-							AlignmentY += bj.vY;
-
-
-							// Cohesion: steer to move toward the average position of local flockmates
-							
-							// vector from i to j
-							CohesionX -= bxs*Math.sqrt(invdistsq);
-							CohesionY -= bys*Math.sqrt(invdistsq);							
-
-						}
-						
-					}
-	
-				}
-				
-				// preparing these vectors for separate representation!
-				// all of these defined as mean
-	
-				bi.vXrule[0] = (AlignmentX / Interactions);
-				bi.vYrule[0] = (AlignmentY / Interactions);
-
-	
-				bi.vXrule[1] = RepulsionX / Interactions;
-				bi.vYrule[1] = RepulsionY / Interactions;
-
-
-				bi.vXrule[2] = CohesionX / Interactions;
-				bi.vYrule[2] = CohesionY / Interactions;
-							
-			}
-			else // no interaction
-			{
-				bi.vXrule[0] = 0;
-				bi.vYrule[0] = 0;
-
-				bi.vXrule[1] = 0;
-				bi.vYrule[1] = 0;
-
-				bi.vXrule[2] = 0;
-				bi.vYrule[2] = 0;			
-			
-			}
-			
-        }
-    }
 
 	// TESTFUNCTION
 	// are the object pigeonholes consistent?
@@ -1148,30 +906,20 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 
     // move the balls
     this.moveBalls = function() {
-        var theBalls = self.theBalls;
+        var theBalls = this.theBalls;
    
-        var pigeonholeWidth = self.pigeonholeWidth;
-        var pigeonholeHeight = self.pigeonholeHeight;
+        var pigeonholeWidth = this.pigeonholeWidth;
+        var pigeonholeHeight = this.pigeonholeHeight;
 
         // what can interact with what
         this.createInteractionList(this.theBalls,this.pigeonholeWidth, this.pigeonholeHeight, this.canvasWidth, this.canvasHeight);
-
-        // PUT YOUR RULE FUNCTIONS HERE
-       // self.applyRules(this.theBalls);
-
-		
+	
 		// confirms update!
 		for(var i=theBalls.length-1; i>=0; i--) {
-			// var nvx = newVX[i];
-			// var nvy = newVY[i];
 			// any chance of zero velocity?
-
-			// newVX[interactor1] = bi.vX;
-			// newVY[interactor1] = bi.vY;	
-			var bi = theBalls[i];
+			var bi = theBalls[i];	
 			
 			// normalise the desire vectors
-			
 			if (bi.interactions[0]>1)
 			{
 				bi.vXrule[0] /= bi.interactions[0];
@@ -1212,14 +960,14 @@ Boid.Agent = function(canvasWidth, canvasHeight)
         // clean array
 
 		for(var i=pigeonholeWidth*pigeonholeHeight-1; i>=0; i--) {		
-            self.PigeonHoles[i].length=0;
+            this.PigeonHoles[i].length=0;
         }
 
 		// move balls and update pigeonholes
         for(var i=theBalls.length-1; i>=0; i--) {
             theBalls[i].move();
             var pigeonIndex = Math.floor(theBalls[i].x/this.perceptionRange)+Math.floor(theBalls[i].y/this.perceptionRange)*pigeonholeWidth;
-            self.PigeonHoles[pigeonIndex].push(i);
+            this.PigeonHoles[pigeonIndex].push(i);
             theBalls[i].pigeon = pigeonIndex;
         }
 		
@@ -1228,7 +976,7 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 		{
 
 			var pigeonIndex =   Math.floor(objectX[i]/this.perceptionRange) + Math.floor(objectY[i]/this.perceptionRange)*pigeonholeWidth;
-			self.PigeonHoles[pigeonIndex].push(objectIndex[i]);			
+			this.PigeonHoles[pigeonIndex].push(objectIndex[i]);			
 			objectPigeonhole[i] = pigeonIndex;		
 		
 		}
@@ -1275,20 +1023,8 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 	
 	
 
-
     // what to do when things get clicked
     this.doClick = function(evt){
-        // a catch - we need to adjust for where the canvas is!
-		
-        // this is quite ugly without some degree of support from
-        // a library
-        //  var theCanvas = self.theCanvas;
-
-        this.addAgent = true;
-        this.addAgentX = evt.pageX - this.theCanvas.offsetLeft;
-        this.addAgentY = evt.pageY - this.theCanvas.offsetTop;
- 
-		
 		// aha! - lock this function so no multiple updates can occur!
 		if (!this.addAgent)
 		{
@@ -1296,8 +1032,6 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 			this.addAgentX = evt.pageX - this.theCanvas.offsetLeft;
 			this.addAgentY = evt.pageY - this.theCanvas.offsetTop;
 		}
-
-		
     }
 
 
@@ -1310,18 +1044,6 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 		{	
 			this.moveBalls();    // new position
 			this.drawBalls();    // show things
-
-			// reqFrame(self.drawLoop);    // call us again in 20ms
-			// print number of Balls
-
-			// Jquery code to display number of Balls beneath canvas
-			var x = document.getElementById("canvas_info");
-			if ( !x)
-			{
-				var div = '<div id = "canvas_info"></div>';
-				$("body").append(div);
-			}
-			$("#canvas_info").html(self.theBalls.length);
 			
 			reqFrame(this.drawLoop.bind(this));
 			
@@ -1333,33 +1055,7 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 
     }
 
-    // this.loop = function()
-    // {
 
-		// var s = 'BoidAgents[' + self.id + '].drawLoop()';
-		// // var s = 'BoidAgents[' + self.id + '].drawLoop';
-		// self.pid = window.setInterval(s, 50);
-		
-		// // var reqFrame =
-		// // window.requestAnimationFrame ||
-			  // // window.webkitRequestAnimationFrame ||
-			  // // window.mozRequestAnimationFrame ||
-			  // // window.oRequestAnimationFrame ||
-			  // // window.msRequestAnimationFrame ||
-			  // // function(/* function FrameRequestCallback */ callback, /* DOMElement Element */ element){
-				// // window.setTimeout(callback, 1000 / 60);
-				// // };
-				
-		// // reqFrame(eval(s));
-					
-    // }
-
-	// function setclicks()
-	// {
-		// theCanvas.onclick = function() { if (!this.running) {this.running=1; reqFrame(animLoop,theCanvas);}};
-		// document.getElementById("stopbutton").onclick = function() {this.running=0;};
-	// }
-	
 	
 	this.restart = function()
 	{
@@ -1368,22 +1064,13 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 		// create an array of pigeonholes
 		this.PigeonHoles = [];
 		// create the interaction list array;
-		this.InteractionList = [];
-		// temp velocity variables		
 		
 		this.initialPopulation = this.newInitialPopulation;
-		//this.genericSpeed = this.newGenericSpeed;
 		this.perceptionRange = this.newPerceptionRange;
-
-
-	
-
 		this.perceptionRangeSquared = this.perceptionRange*this.perceptionRange;
-//		this.directionIndicatorLength = this.perceptionRange;
 		
 		wallCollision = this.newWallCollision;
 		Obstacles = this.newObstacles;	
-
 
 		Objects = 1; // Objects turned on
 		objectX = [];
@@ -1392,8 +1079,6 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 		objectIndex = [];
 
 		objectPigeonhole = [];
-
-
 
 	   // note - am assuming canvas won't change size!!
 		this.pigeonholeWidth = Math.ceil(this.canvasWidth/this.perceptionRange);
@@ -1431,13 +1116,10 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 							  // this.genericSpeed*(1+Math.random()*.6-.3),		
 							  				//			  (1+Math.random()*.8-.4),	
 							  //this.genericStroke
-			// initialise interaction array			  
-			this.InteractionList[i] = [];	  
+	  
+ 
 		}
 		
-		
-
-
 		this.theCanvas.addEventListener("click",this.doClick.bind(this),false);
 		
 		this.running = 1;
@@ -1458,9 +1140,3 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 }
 
 
-// var test;
-
-// jQuery(document).ready(function($) {
-	// test = new Boid.Agent();
-	// test.start();
-// });
