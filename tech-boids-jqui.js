@@ -47,9 +47,7 @@ $(document).ready(function(){
 	
 	$("#restartbutton").click(checkbutton);	
 	$("form").submit(function () { return false; }); // prevent premature submission/auto page reload!
-	
-	$("body").disableSelection();
-	
+		
 
 });
 
@@ -59,12 +57,13 @@ function checkbutton()
 {
 
 	// no input testing at all!
-
-	if ($("#initpop")[0].value) c.newInitialPopulation = $("#initpop")[0].valueAsNumber;
+	
+	
+	if ($("#initpop")[0].value) c.newInitialPopulation = parseInt($("#initpop").val());//$("#initpop")[0].valueAsNumber;
 	//if ($("#speed")[0].value) c.newGenericSpeed = $("#speed")[0].valueAsNumber;
-	if ($("#percRange")[0].value) c.newPerceptionRange = $("#percRange")[0].valueAsNumber;
-	if ($("#obstacles")[0].value) c.newObstacles = $("#obstacles")[0].valueAsNumber;
-	if ($("#wallColl")[0].value) c.newWallCollision = $("#wallColl")[0].valueAsNumber;
+	if ($("#percRange")[0].value) c.newPerceptionRange = parseInt($("#percRange").val());//$("#percRange")[0].valueAsNumber;
+	if ($("#obstacles")[0].value) c.newObstacles = parseInt($("#obstacles").val());//$("#obstacles")[0].valueAsNumber;
+	if ($("#wallColl")[0].value) c.newWallCollision = parseInt($("#wallColl").val());//$("#wallColl")[0].valueAsNumber;
 
 	restartButtonCB();
 
@@ -282,7 +281,21 @@ function disableSelection() {
          }
         }); 
 } 
-          
+
+
+  
+function enableSelection() { 
+      this.each(function() { 
+        if (typeof this.onselectstart != 'undefined') {
+           this.onselectstart = function() { return true; };
+        } else if (typeof this.style.MozUserSelect != 'undefined') {
+             this.style.MozUserSelect = 'inherit';
+        } else {
+             this.onmousedown = function() { return true; };
+         }
+        }); 
+} 
+            
            
 	
 	
