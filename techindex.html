@@ -38,11 +38,18 @@
         </div>
 		
 		<div id="canvas_infopanel">
-			<div id="canvas_info_numberboids"><button id="button_numberboids">Toggle Number of Boids<div id="canvas_info">
-				
-			</div></button></div>
-			<div id="canvas_info_pigeonholes"><button id="button_pigeonholes">Toggle Pigeon Holes</button></div>
-			<div id="canvas_info_perceptionrange"><button class="button_perceptionrange">Toggle Perception Range</button></div>
+			<div id="canvas_info_numberboids">
+				<button id="button_numberboids">Toggle Number of Boids
+					<div id="canvas_info">
+					</div>
+					</button>
+			</div>
+			<div id="canvas_info_pigeonholes">
+				<button id="button_pigeonholes">Toggle Pigeon Holes</button>
+			</div>
+			<div id="canvas_info_perceptionrange">
+				<button class="button_perceptionrange">Toggle Perception Range</button>
+				</div>
 			<div id="canvas_info_boidids">
 				<button class="button_perceptionrange">Toggle Boid Ids</button>
 			</div>
@@ -59,32 +66,31 @@
 				<!--<button id="restartbutton">Restart</button>	 -->
 	
 					
-					<form class="panelinput"> 
-						<table>
-							<tr>
-								<td class="panelinputlabel">Initial Population</td>
-								<td class="panelinputnumber"><input class="panelinputfield" id="initpop" type="number" /></td>
-							</tr>
+					
+						<div class="panelinput">
+							<div class="trclass">
+								<div class="panelinputlabel">Initial Population</div>
+								<div class="panelinputnumber"><input class="panelinputfield" id="initpop" type="number" /></div>
+							</div>
 							<!--<tr>
 								<td>Speed</td>
 								<td><input id="speed" type="number" /></td>
 							</tr> -->
-							<tr>
-								<td class="panelinputlabel">Perception Range</td>
-								<td class="panelinputnumber"><input class="panelinputfield" id="percRange" type="number" /></td>
-							</tr>
-							<tr>
-								<td class="panelinputlabel">Obstacles on/off</td>
-								<td class="panelinputnumber"><input class="panelinputfield" id="obstacles" type="number" /></td>
-							</tr>
-							<tr>
-								<td class="panelinputlabel">Wall Collision Type</td>
-								<td class="panelinputnumber"><input class="panelinputfield" id="wallColl" type="number" /></td>
-							</tr>	
+							<div class="trclass">
+								<div class="panelinputlabel">Perception Range</div>
+								<div class="panelinputnumber"><input class="panelinputfield" id="percRange" type="number" /></div>							</div>
+							<div class="trclass">
+								<div class="panelinputlabel">Obstacles on/off</div>
+								<div class="panelinputnumber"><input class="panelinputfield" id="obstacles" type="number" /></div>
+							</div>
+							<div class="trclass">
+								<div class="panelinputlabel">Wall Collision Type</div>
+								<div class="panelinputnumber"><input class="panelinputfield" id="wallColl" type="number" /></div>
+							</div>	
 							
-						</table>
+						</div>
 						 						
-					</form>  
+					
 				
 					</div>
 					<div class="panelbottom">

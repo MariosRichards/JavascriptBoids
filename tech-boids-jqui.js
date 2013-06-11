@@ -48,6 +48,7 @@ $(document).ready(function(){
 	$("#restartbutton").click(checkbutton);	
 	$("form").submit(function () { return false; }); // prevent premature submission/auto page reload!
 	
+	$("body").disableSelection();
 	
 
 });
@@ -268,6 +269,21 @@ function resize()
 	
 	
 }
+
+  
+function disableSelection() { 
+      this.each(function() { 
+        if (typeof this.onselectstart != 'undefined') {
+           this.onselectstart = function() { return false; };
+        } else if (typeof this.style.MozUserSelect != 'undefined') {
+             this.style.MozUserSelect = 'none';
+        } else {
+             this.onmousedown = function() { return false; };
+         }
+        }); 
+} 
+          
+           
 	
 	
 
