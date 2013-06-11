@@ -18,6 +18,7 @@ $(document).ready(function(){
 		changeObstacleState(0);
 	});
 	
+	
 			
 	$("#wallcollision1").click(function(){
 		changeWallCollisionState(0);	
@@ -59,6 +60,9 @@ $(document).ready(function(){
 	c.ruleColours[1] = "red";
 	c.ruleColours[2] = "blue";
 	
+	$("#initpop").val(c.initialPopulation);
+	$("#percRange").val(c.perceptionRange);
+	
 	controlmySliders();
 	changeWallCollisionState(0);
 	changeObstacleState(1);
@@ -73,7 +77,8 @@ $(document).ready(function(){
 	
 	
 	$("#restartbutton").click(checkbutton);	
-	$("form").submit(function () { return false; }); // prevent premature submission/auto page reload!
+	
+	
 		
 
 });
