@@ -104,6 +104,8 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 	this.theBalls = [];
 	// create an array of pigeonholes
 	this.PigeonHoles = [];
+	
+	this.theRepulsors = [];
 
 
 	// temp velocity variables
@@ -146,12 +148,12 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 	var obstacleIndex = -5;
 	var obstacleRepulsion =100;
 	
-	var Objects = 1; // Objects turned on
-	var objectX = [];
-	var objectY = [];
-	var numObjects = 0;
-	var objectIndex = [];
-	var objectPigeonhole = [];
+	this.Objects = 1; // Objects turned on
+	// var objectX = [];
+	// var objectY = [];
+	//this numObjects = 0;
+	// var objectIndex = [];
+	// var objectPigeonhole = [];
 	this.objectRepulsion = 1000;
 	
 	// make everything go the same speed
@@ -195,11 +197,52 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 	this.cos210 = Math.cos(210*Math.PI/180);	
 	
 
+	this.repulsor = {
+		x : 0,
+		y : 0,
+		id : 0,
+		pigeon : 0,
+		next : null,
+		prev : null,
+		
+		};
+
+	this.makeRepulsor = function( x, y )
+	{
+	
+	    Empty = function () {};
+        Empty.prototype = this.repulsor;
+        var repulsor = new Empty();	
+		
+		x = Math.min( Math.max(x , 1) , (this.canvasWidth-1));
+		y = Math.min( Math.max(y , 1) , (this.canvasHeight-1));		
+		
+		repulsor.x = x;
+		repulsor.y = y;
+					
+		repulsor.id = - 6 - this.theRepulsors.length;
+
+		pigeon =   Math.floor(x / this.perceptionRange),
+				+ (Math.floor(x / this.perceptionRange)) * this.pigeonholeWidth;
+		this.PigeonHoles[pigeon].push(repulsor.id);	
+		this.theRepulsors.push(repulsor);		
+
+		repulsor.pigeon = pigeon;
+
+		//this.numObjects++;		
+	
+	}
+
+
+	
+	
+	
+	
     this.aBall = {
-        x : 100,
-        y : 100,
-        vX : 10,
-        vY : 10,
+        x : 0,
+        y : 0,
+        vX : 0,
+        vY : 0,
 		vXrule : [0, 0, 0],
 		vYrule : [0, 0, 0],
 		interactions : [0, 0, 0],
@@ -208,6 +251,8 @@ Boid.Agent = function(canvasWidth, canvasHeight)
         speed : 1,
 		perceptionRange : self.perceptionRange,
 		perceptionRangeSquared: self.perceptionRange*self.perceptionRange,
+		next: null,
+		prev: null,
 
         draw : function() {
 
@@ -411,7 +456,7 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 		ball.speed = speed;
 		ball.vXrule = [0,0,0];
 		ball.vYrule = [0,0,0];
-		ball.interactions = [0, 0, 0];
+		ball.interactions = [0,0,0];
 		
 
         // make Ball note which pigeonhole it is in
@@ -425,6 +470,12 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 		ball.id = this.theBalls.length;
 		
         this.PigeonHoles[ball.pigeon].push(this.theBalls.length);
+		
+		// add ball to pigeonhole at head of list
+		
+		// ball.nextBoid = this.PigeonHoles[ball.pigeon]; // point to old list head
+		// ball.prevBoid = null; // so you know this ball is at the start of the list
+		// this.PigeonHoles[ball.pigeon] = ball; // place at head of the list
 
         return ball;
     }
@@ -497,15 +548,15 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 		}
 		
 		// draw objects
-		if (numObjects>0)
+		if (this.theRepulsors.length>0)
 		{
 		
 			theContext.strokeStyle = 'rgba(0,255,0,1)';
 			theContext.beginPath();		
-			for (var obj = numObjects-1; obj>=0; obj--)
+			for (var obj = this.theRepulsors.length-1; obj>=0; obj--)
 			{
-				theContext.moveTo(objectX[obj]<<0,objectY[obj]<<0);
-				theContext.arc(objectX[obj]<<0,objectY[obj]<<0, 1,0, this.circ,true);							
+				theContext.moveTo( (this.theRepulsors[obj].x) <<0 , (this.theRepulsors[obj].y) <<0);
+				theContext.arc(    (this.theRepulsors[obj].x) <<0 , (this.theRepulsors[obj].y) <<0, 1,0, this.circ,true);							
 			}
 			theContext.closePath();
 			theContext.stroke();			
@@ -633,6 +684,7 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 				}				
 			}
 			
+			// Check for walls
 			if (wallCollision==2)
 			{
 				var penetrationUpper = bix + bi.perceptionRange - canvasWidth;
@@ -678,9 +730,17 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 					pigeonhole = ((holeX+pigeonholeWidth)%pigeonholeWidth) + pigeonholeWidth*((holeY+pigeonholeHeight)%pigeonholeHeight);
 					// now iterate through the Balls in this pigeon if any
 
-					for(var interactant = this.PigeonHoles[pigeonhole].length-1; interactant>=0; interactant--) {
+					for(var interactant = this.PigeonHoles[pigeonhole].length-1; interactant>=0; interactant--) {				
 
 						j = this.PigeonHoles[pigeonhole][interactant];
+						
+						
+						// j = this.PigeonHoles[pigeonhole];
+						// while (j!==null)
+						// ...
+						// j = j.nextBoid;
+						
+						
 
 						// here is where you'd add an if statement to cut work in half!
 						if(j != i) { //
@@ -690,8 +750,8 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 							if (j<=-6) // is it an object?
 							{
 
-								dx = objectX[-6-j] - bix;
-								dy = objectY[-6-j] - biy;
+								dx = this.theRepulsors[-6-j].x - bix;
+								dy = this.theRepulsors[-6-j].y - biy;
 							
 							}
 							else // no, it's a boid
@@ -783,31 +843,6 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 	
 
 
-	// TESTFUNCTION
-	// are the object pigeonholes consistent?
-	this.testObjectPigeonholes = function()
-	{
-		for (obj = numObjects-1; obj>=0; obj--)
-		{	
-		    var contents = this.PigeonHoles[objectPigeonhole[obj]];
-		    unfound = true;
-		    for (int = contents.length-1; int >=0; int--)
-		    {
-		        
-    			if (contents[int]==objectIndex[obj])
-    			{
-    				unfound = false;
-    			}
-		    }
-		    if (unfound)
-		    {
-		         debugger;   
-		    }
-		}
-	}
-	
-	
-	
 
     // move the balls
     this.moveBalls = function() {
@@ -860,11 +895,13 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 			}
 		}					
 
+		// UNNECESSARY WITH DL LIST
         // clean pigeonhole array
 		for(var i=pigeonholeWidth*pigeonholeHeight-1; i>=0; i--) {		
             this.PigeonHoles[i].length=0;
         }
 
+		// HANDLED IN THE BALL.MOVE
 		// move balls and update pigeonholes
         for(var i=theBalls.length-1; i>=0; i--) {
             theBalls[i].move();
@@ -873,46 +910,54 @@ Boid.Agent = function(canvasWidth, canvasHeight)
             theBalls[i].pigeon = pigeonIndex;
         }
 		
+		// UNNECESSARY WITH DL LIST SINCE OBJECTS DON'T MOVE
 		// reset pigeonholes for objects
-		for(var i=numObjects-1; i>=0; i--)
+
+		// draw objects
+
+
+		
+		
+		for(var i = this.theRepulsors.length-1; i >= 0; i--)
 		{
-			var pigeonIndex =   Math.floor(objectX[i]/this.perceptionRange) + Math.floor(objectY[i]/this.perceptionRange)*pigeonholeWidth;
-			this.PigeonHoles[pigeonIndex].push(objectIndex[i]);			
-			objectPigeonhole[i] = pigeonIndex;		
+			var pigeonIndex =   Math.floor(this.theRepulsors[i].x /this.perceptionRange) + Math.floor(this.theRepulsors[i].y/this.perceptionRange)*pigeonholeWidth;
+			this.PigeonHoles[pigeonIndex].push(this.theRepulsors[i].id);			
+			this.theRepulsors[i].pigeon = pigeonIndex;		
 		}
 		
         // Note - this prevents new agent creation in the middle of a cycle
         // Downside, reduces user agency noticeably (creation latency)!
 
-        if (this.addAgent && Objects==1) {
+        if (this.addAgent && this.Objects==1) {
 
 			// CREATE AGENTS ON CLICK CODE
             // var randomAngleInRadians = Math.random()*Math.PI*2;
             // b = self.makeBall( self.addAgentX, self.addAgentY, Math.cos(randomAngleInRadians) * self.genericSpeed, Math.sin(randomAngleInRadians) * self.genericSpeed, self.genericSpeed, self.genericRadius, self.genericStroke );
             // theBalls.push(b);
             // self.addAgent = false;
+			
+			
+			this.makeRepulsor(this.addAgentX, this.addAgentY);
 
-			objectX[numObjects] = this.addAgentX;
-			objectY[numObjects] = this.addAgentY;
-			x =  this.addAgentX;
-			y =  this.addAgentY;
+			// x =  this.addAgentX;
+			// y =  this.addAgentY;
 			
-			x = Math.min( Math.max(x , 1) , (this.canvasWidth-1));
-			y = Math.min( Math.max(y , 1) , (this.canvasHeight-1));
+			// x = Math.min( Math.max(x , 1) , (this.canvasWidth-1));
+			// y = Math.min( Math.max(y , 1) , (this.canvasHeight-1));
 			
-			objectX[numObjects] = x;
-			objectY[numObjects] = y;
-			objectIndex[numObjects] = - 6 - numObjects;
+			// objectX[numObjects] = x;
+			// objectY[numObjects] = y;
+			// objectIndex[numObjects] = - 6 - numObjects;
 
 			this.addAgent = 0;
 
-			pigeon =   Math.floor(objectX[numObjects] / this.perceptionRange),
-					+ (Math.floor(objectY[numObjects] / this.perceptionRange)) * this.pigeonholeWidth;
-			this.PigeonHoles[pigeon].push(objectIndex[numObjects]);			
+			// pigeon =   Math.floor(objectX[numObjects] / this.perceptionRange),
+					// + (Math.floor(objectY[numObjects] / this.perceptionRange)) * this.pigeonholeWidth;
+			// this.PigeonHoles[pigeon].push(objectIndex[numObjects]);			
 
-			objectPigeonhole[numObjects] = pigeon;
+			// objectPigeonhole[numObjects] = pigeon;
 
-			numObjects++;
+			// numObjects++;
 
         }	
 	//	this.testObjectPigeonholes();
@@ -964,16 +1009,16 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 		this.perceptionRange = this.newPerceptionRange;
 		this.perceptionRangeSquared = this.perceptionRange*this.perceptionRange;
 		
-		wallCollision = this.newWallCollision;
-		Obstacles = this.newObstacles;	
+		this.wallCollision = this.newWallCollision;
+		this.Obstacles = this.newObstacles;	
 
-		Objects = 1; // Objects turned on
-		objectX = [];
-		objectY = [];
-		numObjects = 0;
-		objectIndex = [];
+		this.Objects = 1; // Objects turned on
+		//objectX = [];
+		//objectY = [];
+		//this.numObjects = 0;
+		//objectIndex = [];
 
-		objectPigeonhole = [];
+		//objectPigeonhole = [];
 
 	   // note - am assuming canvas won't change size!!
 		this.pigeonholeWidth = Math.ceil(this.canvasWidth/this.perceptionRange);
@@ -992,13 +1037,13 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 		for (var i=this.pigeonholeWidth*this.pigeonholeHeight-1; i>=0; i--)
         {
 			this.PigeonHoles[i] = [];
-        }			
+        }
 	
 		for (var i=this.initialPopulation-1; i>=0; i--) {
 
 			var randomAngleInRadians = Math.random()*Math.PI*2;
 			var speed = 1;
-			b = this.makeBall(this.canvasWidth*Math.random(),
+			var b = this.makeBall(this.canvasWidth*Math.random(),
 							  this.canvasHeight*Math.random(),
 							  Math.cos(randomAngleInRadians) * speed,
 							  Math.sin(randomAngleInRadians) * speed,
