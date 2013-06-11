@@ -56,8 +56,8 @@ $(document).ready(function(){
 function checkbutton()
 {
 
-	var minvalueonscreen=Math.min(window.innerWidth,window.innerHeight);
-
+	var minvalueonscreen=(Math.min($("#dummy_pane").width(),$("#dummy_pane").height()))/2;
+		
 	var inputtest=true;
 	var alertmessage="Invalid parameters introduced. \n\nValid values as follows: \n";
 	
@@ -67,13 +67,21 @@ function checkbutton()
 	alertmessage+="\n\n      Initial Population: 1 or higher."
 	if(parseInt($("#initpop").val()) < 1) {
 		alertmessage+=invalid;
+		$("#initpop").val(1);
 		inputtest=false;
 	}
 	alertmessage+="\n\n      Perception Range: From 3 to "+ minvalueonscreen;
-	if(((parseInt($("#percRange").val()) < 3)||((parseInt($("#percRange").val()) > minvalueonscreen)))) {
+	if(((parseInt($("#percRange").val()) < 3))) {
 		alertmessage+=invalid;
+		$("#percRange").val(3);
 		inputtest=false;
 	}
+	if((parseInt($("#percRange").val()) > minvalueonscreen)) {
+		alertmessage+=invalid;
+		$("#percRange").val(minvalueonscreen);
+		inputtest=false;
+	}
+	
 	alertmessage+="\n\n      Obstacles: From 0 to 1."
 	if(((parseInt($("#obstacles").val()) < 0)||((parseInt($("#obstacles").val()) > 1)))) {
 		alertmessage+=invalid;
