@@ -82,7 +82,7 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 	
 	// WARNING: WALL COLLISION PLACES A CONSTRAINT ON MAXIMUM SPEED OF 1/4 PERCEPTION RANGE
 	// WHY 1/4?
-	var wallCollision = 0;
+	this.wallCollision = 0;
 	var wallRepulsion = 1000;
 	
 		
@@ -140,7 +140,7 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 	this.ruleColours = ['rgba(0,0,255,1)', 'rgba(0,255,255,1)', 'rgba(255,0,255,1)'];	
 
 	
-	var Obstacles = 1; // turn obstacle interaction on(1)/off(0)
+	this.Obstacles = 1; // turn obstacle interaction on(1)/off(0)
 	// obstacle is a circle
 	var obstacleRadius = 20;
 	var obstacleX = this.canvasWidth/2;
@@ -174,8 +174,8 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 	this.newInitialPopulation = this.initialPopulation;
 
 	this.newPerceptionRange = this.perceptionRange;
-	this.newWallCollision = wallCollision;
-	this.newObstacles = Obstacles;
+	this.newWallCollision = this.wallCollision;
+	this.newObstacles = this.Obstacles;
 	
 	
 	// graphics controls
@@ -341,14 +341,14 @@ Boid.Agent = function(canvasWidth, canvasHeight)
             // Marios: Minor unnecessary optimisation - only checks for Upper penetration in an axis
             // if Lower penetration has not occurred
 
-			if (wallCollision==1) // toroidal
+			if (self.wallCollision==1) // toroidal
 			{
 
 				this.x = (this.x+self.canvasWidth)%self.canvasWidth;
 				this.y = (this.y+self.canvasHeight)%self.canvasHeight;
 
 			}
-			else if (wallCollision==0) // hard bounce
+			else if (self.wallCollision==0) // hard bounce
 			{
 
 				var penetrationUpper = this.x + this.perceptionRange - self.canvasWidth;
@@ -399,12 +399,16 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 				// }				
 		
 			}
-			else // repulsion
+			else if (self.wallCollision==2) // repulsion
 			{
 				
 				this.x = Math.min( Math.max(this.x , 1) , (self.canvasWidth-1));
 				this.y = Math.min( Math.max(this.y , 1) , (self.canvasHeight-1));					
 
+			}
+			else
+			{
+				debugger;
 			}
         }
     };
@@ -431,7 +435,7 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 		
 		// Prevent balls from being created inside obstacles
 		// ugly random positioning solution!
-		if (Obstacles==1)
+		if (this.Obstacles==1)
 		{
 			while ( Math.sqrt((obstacleX - x)*(obstacleX - x) + (obstacleY - y)*(obstacleY - y) ) < (obstacleRadius) )
 			{
@@ -537,7 +541,7 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 		
 		
 		// draw obstacles
-		if (Obstacles==1) {
+		if (this.Obstacles==1) {
 		
             theContext.strokeStyle = 'rgba(255,0,0,1)';
             theContext.beginPath();
@@ -676,7 +680,7 @@ Boid.Agent = function(canvasWidth, canvasHeight)
             pigeonY = Math.floor(bi.pigeon/pigeonholeWidth); // 0 : pigeonholeHeight -1??
 			
 			// Check for obstacles
-			if (Obstacles==1)
+			if (this.Obstacles==1)
 			{			
 				if ( ((obstacleX - bix)*(obstacleX - bix) + (obstacleY - biy)*(obstacleY - biy)) < ((obstacleRadius + bi.perceptionRange)*(obstacleRadius + bi.perceptionRange)) ) // could precompute!
 				{
@@ -685,7 +689,7 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 			}
 			
 			// Check for walls
-			if (wallCollision==2)
+			if (this.wallCollision==2)
 			{
 				var penetrationUpper = bix + bi.perceptionRange - canvasWidth;
 				var penetrationLower = bi.perceptionRange - bix;
@@ -762,7 +766,7 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 							dx = bj.x - bix;
 							dy = bj.y - biy;							
 							
-							if (wallCollision==1) // toroidal least distance
+							if (this.wallCollision==1) // toroidal least distance
 							{
 							
 								if ( 2*Math.abs(dx) > canvasWidth ) {
