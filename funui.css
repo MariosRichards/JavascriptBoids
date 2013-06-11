@@ -1,0 +1,779 @@
+@charset "utf-8";
+
+html { 
+	font-size:100.01%;
+	
+	
+		-khtml-user-select: none;
+	    -webkit-user-select: none;
+	    -o-user-select: none;
+	    user-select: none;
+	   
+}
+
+
+#background {
+	
+	position:absolute;
+	width:100%;
+	height:100%;
+	background-color:white;
+	top:0;
+	left:0;
+}
+
+#dummy_pane {
+	position:absolute;
+	width:54.6%;
+	height:80%;
+	left:0;
+	right:0;
+	top:0;
+	bottom:0;
+	display:none;
+}
+
+	
+	#mycanvas {
+	
+	position:absolute;
+	left:30%;
+	top:1%;
+	
+	border: thin solid #666;
+	border-radius:1%;
+	
+	
+	}
+	
+	
+
+head {
+	font-family: Open Sans,Verdana, Geneva, sans-serif;
+	font-weight:600;
+}
+
+
+body {
+
+	font-family: Verdana, Geneva, sans-serif;
+	width: 65%;
+	height:60%;
+	font-size: 100%;
+	font-weight:800;
+	
+}
+
+
+
+
+.toolcontainer {
+	
+	position:absolute;
+
+	width:25%;
+	height:80%;
+
+	left:4%;
+	top:1%;
+	/*background-color:green;*/
+}
+
+	
+	.panel {
+	
+		position:absolute;
+		width:100%;
+		height:100%;
+	
+		border: thin solid #666;	
+		background-color: #CCC;
+		width: 85%;
+		height: 49%;
+		border-radius:10%;
+		margin-top:0.6%;
+		
+	
+	}
+	
+	
+	
+		.panelheader {
+			
+			position:absolute;
+			
+			top:0%;
+			left:0%;
+			width:100%;
+			height:20%;
+			text-align:center;
+			
+		}
+		
+		
+			.panelheadertext {
+				position:absolute;
+				top:0%;
+				left:0%;
+				width:90%;
+				height:50%;
+				font-family: Open Sans,Georgia, "Times New Roman", Times, serif;
+				text-align:center;
+				font-weight:800;
+				font-size:50%;
+				margin-left:5%;
+				margin-top:5%;
+			} 
+	
+		.panelinset {
+			
+			position:absolute;
+			
+			top:20%;
+			left:0%;
+			width:100%;
+			height:60%;
+			text-align:center;
+			
+			
+		}
+	
+			.panelinput {
+				position:absolute;
+				
+				top:10%;
+				left:0%;
+				width:100%;
+				height:100%;
+				font-family: Open Sans,Arial, Helvetica, sans-serif;
+				font-size: 45%;
+				font-weight:400;
+			
+			}
+			
+			
+						
+				.trclass {
+					position:relative;
+					float:left;
+					text-align:center;
+					height:22%;
+					width:100%;
+					
+					
+				}
+				
+					.panelinputlabel {
+						
+						position:absolute;
+						
+						top:0%;
+						left:2%;
+						width:65%;
+						height:100%;
+						
+						text-align:left;
+					}
+					
+					.panelinputnumber {
+						
+						position:absolute;
+						
+						top:-15%;
+						left:47%;
+						width:50%;
+						height:75%;
+						
+					}
+					
+					.panelinputradio {
+						
+						position:absolute;
+						
+						top:0%;
+						left:0%;
+						width:100%;
+						height:100%;
+						
+					}
+					
+					.labelradio {
+						position:absolute;
+						
+						top:0%;
+						left:0%;		
+										
+						width:100%;
+						height:50%;
+						
+						
+						font-size:80%;
+					}
+					
+					#labelradiolabel1 {
+						
+						position:absolute;
+																					
+						top:-10%;
+						left:17%;
+							
+						width:50%;
+						height:100%;
+						
+						
+						z-index:2;
+					}
+					
+					#labelradiolabel2 {
+						
+						position:absolute;
+																					
+						top:-10%;
+						left:34%;
+							
+						width:50%;
+						height:100%;
+						
+						
+						
+						z-index:2;
+						
+					}
+					
+					#labelradiolabel3 {
+						
+						position:absolute;
+																					
+						top:-10%;
+						left:0%;
+							
+						width:33%;
+						height:100%;
+						
+						
+						z-index:2;
+					}
+					
+					#labelradiolabel4 {
+						
+						position:absolute;
+																					
+						top:-10%;
+						left:33%;
+							
+						width:33%;
+						height:100%;
+						
+						
+						z-index:2;
+					}
+					
+					#labelradiolabel5 {
+						
+						position:absolute;
+																					
+						top:-10%;
+						left:66%;
+							
+						width:33%;
+						height:100%;
+						
+						
+						z-index:2;
+					}
+					
+					.arearadio {
+						
+						position:absolute;
+						
+						top:50%;
+						left:0%;
+						
+						width:100%;
+						height:50%;
+					}
+					
+					.buttonwall {
+						
+						position:relative;
+						
+						float:left;
+						
+						left:-7%;
+						
+						margin-left:20%;
+					}
+					
+					.panelinputfield {
+						
+						position:absolute;
+						
+						top:15%;
+						left:45%;
+						width:50%;
+						height:60%;
+						
+						color:orange;
+						font-weight:600;
+						
+						
+						text-align:center;
+					
+					}
+	
+	.panelbottom {
+		
+		position:absolute;
+		
+		top:80%;
+		left:0%;
+		width:100%;
+		height:20%;
+		text-align:center;
+	
+	}
+	
+		#restartbuttonpanel {
+			
+			position:absolute;
+			top:25%;
+			left:0;
+			
+			width:100%;
+			height:50%;
+			
+			
+		
+		}
+		
+			.panelbutton {
+				
+				position:absolute;
+				
+				top:25%;
+				left:25%;
+				
+				width:50%;
+				height:90%;
+				
+				font-size:50%;
+				text-align:center;
+	
+			}
+		
+				#restartbutton {
+					
+					
+				}
+
+
+	#panel2 {
+		
+		top:50%;
+		left:0%;
+		
+		width:
+		height:
+	}
+	
+		#stopbuttonpanel {
+			
+			position:absolute;
+			top:25%;
+			left:0;
+			
+			width:100%;
+			height:50%;
+			
+			
+		
+		}
+		
+		#stopbutton {
+		
+		}
+		
+		#allslidersbox {
+			position:absolute;
+			height:100%;
+			width:100%;
+			
+			top:0%;
+			left:0%;
+			
+		}
+		
+		.sliderbox {
+			
+			position:relative;
+			height:25%;
+			width:100%;
+			
+		
+			
+		}
+		
+			.sliderinputsbar {
+		
+				position:absolute;
+				
+				height:40%;
+				width:100%;
+				
+				top:0%;
+				left:0%;
+				
+			}
+				
+				.sliderlabel {
+		
+					position:absolute;
+					top:0%;
+					left:2%;
+					height:100%;
+					width:40%;
+					
+					font-family: Open Sans,Georgia, "Times New Roman", Times, serif;
+					font-weight:200;
+					font-size:50%;
+					text-align:left;
+					
+				
+				}
+				
+							
+				
+					.slideramount {
+						
+						position:absolute;
+						
+						top:0%;
+						left:75%;
+						
+						width:10%;
+						height:100%;
+						
+						font-weight: bold;
+						font-size:70%;
+				
+						
+					}
+					
+						.slideramountfield {
+							
+							position:absolute;
+							
+							height:100%;
+							width:100%;
+							
+							left:0%;
+							top:15%;
+						}
+
+				.slidereye {
+					
+					position:absolute;
+					
+					width:15%;
+					height: 120%;
+					
+					top:15%;
+					left:85%;
+					
+					
+					z-index:3;
+				}
+				
+										
+					img {
+						position:absolute;
+						height:100%;
+						width:100%;
+						
+						top:0%;
+						left:0%;
+					
+					}
+			
+			.slider {
+				
+				position:absolute;
+				height:25%;
+				width:80%;
+				
+				top:60%;
+				left:15%;
+			}
+
+				.my_slideralignment {
+					
+					position:absolute;
+					
+					height:100%;
+					width:100%;
+
+					
+				}
+				
+					
+				.my_sliderrepulsion {
+		
+					position:absolute;
+
+					height:100%;
+					width:100%;
+					
+				}
+	
+				.my_slidercohesion {
+					position:absolute;
+						
+					height:100%;
+					width:100%;
+				}
+	
+				.my_slidersimspeed {
+					position:absolute;
+						
+					height:100%;
+					width:100%;
+				}
+			
+				/*Slider Handle :D)
+				 * 
+				 */
+				
+				.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+					
+					position:absolute;
+					
+					height:140%;
+					width:8%;
+					
+					top:-35%;
+					
+				}
+				        				
+
+#canvas_infopanel {
+	
+	background-color:darkgrey;
+	position:absolute;
+	left:86.8%;
+	top:1%;
+	width:10%;
+	height:80%;
+	text-align:center;
+	border-radius:4%;
+	border: thin solid #666;	
+	background-color: #CCC;
+	
+}
+
+#canvas_info {
+	position:absolute;
+	left:75%;
+	top:81%;
+	width:10%;
+	text-align:center;
+	font-family: Open Sans,Georgia, "Times New Roman", Times, serif;
+	font-weight:400;
+	visibility:visible;
+}
+
+
+
+#canvas_info_numberboids{
+	position:relative;
+	width:90%;
+	height:25%;
+	text-align:center;
+	margin:auto;
+	
+	font-family: Open Sans,Georgia, "Times New Roman", Times, serif;
+	font-weight:400;
+
+}
+
+#canvas_info_pigeonholes{
+	position:relative;
+	width:90%;
+	height:25%;
+	text-align:center;
+	margin:auto;
+	
+	font-family: Open Sans,Georgia, "Times New Roman", Times, serif;
+	font-weight:400;
+}
+
+#canvas_info_perceptionrange{
+	position:relative;
+	width:90%;
+	height:25%;
+	text-align:center;
+	margin:auto;
+	
+	font-family: Open Sans,Georgia, "Times New Roman", Times, serif;
+	font-weight:400;
+}
+
+#canvas_info_boidids{
+	position:relative;
+	width:90%;
+	height:25%;
+	text-align:center;
+	margin:auto;
+	
+	font-family: Open Sans,Georgia, "Times New Roman", Times, serif;
+	font-weight:400;
+}
+
+#button_numberboids{
+	position:relative;
+	width:100%;
+	height:100%;
+	text-align:center;
+	margin:auto;
+	font-family: Open Sans,Georgia, "Times New Roman", Times, serif;
+	font-weight:400;
+}
+
+#button_pigeonholes{
+	position:relative;
+	width:100%;
+	height:100%;
+	text-align:center;
+	margin:auto;
+	font-family: Open Sans,Georgia, "Times New Roman", Times, serif;
+	font-weight:400;
+}
+
+.button_perceptionrange{
+	position:relative;
+	width:100%;
+	height:100%;
+	text-align:center;
+	margin:auto;
+	font-family: Open Sans,Georgia, "Times New Roman", Times, serif;
+	font-weight:400;
+}
+
+/*#canvas_info {
+	position:absolute;
+	left:86.8%;
+	top:43%;
+	width:10%;
+	text-align:center;
+	font-family: Open Sans,Georgia, "Times New Roman", Times, serif;
+	font-weight:400;
+}*/
+
+
+
+
+
+/*  .panel2 {
+ 	position:absolute;
+	left:350px; 
+	float:left;
+	background-color: #CCC;
+	width: 300px;
+}  */
+
+
+/*input {
+	
+	position:relative;
+	width:60%;
+	height:30%;
+	float:right;
+	text-align:center;
+	font-size: 100%;
+}*/
+
+/*td:nth-child(1) {
+	position:relative;
+	text-align:left;
+	width:40%;
+}
+
+td:nth-child(2) {
+	position:relative;
+	text-align:right;
+	width:40%;
+}*/
+
+
+
+#labelalignment {
+	color:yellow;
+	
+
+}
+  
+#amountalignment {
+	
+	color: #f6931f;
+	
+} 
+
+#labelrepulsion {
+	color:red;
+	
+
+}
+  
+#amountrepulsion {
+	
+	color: #f6931f;
+		
+}  
+
+#labelcohesion {
+	color:blue;
+	
+}
+  
+#amountcohesion {
+	
+	color: #f6931f;
+		
+}  
+
+#labelsimspeed {
+	color:black;
+	
+}
+  
+#amountsimspeed {
+	
+	color: #f6931f;
+	
+
+	
+}   
+
+
+#eyealignment {
+	
+	
+}
+
+#eyerepulsion {
+	
+	
+	
+}
+
+#eyecohesion {
+	
+	
+	
+}
+
+.hidden {
+	
+	visibility:hidden;
+	display:none;
+}
+
