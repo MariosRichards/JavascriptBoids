@@ -749,20 +749,18 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 							var dx,dy;
 							if (j<=-6) // is it an object?
 							{
-
-								dx = this.theRepulsors[-6-j].x - bix;
-								dy = this.theRepulsors[-6-j].y - biy;
+								bj = this.theRepulsors[-6-j];
 							
 							}
 							else // no, it's a boid
 							{
 						
-								// test if within perceptionRange
 								bj = theBalls[j];
-								dx = bj.x - bix;
-								dy = bj.y - biy;
-								
+
 							}
+							
+							dx = bj.x - bix;
+							dy = bj.y - biy;							
 							
 							if (wallCollision==1) // toroidal least distance
 							{
