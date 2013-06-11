@@ -129,6 +129,7 @@ function checkbutton()
 	{
 		if ($("#initpop").val()) {
 			c.newInitialPopulation = Math.floor(parseInt($("#initpop").val()));
+			$("#canvas_info").text(c.newInitialPopulation);
 			$("#initpop").val(Math.floor(parseInt($("#initpop").val())));
 		}//$("#initpop")[0].valueAsNumber;
 		    //if ($("#speed")[0].value) c.newGenericSpeed = $("#speed")[0].valueAsNumber;
@@ -137,10 +138,10 @@ function checkbutton()
 			$("#percRange").val(Math.floor(parseInt($("#percRange").val())));
 		} //$("#percRange")[0].valueAsNumber;
 		if ($("#obstacles").val()) {
-			c.newObstacles = $("#obstacles").val();
+			c.newObstacles = parseInt($("#obstacles").val());
 		} //$("#obstacles")[0].valueAsNumber;
 		if ($("#wallColl").val()) {
-			c.newWallCollision = $("#wallColl").val();
+			c.newWallCollision = parseInt($("#wallColl").val());
 		} //$("#wallColl")[0].valueAsNumber;
 		
 		restartButtonCB();
@@ -391,8 +392,7 @@ function changeObstacleState(number) {
 function changeWallCollisionState(number) {
 	
 	if(number===0||number===1||number===2)
-	{
-		
+	{	
 		$("#wallColl").val(number);
 	}
 	
