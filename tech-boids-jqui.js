@@ -56,17 +56,63 @@ $(document).ready(function(){
 function checkbutton()
 {
 
-	// no input testing at all!
-	
-	
-	if ($("#initpop")[0].value) c.newInitialPopulation = parseInt($("#initpop").val());//$("#initpop")[0].valueAsNumber;
-	//if ($("#speed")[0].value) c.newGenericSpeed = $("#speed")[0].valueAsNumber;
-	if ($("#percRange")[0].value) c.newPerceptionRange = parseInt($("#percRange").val());//$("#percRange")[0].valueAsNumber;
-	if ($("#obstacles")[0].value) c.newObstacles = parseInt($("#obstacles").val());//$("#obstacles")[0].valueAsNumber;
-	if ($("#wallColl")[0].value) c.newWallCollision = parseInt($("#wallColl").val());//$("#wallColl")[0].valueAsNumber;
+	var minvalueonscreen=Math.min(window.innerWidth,window.innerHeight);
 
-	restartButtonCB();
+	var inputtest=true;
+	var alertmessage="Invalid parameters introduced. \n\nValid values as follows: \n";
+	
+	var invalid=" <== Invalid value!";
+	invalid.fontcolor("red");	
 
+	alertmessage+="\n\n      Initial Population: 1 or higher."
+	if(parseInt($("#initpop").val()) < 1) {
+		alertmessage+=invalid;
+		inputtest=false;
+	}
+	alertmessage+="\n\n      Perception Range: From 3 to "+ minvalueonscreen;
+	if(((parseInt($("#percRange").val()) < 3)||((parseInt($("#percRange").val()) > minvalueonscreen)))) {
+		alertmessage+=invalid;
+		inputtest=false;
+	}
+	alertmessage+="\n\n      Obstacles: From 0 to 1."
+	if(((parseInt($("#obstacles").val()) < 0)||((parseInt($("#obstacles").val()) > 1)))) {
+		alertmessage+=invalid;
+		inputtest=false;
+	}
+	alertmessage+="\n\n      Wall Collision: From 0 to 2."
+	if(((parseInt($("#wallColl").val()) < 0)||((parseInt($("#wallColl").val()) > 2)))) {
+		alertmessage+=invalid;
+		inputtest=false;
+	}
+	
+	if(inputtest===false)
+	{
+		alert(alertmessage);
+	}
+	
+	if(inputtest===true)
+	{
+		if ($("#initpop").val()) {
+			c.newInitialPopulation = Math.floor(parseInt($("#initpop").val()));
+			$("#initpop").val(Math.floor(parseInt($("#initpop").val())));
+		}//$("#initpop")[0].valueAsNumber;
+		    //if ($("#speed")[0].value) c.newGenericSpeed = $("#speed")[0].valueAsNumber;
+		if ($("#percRange").val()) {
+			c.newPerceptionRange = parseInt($("#percRange").val());
+			$("#percRange").val(Math.floor(parseInt($("#percRange").val())));
+		} //$("#percRange")[0].valueAsNumber;
+		if ($("#obstacles").val()) {
+			c.newObstacles = parseInt($("#obstacles").val());
+			$("#obstacles").val(Math.floor(parseInt($("#obstacles").val())));
+		} //$("#obstacles")[0].valueAsNumber;
+		if ($("#wallColl").val()) {
+			c.newWallCollision = parseInt($("#wallColl").val());
+			$("#wallColl").val(Math.floor(parseInt($("#wallColl").val())));
+		} //$("#wallColl")[0].valueAsNumber;
+		
+		restartButtonCB();
+	}
+	
 }
 
 
