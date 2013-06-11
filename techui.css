@@ -58,7 +58,7 @@ body {
 
 	font-family: Verdana, Geneva, sans-serif;
 	width: 65%;
-	height:60%:
+	height:60%;
 	font-size: 100%;
 	font-weight:800;
 	
@@ -79,15 +79,7 @@ body {
 	/*background-color:green;*/
 }
 
-	#panel1 {
-		
-		top:0%;
-		left:0%;
-		
-		width:100%
-		height:24%;
-	}
-
+	
 	.panel {
 	
 		position:absolute;
@@ -100,7 +92,6 @@ body {
 		height: 49%;
 		border-radius:10%;
 		margin-top:0.6%;
-		
 		
 	
 	}
@@ -188,21 +179,138 @@ body {
 						
 						position:absolute;
 						
-						top:0%;
-						left:66%;
-						width:33%;
+						top:-15%;
+						left:47%;
+						width:50%;
 						height:75%;
 						
+					}
 					
+					.panelinputradio {
+						
+						position:absolute;
+						
+						top:0%;
+						left:0%;
+						width:100%;
+						height:100%;
+						
+					}
+					
+					.labelradio {
+						position:absolute;
+						
+						top:0%;
+						left:0%;		
+										
+						width:100%;
+						height:50%;
+						
+						
+						font-size:80%;
+					}
+					
+					#labelradiolabel1 {
+						
+						position:absolute;
+																					
+						top:-10%;
+						left:17%;
+							
+						width:50%;
+						height:100%;
+						
+						
+						z-index:2;
+					}
+					
+					#labelradiolabel2 {
+						
+						position:absolute;
+																					
+						top:-10%;
+						left:34%;
+							
+						width:50%;
+						height:100%;
+						
+						
+						
+						z-index:2;
+						
+					}
+					
+					#labelradiolabel3 {
+						
+						position:absolute;
+																					
+						top:-10%;
+						left:0%;
+							
+						width:33%;
+						height:100%;
+						
+						
+						z-index:2;
+					}
+					
+					#labelradiolabel4 {
+						
+						position:absolute;
+																					
+						top:-10%;
+						left:33%;
+							
+						width:33%;
+						height:100%;
+						
+						
+						z-index:2;
+					}
+					
+					#labelradiolabel5 {
+						
+						position:absolute;
+																					
+						top:-10%;
+						left:66%;
+							
+						width:33%;
+						height:100%;
+						
+						
+						z-index:2;
+					}
+					
+					.arearadio {
+						
+						position:absolute;
+						
+						top:50%;
+						left:0%;
+						
+						width:100%;
+						height:50%;
+					}
+					
+					.buttonwall {
+						
+						position:relative;
+						
+						float:left;
+						
+						left:-7%;
+						
+						margin-left:20%;
 					}
 					
 					.panelinputfield {
 						
 						position:absolute;
 						
-						top:0%;
-						left:0%;
-						width:90%;
+						top:15%;
+						left:45%;
+						width:50%;
 						height:60%;
 						
 						color:orange;
@@ -661,5 +769,11 @@ td:nth-child(2) {
 	
 	
 	
+}
+
+.hidden {
+	
+	visibility:hidden;
+	display:none;
 }
 

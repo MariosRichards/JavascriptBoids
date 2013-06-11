@@ -78,15 +78,49 @@
 							</tr> -->
 							<div class="trclass">
 								<div class="panelinputlabel">Perception Range</div>
-								<div class="panelinputnumber"><input class="panelinputfield" id="percRange" type="number" /></div>							</div>
+								<div class="panelinputnumber"><input class="panelinputfield" id="percRange" type="number" /></div>							
+							</div>
 							<div class="trclass">
-								<div class="panelinputlabel">Obstacles on/off</div>
-								<div class="panelinputnumber"><input class="panelinputfield" id="obstacles" type="number" /></div>
+								<div class="panelinputlabel">Obstacles</div>
+								<div class="panelinputnumber">
+									<div class="panelinputradio">
+										
+										<div class="labelradio"><div id="labelradiolabel1"><label for="obstaclebuttonon" >On</label></div></div>
+  										
+  										<div class="labelradio"><div id="labelradiolabel2"><label for="obstaclebuttonoff">Off</label></div></div>
+  										
+  										<div class="arearadio">
+  											<input class="buttonobstacle" id="obstaclebuttonon" name="radion-obstacle" type="radio" checked="checked"/>
+  											<input class="buttonobstacle" id="obstaclebuttonoff" name="radion-obstacle" type="radio" />
+  											<input class="hidden" id="obstacles" type="number"/>
+  										</div>
+  									</div>
+  								</div>
 							</div>
 							<div class="trclass">
 								<div class="panelinputlabel">Wall Collision Type</div>
-								<div class="panelinputnumber"><input class="panelinputfield" id="wallColl" type="number" /></div>
-							</div>	
+								<div class="panelinputnumber">
+									<div class="panelinputradio">
+								<!--<div class="panelinputnumber"><input class="panelinputfield" id="wallColl" type="number" />-->
+										<div class="labelradio"><div id="labelradiolabel3"><label for="wallcollision1" >Bounce</label></div></div>
+										
+										<div class="labelradio"><div id="labelradiolabel4"><label for="wallcollision2">Toroidal</label></div></div>
+  										
+  										<div class="labelradio"><div id="labelradiolabel5"><label for="wallcollision3">Repulsion</label></div></div>
+  										
+  										<div class="arearadio">
+  											<input class="buttonwall" id="wallcollision1" name="radion-wall" type="radio" checked="checked"/>
+											<input class="buttonwall" id="wallcollision2" name="radion-wall" type="radio" />
+											<input class="buttonwall" id="wallcollision3" name="radion-wall" type="radio" />
+											<input class="hidden" id="wallColl" type="number"/>
+
+										</div>
+
+									</div>
+								</div>
+							</div>
+								
+							
 							
 						</div>
 						 						

@@ -8,6 +8,29 @@ $(document).ready(function(){
 	$("#canvas_info_boidids").click(boididsButtonCB);
 	
 	
+	
+	$("#obstaclebuttonon").click(function(){
+		
+		changeObstacleState(1);
+	});
+	$("#obstaclebuttonoff").click(function(){
+		
+		changeObstacleState(0);
+	});
+	
+			
+	$("#wallcollision1").click(function(){
+		changeWallCollisionState(0);	
+	});
+	$("#wallcollision2").click(function(){
+		changeWallCollisionState(1);	
+	});
+	$("#wallcollision3").click(function(){
+		changeWallCollisionState(2);	
+	});
+
+
+
 	/*$("#checkboxalignment").click(toggleAlignmentButtonCB);
 	$("#checkboxrepulsion").click(toggleRepulsionButtonCB);
 	$("#checkboxcohesion").click(toggleCohesionButtonCB);
@@ -26,7 +49,7 @@ $(document).ready(function(){
 	var w = $("#dummy_pane").width();	
 	var h = $("#dummy_pane").height();
 
-	
+		
 	c = new Boid.Agent(w,h);
 	c.start();
 	
@@ -37,12 +60,16 @@ $(document).ready(function(){
 	c.ruleColours[2] = "blue";
 	
 	controlmySliders();
+	changeWallCollisionState(0);
+	changeObstacleState(1);
 	resize();
 				
 	/*makeSlider("Alignment",c.ruleColours[0],function(v){c.ruleCoeffs[0] = v}, {value:1, min:0, max:10, step:.05});
 	makeSlider("Repulsion",c.ruleColours[1],function(v){c.ruleCoeffs[1] = v}, {value:1, min:0, max:10, step:.05});
 	makeSlider("Cohesion",c.ruleColours[2],function(v){c.ruleCoeffs[2] = v}, {value:0, min:0, max:10, step:.05});
 	makeSlider("Sim Speed",NaN,function(v){c.simulationSpeed = v}, {value:1, min:0.05, max:10, step:.05});*/
+	
+	
 	
 	
 	$("#restartbutton").click(checkbutton);	
@@ -82,7 +109,7 @@ function checkbutton()
 		inputtest=false;
 	}
 	
-	alertmessage+="\n\n      Obstacles: From 0 to 1."
+	/*alertmessage+="\n\n      Obstacles: From 0 to 1."
 	if(((parseInt($("#obstacles").val()) < 0)||((parseInt($("#obstacles").val()) > 1)))) {
 		alertmessage+=invalid;
 		inputtest=false;
@@ -91,7 +118,7 @@ function checkbutton()
 	if(((parseInt($("#wallColl").val()) < 0)||((parseInt($("#wallColl").val()) > 2)))) {
 		alertmessage+=invalid;
 		inputtest=false;
-	}
+	}*/
 	
 	if(inputtest===false)
 	{
@@ -110,12 +137,10 @@ function checkbutton()
 			$("#percRange").val(Math.floor(parseInt($("#percRange").val())));
 		} //$("#percRange")[0].valueAsNumber;
 		if ($("#obstacles").val()) {
-			c.newObstacles = parseInt($("#obstacles").val());
-			$("#obstacles").val(Math.floor(parseInt($("#obstacles").val())));
+			c.newObstacles = $("#obstacles").val();
 		} //$("#obstacles")[0].valueAsNumber;
 		if ($("#wallColl").val()) {
-			c.newWallCollision = parseInt($("#wallColl").val());
-			$("#wallColl").val(Math.floor(parseInt($("#wallColl").val())));
+			c.newWallCollision = $("#wallColl").val();
 		} //$("#wallColl")[0].valueAsNumber;
 		
 		restartButtonCB();
@@ -349,8 +374,29 @@ function enableSelection() {
          }
         }); 
 } 
-            
-           
+
+
+function changeObstacleState(number) {
+	
+	
+	if(number===0||number===1)
+	{
+		
+		$("#obstacles").val(number);
+	}
+	
+	
+}       
+
+function changeWallCollisionState(number) {
+	
+	if(number===0||number===1||number===2)
+	{
+		
+		$("#wallColl").val(number);
+	}
+	
+}
 	
 	
 
