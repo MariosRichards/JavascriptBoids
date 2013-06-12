@@ -215,92 +215,27 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 					
 		repulsor.id = - 6 - this.theRepulsors.length;
 
-		pigeon =   Math.floor(x / this.perceptionRange),
-				         + (Math.floor(x / this.perceptionRange)) * this.pigeonholeWidth;
-
-	//	this.PigeonHoles[pigeon].push(repulsor.id);
+		pigeon =   Math.floor(x / this.perceptionRange)
+			    + (Math.floor(y / this.perceptionRange)) * this.pigeonholeWidth;
 
 		repulsor.prev = null;
 		repulsor.next = this.PigeonHoles[pigeon];
+		
+	// doesn't set previous value for the next item!
+		if (repulsor.next!==null)
+		{
+			repulsor.next.prev=repulsor;
+		}
+
 		this.PigeonHoles[pigeon] = repulsor;
 
 		repulsor.pigeon = pigeon;
 		this.theRepulsors.push(repulsor);		
 
+	//	this.testLinkedList("Called from makeRepulsor");
 	}
 
-	
-	// doubly linked list test function
-	this.testLinkedList = function(calledFromWhere)
-	{
-		var count = [];
-		
-		// traverse every list? FORWARDS
-		
-		for (var i=this.pigeonholeWidth*this.pigeonholeHeight-1; i>=0; i--)
-        {
-			var bjprior=null;
-			var bj = this.PigeonHoles[i];
-			while (bj!==null)
-			{
-				if (bj.id>=0) // boid
-				{
-					if (!count[bj.id])
-					{
-						count[bj.id]=i;
-					
-					}
-					else // duplicate!
-					{
-						debugger; 
-					}
-				}
-				
-				
-				if (bj==bj.next) // infinite loop!
-				{
-					debugger;
-				}
-				if (bj!=null && !bj) // not null but some other 'falsy' state
-				{
-					debugger;			
-				}
-				bjprior = bj;
-				bj = bj.next;
-			}
-			
-			// now backwards
-			bj = bjprior;
-			while (bj!==null)
-			{
-		
-				if (bj==bj.prev) // infinite loop!
-				{
-					debugger;
-				}			
-			
-				bjprior = bj;
-				bj = bj.prev;
-			}
-			
-			// if successful, should read the head of the list
-			
-			if (bjprior!=this.PigeonHoles[i])
-			{
-				debugger;
-			}
-			
-			
-			
-			
-        }	
-		// count number of instances of boids
-		
 
-
-		
-		
-	}	
 	
 	
     this.aBall = {
@@ -480,7 +415,7 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 			
 		
 			var newPigeon = ( (this.x / self.perceptionRange)<<0 )
-			       + ( (this.y / self.perceptionRange)<<0 ) * self.pigeonholeWidth;
+			              + ( (this.y / self.perceptionRange)<<0 ) * self.pigeonholeWidth;
 				  
 			if (newPigeon!=this.pigeon) // pigeonhole changed!
 			{
@@ -489,63 +424,37 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 				
 				if (this.prev===null) // obviously at top of list
 				{
+					// is this *really* at the head?
 					self.PigeonHoles[this.pigeon] = this.next; // point to next in list
 				}
 				else // not at top of list
 				{
-					this.prev = this.next;
+					this.prev.next = this.next;
 				}
 
-				if (a===this)
-				{
-					debugger;
-				}	
-				
+				// AT THIS POINT ORPHANS SHOULD BE ENTIRELY REMOVED!
+
 				// if there is a next object
-				var a = this.next;
-				if (a!==null)
+				if (this.next!==null)
 				{
 					this.next.prev = this.prev;
 				}
 
-				if (a===this)
-				{
-					debugger;
-				}				
-				
 				// add to new pigeonhole list
-				
 
-				
-				if (self.PigeonHoles[newPigeon]===this)
-				{
-					debugger;
-				}
-
-				this.next = self.PigeonHoles[newPigeon]; // point at the head of the list
-				
+				this.next = self.PigeonHoles[newPigeon]; // point at the head of the list			
 				this.prev = null; // I am at the top!
 				
 				self.PigeonHoles[newPigeon] = this; // take the head of the list
 
-
-				
-				a = this.next;
-				if (a!==null)
+				if (this.next!==null)
 				{				
 					this.next.prev = this;
 				}
-				
-				if (a===this)
-				{
-					debugger;
-				}
-				
+
 				this.pigeon = newPigeon; //update pigeonhole				
 
 			}	
-
-			self.testLinkedList("In the ball.move loop");
 			
         }
     };
@@ -610,10 +519,10 @@ Boid.Agent = function(canvasWidth, canvasHeight)
         // make Ball note which pigeonhole it is in
         ball.pigeon = Math.floor(x/ this.perceptionRange) + (Math.floor(y/this.perceptionRange)) * this.pigeonholeWidth;
 		
-		if (ball.pigeon >= this.pigeonholeWidth*this.pigeonholeHeight || ball.pigeon <0)
-		{
-			debugger;
-		}
+		// if (ball.pigeon >= this.pigeonholeWidth*this.pigeonholeHeight || ball.pigeon <0)
+		// {
+			// debugger;
+		// }
 		
 		ball.id = this.theBalls.length;
 		
@@ -625,16 +534,10 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 		ball.next = this.PigeonHoles[ball.pigeon]; // point to old list head
 		ball.prev = null; // so you know this ball is at the start of the list
 		this.PigeonHoles[ball.pigeon] = ball; // place at head of the list
-		var a = ball.next;
-		if (a!==null)
+		if (ball.next!==null)
 		{
 			ball.next.prev=ball;
 		}
-
-		if (a===this)
-		{
-			debugger;
-		}		
 
         this.theBalls.push(ball);
     }
@@ -776,14 +679,11 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 					theContext.beginPath();
 					theContext.moveTo( boidX<<0 
 									 , boidY<<0 );
-									 
-									 
+									 							 
 					arrowX = bi.vXrule[rule]*ratio*this.ruleCoeffs[rule];
 					arrowY = bi.vYrule[rule]*ratio*this.ruleCoeffs[rule];
 					theContext.lineTo( ( boidX+arrowX )<<0 
 									 , ( boidY+arrowY )<<0 );
-
-
 
 					theContext.lineTo( ( boidX + arrowX + arrowX*arrowRatio*this.cos150 - arrowY*arrowRatio*this.sin150  )<<0,
 									   ( boidY + arrowY + arrowX*arrowRatio*this.sin150 + arrowY*arrowRatio*this.cos150  )<<0 );
@@ -802,7 +702,6 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 				bi.vXrule[rule] = 0;
 				bi.vYrule[rule] = 0;
 				bi.interactions[rule] = 0;
-				
 			}
 			
 			if (this.displayBoidIDs)
@@ -885,16 +784,10 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 			for(var holeX = pigeonX+1; holeX>= pigeonX-1; holeX--) {
 
 				for(var holeY = pigeonY+1; holeY>= pigeonY-1; holeY--) {
-
 					
-					pigeonhole =      ((holeX+pigeonholeWidth )%pigeonholeWidth ) 
+					var pigeonhole =      ((holeX+pigeonholeWidth )%pigeonholeWidth ) 
 					+ pigeonholeWidth*((holeY+pigeonholeHeight)%pigeonholeHeight);
 					// now iterate through the Balls in this pigeon if any
-
-					// for(var interactant = this.PigeonHoles[pigeonhole].length-1; interactant>=0; interactant--) {				
-
-						// j = this.PigeonHoles[pigeonhole][interactant];
-						
 						
 					var bj = this.PigeonHoles[pigeonhole];
 					while (bj!==null)
@@ -926,14 +819,6 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 							}
 						}
 						
-						if (bj===bj.next)
-						{
-							debugger;
-						}
-						else if (!bj && bj!==null)
-						{
-							debugger;
-						}
 						bj = bj.next;
 						
 					}	
@@ -1003,13 +888,12 @@ Boid.Agent = function(canvasWidth, canvasHeight)
     // move the balls
     this.moveBalls = function() {
         var theBalls = this.theBalls;
-   
         var pigeonholeWidth = this.pigeonholeWidth;
         var pigeonholeHeight = this.pigeonholeHeight;
 
         // what can interact with what
         this.createInteractionList(this.theBalls,this.pigeonholeWidth, this.pigeonholeHeight, this.canvasWidth, this.canvasHeight);
-	
+
 		// confirms update!
 		for(var i=theBalls.length-1; i>=0; i--) {
 			// any chance of zero velocity?
@@ -1051,36 +935,12 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 			}
 		}					
 
-		// UNNECESSARY WITH DL LIST
-        // clean pigeonhole array
-		// for(var i=pigeonholeWidth*pigeonholeHeight-1; i>=0; i--) {		
-            // this.PigeonHoles[i].length=0;
-        // }
-
-		// HANDLED IN THE BALL.MOVE
-		// move balls and update pigeonholes
         for(var i=theBalls.length-1; i>=0; i--) {
             theBalls[i].move();
-            // var pigeonIndex = Math.floor(theBalls[i].x/this.perceptionRange)+Math.floor(theBalls[i].y/this.perceptionRange)*pigeonholeWidth;
-            // this.PigeonHoles[pigeonIndex].push(i);
-            // theBalls[i].pigeon = pigeonIndex;
         }
-		
-		// UNNECESSARY WITH DL LIST SINCE OBJECTS DON'T MOVE
-		// reset pigeonholes for objects
-
-		// draw objects
-
-		// for(var i = this.theRepulsors.length-1; i >= 0; i--)
-		// {
-			// var pigeonIndex =   Math.floor(this.theRepulsors[i].x /this.perceptionRange) + Math.floor(this.theRepulsors[i].y/this.perceptionRange)*pigeonholeWidth;
-			// this.PigeonHoles[pigeonIndex].push(this.theRepulsors[i].id);			
-			// this.theRepulsors[i].pigeon = pigeonIndex;		
-		// }
-		
+			
         // Note - this prevents new agent creation in the middle of a cycle
         // Downside, reduces user agency noticeably (creation latency)!
-
         if (this.addAgent && this.Objects==1) {
 
 			// CREATE AGENTS ON CLICK CODE
@@ -1185,7 +1045,6 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 							  //this.genericStroke
 	  
 		}
-		this.testLinkedList("Where they are made");
 		
 		this.theCanvas.addEventListener("click",this.doClick.bind(this),false);
 		this.running = 1;
@@ -1203,5 +1062,67 @@ Boid.Agent = function(canvasWidth, canvasHeight)
     this.init();
 
 }
+
+
+
+	
+	// doubly linked list test function
+	this.testLinkedList = function(calledFromWhere)
+	{
+		var count = [];
+		
+		// traverse every list? FORWARDS
+		
+		for (var i=this.pigeonholeWidth*this.pigeonholeHeight-1; i>=0; i--)
+        {
+			var bjprior=null;
+			var bj = this.PigeonHoles[i];
+			while (bj!==null)
+			{
+				if (bj.id>=0) // boid
+				{
+					if (!count[bj.id])
+					{
+						count[bj.id]=i;
+					}
+					else // duplicate!
+					{
+						debugger; 
+					}
+				}
+
+				if (bj==bj.next) // infinite loop!
+				{
+					debugger;
+				}
+				if (bj!=null && !bj) // not null but some other 'falsy' state
+				{
+					debugger;			
+				}
+				bjprior = bj;
+				bj = bj.next;
+			}
+			
+			// now backwards
+			bj = bjprior;
+			while (bj!==null)
+			{
+				if (bj==bj.prev) // infinite loop!
+				{
+					debugger;
+				}			
+			
+				bjprior = bj;
+				bj = bj.prev;
+			}
+			// if successful, should read the head of the list
+			
+			if (bjprior!=this.PigeonHoles[i])
+			{
+				debugger;
+			}
+        }	
+		// count number of instances of boids
+	}	
 
 
