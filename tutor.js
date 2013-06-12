@@ -230,6 +230,79 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 	}
 
 	
+	// doubly linked list test function
+	this.testLinkedList = function(calledFromWhere)
+	{
+		var count = [];
+		
+		// traverse every list? FORWARDS
+		
+		for (var i=this.pigeonholeWidth*this.pigeonholeHeight-1; i>=0; i--)
+        {
+			var bjprior=null;
+			var bj = this.PigeonHoles[i];
+			while (bj!==null)
+			{
+				if (bj.id>=0) // boid
+				{
+					if (!count[bj.id])
+					{
+						count[bj.id]=i;
+					
+					}
+					else // duplicate!
+					{
+						debugger; 
+					}
+				}
+				
+				
+				if (bj==bj.next) // infinite loop!
+				{
+					debugger;
+				}
+				if (bj!=null && !bj) // not null but some other 'falsy' state
+				{
+					debugger;			
+				}
+				bjprior = bj;
+				bj = bj.next;
+			}
+			
+			// now backwards
+			bj = bjprior;
+			while (bj!==null)
+			{
+		
+				if (bj==bj.prev) // infinite loop!
+				{
+					debugger;
+				}			
+			
+				bjprior = bj;
+				bj = bj.prev;
+			}
+			
+			// if successful, should read the head of the list
+			
+			if (bjprior!=this.PigeonHoles[i])
+			{
+				debugger;
+			}
+			
+			
+			
+			
+        }	
+		// count number of instances of boids
+		
+
+
+		
+		
+	}	
+	
+	
     this.aBall = {
         x : 0,
         y : 0,
@@ -405,12 +478,11 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 			
 			// have I changed pigeonhole?
 			
-			// ball.pigeon = Math.floor(x/ this.perceptionRange)
-//			              + (Math.floor(y/ this.perceptionRange)) * this.pigeonholeWidth;			
-			pigeon = ( (this.x / self.perceptionRange)<<0 )
+		
+			var newPigeon = ( (this.x / self.perceptionRange)<<0 )
 			       + ( (this.y / self.perceptionRange)<<0 ) * self.pigeonholeWidth;
 				  
-			if (pigeon!==this.pigeon) // pigeonhole changed!
+			if (newPigeon!=this.pigeon) // pigeonhole changed!
 			{
 				// remove from previous pigeonhole list
 				// WRONG - not necessarily at the head
@@ -423,34 +495,66 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 				{
 					this.prev = this.next;
 				}
+
+				if (a===this)
+				{
+					debugger;
+				}	
 				
 				// if there is a next object
 				var a = this.next;
 				if (a!==null)
 				{
-					a.prev = this.prev;
+					this.next.prev = this.prev;
 				}
-				
+
+				if (a===this)
+				{
+					debugger;
+				}				
 				
 				// add to new pigeonhole list
 				
-				this.pigeon = pigeon; //update pigeonhole
 
-				this.next = self.PigeonHoles[pigeon]; // point at the head of the list
+				
+				if (self.PigeonHoles[newPigeon]===this)
+				{
+					debugger;
+				}
+
+				this.next = self.PigeonHoles[newPigeon]; // point at the head of the list
 				
 				this.prev = null; // I am at the top!
 				
-				self.PigeonHoles[pigeon] = this; // take the head of the list
+				self.PigeonHoles[newPigeon] = this; // take the head of the list
+
+
 				
 				a = this.next;
 				if (a!==null)
 				{				
-					a.prev = this;
+					this.next.prev = this;
 				}
+				
+				if (a===this)
+				{
+					debugger;
+				}
+				
+				this.pigeon = newPigeon; //update pigeonhole				
 
-			}		
+			}	
+
+			self.testLinkedList("In the ball.move loop");
+			
         }
     };
+	
+
+	
+
+	
+	
 
 
 	this.addBall = function()
@@ -521,6 +625,16 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 		ball.next = this.PigeonHoles[ball.pigeon]; // point to old list head
 		ball.prev = null; // so you know this ball is at the start of the list
 		this.PigeonHoles[ball.pigeon] = ball; // place at head of the list
+		var a = ball.next;
+		if (a!==null)
+		{
+			ball.next.prev=ball;
+		}
+
+		if (a===this)
+		{
+			debugger;
+		}		
 
         this.theBalls.push(ball);
     }
@@ -814,9 +928,12 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 						
 						if (bj===bj.next)
 						{
-							alert("wah - infinite loop!");
+							debugger;
 						}
-						
+						else if (!bj && bj!==null)
+						{
+							debugger;
+						}
 						bj = bj.next;
 						
 					}	
@@ -1068,6 +1185,7 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 							  //this.genericStroke
 	  
 		}
+		this.testLinkedList("Where they are made");
 		
 		this.theCanvas.addEventListener("click",this.doClick.bind(this),false);
 		this.running = 1;
