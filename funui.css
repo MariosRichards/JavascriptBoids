@@ -12,6 +12,12 @@ html {
 }
 
 
+.referencepaths {
+	
+	
+	display:none;
+}
+
 #democontainer {
 	
 	width:54.6%;
@@ -25,7 +31,8 @@ html {
 	
 	z-index:4;
 	
-	background-color:green;
+
+	
 	
 }
 
@@ -41,7 +48,7 @@ html {
 	
 	z-index:5;
 	
-	background-color:yellow;
+	
 } 
 
 #control {
