@@ -1000,7 +1000,7 @@ Boid.Agent = function(canvasWidth, canvasHeight)
             theBalls[i].move();
         }
 		
-		
+		this.killagent = false;
 		if (this.killagent && this.theBalls.length>0)
 		{	
 			var c = Math.random();
@@ -1047,13 +1047,6 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 			}
 
         }	
-		
-
-		
-		
-		
-		
-		
 
     }
 	
