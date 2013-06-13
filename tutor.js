@@ -60,6 +60,12 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 // PLAYER STUFF
 	// this.numberPlayers= 2;
 	// this.thePlayers = [];
+	
+	
+	this.eagleSprite = new Image();
+	this.eagleSprite.src = "eagletop.png";
+
+	
 
 	// shim layer with setTimeout fallback
 	reqFrame =window.requestAnimationFrame ||
@@ -104,6 +110,13 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 	this.PigeonHoles = [];
 	
 	this.theRepulsors = [];
+	
+	
+	
+	// HARDCODED INTERACTION LIST
+	this.InteractionList = [];
+	
+	
 
 	// temp velocity variables
 
@@ -129,18 +142,18 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 	this.killagent = true;
 	this.killThisAgent = {};
 	
+	this.changeAgent = null;
+	this.changeAgentTo = null;
+	
 
 	this.circ = Math.PI*2;            // complete circle
-
-	// Rule coefficients
-
-	this.ruleCoeffs = [];
-	this.ruleCoeffs[0] = 1; // alignment coefficient
-	this.ruleCoeffs[1] = 1; // repulsion coefficient
-	this.ruleCoeffs[2] = 0; // cohesion coefficient
-	this.ruleColours = ['rgba(0,0,255,1)', 'rgba(0,255,255,1)', 'rgba(255,0,255,1)'];	
-
 	
+	// BlackHole code
+	this.blackHole = 1;
+	this.blackHoleX = this.canvasWidth/2;
+	this.blackHoleY = this.canvasHeight/2
+
+
 	this.Obstacles = 1; // turn obstacle interaction on(1)/off(0)
 	// obstacle is a circle
 	this.obstacleRadius = 20;
@@ -174,11 +187,7 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 	this.newObstacles = this.Obstacles;
 	
 	
-	// graphics controls
-	this.pigeonholesVisible = false;
-	this.perceptionRangeVisible = true;
-	this.ruleVectorVisible = [true, true, true];	
-	this.displayBoidIDs = true;	
+
 	
 	
 	// precomputed sin/cos functions
@@ -193,16 +202,62 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 	this.cos210 = Math.cos(210*Math.PI/180);	
 	
 	
+	this.numTypes = 5;
 	// types (of things you can interact with)
 	// type 0 = Obstacle
 	// type 1 = Wall
 	// type 2 = Boid
 	// type 3 = Repulsor
+	// type 4 = Boid2?
+	// type 5 = Black Hole
 	
 	// id stored as monotonically increasing pseudoglobal
 	// only tracks Boids/Repulsors etc
+
+
+	// rules
+	// alignment
+	// repulsion	
+	// cohesion
+	// wall repulsion
+	// object repulsion
 	
-	this.numObjects = 0;
+	
+	// Rule coefficients
+
+	
+	
+	
+	this.ruleCoeffs = [];
+	this.ruleCoeffs[0] = [0, 0, 0, 0,    1000, 0]; // obstacle
+	this.ruleCoeffs[1] = [0, 0, 0, 1000, 0,    0]; // wall
+	this.ruleCoeffs[2] = [1, 1, 0, 0,    0,    0]; // boid
+	this.ruleCoeffs[3] = [0, 0, 0, 0,    1000, 0]; // repulsor
+	this.ruleCoeffs[4] = [1, 1, 0, 0,    0,    0]; // boid2
+	this.ruleCoeffs[5] = [0, 0, 0, 0,    0,    1]; // black hole gravitation
+	
+	this.numRules = this.ruleCoeffs[0].length;
+
+	
+	// this.ruleCoeffs[0] = 1; // alignment coefficient
+	// this.ruleCoeffs[1] = 1; // repulsion coefficient
+	// this.ruleCoeffs[2] = 0; // cohesion coefficient
+	this.ruleColours = ['rgb(0,  0,  255)',
+					    'rgb(0,  255,255)',
+					    'rgb(255,0  ,255)',
+					    'rgb(255,100,255)',
+						'rgb(100,0  ,255)',
+						'rgb(0  ,0  ,0  )'
+						];
+
+	// graphics controls
+	this.pigeonholesVisible = false;
+	this.perceptionRangeVisible = true;
+	this.ruleVectorVisible = [true, true, true, true, true, true];	
+	this.displayBoidIDs = true;	
+						
+	
+	this.numObjects = 0; // global object counter!
 	
 	
 
@@ -275,79 +330,79 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 		prev: null,
 		type: 2,
 
-        draw : function() {
+        // draw : function() {
 
-			var theContext = self.theContext;
+			// var theContext = self.theContext;
 
-			// show perception Range
+			// // show perception Range
 			
-			if (self.perceptionRangeVisible)
-			{
-				theContext.strokeStyle = 'rgba(255,0,0,0.1)';
-				theContext.lineWidth = 5;
-				theContext.beginPath();
-				theContext.arc((this.x)<<0,(this.y)<<0, this.perceptionRange-theContext.lineWidth/2,0, self.circ,true);
-				theContext.closePath();
-				theContext.stroke();
-			}
+			// if (self.perceptionRangeVisible)
+			// {
+				// theContext.strokeStyle = 'rgba(255,0,0,0.1)';
+				// theContext.lineWidth = 5;
+				// theContext.beginPath();
+				// theContext.arc((this.x)<<0,(this.y)<<0, this.perceptionRange-theContext.lineWidth/2,0, self.circ,true);
+				// theContext.closePath();
+				// theContext.stroke();
+			// }
 			
-			// draw boid triangle
-			theContext.strokeStyle = 'rgba(0,255,0,1)';
-			theContext.lineWidth = 1;			
-            theContext.beginPath();			
-			var ratio = this.perceptionRange/(this.speed);
-			theContext.moveTo( (this.x+(this.vX*ratio) )<<0,( this.y+(this.vY*ratio) )<<0 );
-			var theta = 140*Math.PI/180;
+			// // draw boid triangle
+			// theContext.strokeStyle = 'rgba(0,255,0,1)';
+			// theContext.lineWidth = 1;			
+            // theContext.beginPath();			
+			// var ratio = this.perceptionRange/(this.speed);
+			// theContext.moveTo( (this.x+(this.vX*ratio) )<<0,( this.y+(this.vY*ratio) )<<0 );
+			// var theta = 140*Math.PI/180;
 
-			theContext.lineTo( ( this.x+(this.vX*Math.cos(theta)-this.vY*Math.sin(theta))*ratio )<<0 
-			                 , ( this.y+(this.vX*Math.sin(theta)+this.vY*Math.cos(theta))*ratio )<<0 );
-			theta = (140+80)*Math.PI/180;
-			theContext.lineTo( ( this.x+(this.vX*Math.cos(theta)-this.vY*Math.sin(theta))*ratio )<<0
-                 			 , ( this.y+(this.vX*Math.sin(theta)+this.vY*Math.cos(theta))*ratio )<<0 );
-			theContext.lineTo( ( this.x+(this.vX*ratio) )<<0 
-			                 , ( this.y+(this.vY*ratio) )<<0 ) ;
+			// theContext.lineTo( ( this.x+(this.vX*Math.cos(theta)-this.vY*Math.sin(theta))*ratio )<<0 
+			                 // , ( this.y+(this.vX*Math.sin(theta)+this.vY*Math.cos(theta))*ratio )<<0 );
+			// theta = (140+80)*Math.PI/180;
+			// theContext.lineTo( ( this.x+(this.vX*Math.cos(theta)-this.vY*Math.sin(theta))*ratio )<<0
+                 			 // , ( this.y+(this.vX*Math.sin(theta)+this.vY*Math.cos(theta))*ratio )<<0 );
+			// theContext.lineTo( ( this.x+(this.vX*ratio) )<<0 
+			                 // , ( this.y+(this.vY*ratio) )<<0 ) ;
 					
-            theContext.closePath();
-            theContext.stroke();
+            // theContext.closePath();
+            // theContext.stroke();
 			
-			var arrowX;
-			var arrowY;
+			// var arrowX;
+			// var arrowY;
 			
-			// draw desire vector arrows
-			for (var rule = 0; rule < self.ruleCoeffs.length; rule ++)
-			{
-				if (self.ruleVectorVisible[rule])
-				{
-					theContext.strokeStyle = self.ruleColours[rule];
-					theContext.beginPath();
-					theContext.moveTo( (this.x)<<0 
-					                 , (this.y)<<0 );
-					arrowX = this.vXrule[rule]*ratio*self.ruleCoeffs[rule];
-					arrowY = this.vYrule[rule]*ratio*self.ruleCoeffs[rule];
-					theContext.lineTo( ( this.x+arrowX )<<0 
-					                 , ( this.y+arrowY )<<0 );
+			// // draw desire vector arrows
+			// for (var rule = 0; rule < self.ruleCoeffs.length; rule ++)
+			// {
+				// if (self.ruleVectorVisible[rule] )
+				// {
+					// theContext.strokeStyle = self.ruleColours[rule];
+					// theContext.beginPath();
+					// theContext.moveTo( (this.x)<<0 
+					                 // , (this.y)<<0 );
+					// arrowX = this.vXrule[rule]*ratio*self.ruleCoeffs[rule];
+					// arrowY = this.vYrule[rule]*ratio*self.ruleCoeffs[rule];
+					// theContext.lineTo( ( this.x+arrowX )<<0 
+					                 // , ( this.y+arrowY )<<0 );
 					
-					var arrowRatio = .2;
-					theta = 150*Math.PI/180;
-					theContext.lineTo( ( this.x +arrowX+ arrowRatio*( arrowX*Math.cos(theta) - arrowY*Math.sin(theta) ) )<<0,
-					                   ( this.y +arrowY+ arrowRatio*( arrowX*Math.sin(theta) + arrowY*Math.cos(theta) ) )<<0 );
-					theta = 210*Math.PI/180;
-					theContext.lineTo( ( this.x +arrowX+ arrowRatio*( arrowX*Math.cos(theta) - arrowY*Math.sin(theta) ) )<<0 
-					                 , ( this.y +arrowY+ arrowRatio*( arrowX*Math.sin(theta) + arrowY*Math.cos(theta) ) )<<0 );
-					theContext.lineTo( ( this.x +arrowX )<<0
-					                 , ( this.y +arrowY )<<0 );	
-					theContext.closePath();
-					theContext.stroke();			
-				}
-			}
+					// var arrowRatio = .2;
+					// theta = 150*Math.PI/180;
+					// theContext.lineTo( ( this.x +arrowX+ arrowRatio*( arrowX*Math.cos(theta) - arrowY*Math.sin(theta) ) )<<0,
+					                   // ( this.y +arrowY+ arrowRatio*( arrowX*Math.sin(theta) + arrowY*Math.cos(theta) ) )<<0 );
+					// theta = 210*Math.PI/180;
+					// theContext.lineTo( ( this.x +arrowX+ arrowRatio*( arrowX*Math.cos(theta) - arrowY*Math.sin(theta) ) )<<0 
+					                 // , ( this.y +arrowY+ arrowRatio*( arrowX*Math.sin(theta) + arrowY*Math.cos(theta) ) )<<0 );
+					// theContext.lineTo( ( this.x +arrowX )<<0
+					                 // , ( this.y +arrowY )<<0 );	
+					// theContext.closePath();
+					// theContext.stroke();			
+				// }
+			// }
 			
-			if (self.displayBoidIDs)
-			{
-				theContext.fillText(this.id +","+ this.pigeon,this.x<<0, this.y<<0);
-			}
+			// if (self.displayBoidIDs)
+			// {
+				// theContext.fillText(this.id +","+ this.pigeon,this.x<<0, this.y<<0);
+			// }
 			
 			
-        },
+        // },
 
         // make 'em "bounce" when they go over the edge
         // no loss of velocity
@@ -527,7 +582,7 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 	
 	
 	
-	this.makeBall = function(x, y, vX, vY, speed, perceptionRange , stroke) {
+	this.makeBall = function(x, y, vX, vY, speed, perceptionRange , type) {
 
         var theCanvas = this.theCanvas;
 
@@ -564,12 +619,12 @@ Boid.Agent = function(canvasWidth, canvasHeight)
         ball.vY = vY;
         ball.perceptionRange = perceptionRange;
 		ball.perceptionRangeSquared = perceptionRange*perceptionRange;
-        ball.stroke = stroke;
+        // ball.stroke = stroke;
 		ball.speed = speed;
 		ball.vXrule = [0,0,0];
 		ball.vYrule = [0,0,0];
 		ball.interactions = [0,0,0];
-		ball.type = 2; // Boid Type
+		ball.type = type; // Boid Type
 		
 
         // make Ball note which pigeonhole it is in
@@ -681,8 +736,9 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 			theContext.stroke();			
 		}
 
+		// draw Boids
 
-		for (var i=this.theBalls.length-1; i>=0; i--) 
+		for (var i=this.theBalls.length-1; i>=0; i--)  // cycle through Boid list
 		{
 			var bi = this.theBalls[i];
 			// show perception Range
@@ -695,33 +751,99 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 				theContext.arc((bi.x)<<0,(bi.y)<<0, this.perceptionRange-2.5,0, this.circ,true); // decrement radius by half of line width
 				theContext.closePath();
 				theContext.stroke();
+				theContext.lineWidth = 1;									
 			}
 			
-			// draw boid triangle
-			theContext.strokeStyle = 'rgba(0,255,0,1)';
-			theContext.lineWidth = 1;			
-			theContext.beginPath();			
-			var ratio = this.perceptionRange/(bi.speed);
 			
-			var boidX = bi.x;
-			var boidY = bi.y;
-			var normVx = bi.vX*ratio;
-			var normVy = bi.vY*ratio;
+			var ratio = this.perceptionRange/(bi.speed);			
+			if (bi.type==2)
+			{
 			
-			theContext.moveTo( ( boidX+normVx )<<0
-			                 , ( boidY+normVy )<<0 );
-
-			theContext.lineTo( ( boidX + normVx*this.cos140 - normVy*this.sin140 )<<0 
-							 , ( boidY + normVx*this.sin140 + normVy*this.cos140 )<<0 );
+			
+				// draw boid triangle
+				theContext.strokeStyle = 'rgba(0,255,0,1)';
 	
-			theContext.lineTo( ( boidX + normVx*this.cos220 - normVy*this.sin220 )<<0
-							 , ( boidY + normVx*this.sin220 + normVy*this.cos220 )<<0 );
-							 
-			theContext.lineTo( ( boidX + normVx )<<0 
-							 , ( boidY + normVy )<<0 ) ;
-					
-			theContext.closePath();
-			theContext.stroke();
+				theContext.beginPath();			
+
+				
+				var boidX = bi.x;
+				var boidY = bi.y;
+				var normVx = bi.vX*ratio;
+				var normVy = bi.vY*ratio;
+				
+				theContext.moveTo( ( boidX+normVx )<<0
+								 , ( boidY+normVy )<<0 );
+
+				theContext.lineTo( ( boidX + normVx*this.cos140 - normVy*this.sin140 )<<0 
+								 , ( boidY + normVx*this.sin140 + normVy*this.cos140 )<<0 );
+		
+				theContext.lineTo( ( boidX + normVx*this.cos220 - normVy*this.sin220 )<<0
+								 , ( boidY + normVx*this.sin220 + normVy*this.cos220 )<<0 );
+								 
+				theContext.lineTo( ( boidX + normVx )<<0 
+								 , ( boidY + normVy )<<0 ) ;
+						
+				theContext.closePath();
+				theContext.stroke();
+			
+			}
+			else if (bi.type==4)
+			{
+			
+
+				theContext.drawImage(this.eagleSprite, (bi.x-this.eagleSpriteHalfWidth )<<0
+				                                     , (bi.y-this.eagleSpriteHalfHeight)<<0 )
+				// draw boid triangle
+				// theContext.strokeStyle = 'rgba(0,0,0,1)';
+	
+				// theContext.beginPath();			
+
+				
+				// var boidX = bi.x;
+				// var boidY = bi.y;
+				// var normVx = bi.vX*ratio;
+				// var normVy = bi.vY*ratio;
+				
+				// theContext.moveTo( ( boidX+normVx )<<0
+								 // , ( boidY+normVy )<<0 );
+
+				// theContext.lineTo( ( boidX + normVx*this.cos140 - normVy*this.sin140 )<<0 
+								 // , ( boidY + normVx*this.sin140 + normVy*this.cos140 )<<0 );
+		
+				// theContext.lineTo( ( boidX + normVx*this.cos220 - normVy*this.sin220 )<<0
+								 // , ( boidY + normVx*this.sin220 + normVy*this.cos220 )<<0 );
+								 
+				// theContext.lineTo( ( boidX + normVx )<<0 
+								 // , ( boidY + normVy )<<0 ) ;
+						
+				// theContext.closePath();
+				// theContext.stroke();			
+			
+			
+			}
+			
+			// HARCODED INTERACTION LIST STUFF
+			// iterate through interaction list drawing lines
+			if (this.InteractionList[i].length>0)
+			{
+
+				theContext.strokeStyle = 'rgb(255,105,180)';
+				theContext.beginPath();				
+			
+				for (var j = this.InteractionList[i].length-1; j>=0; j--)
+				{
+					// move to my location
+					var a = this.InteractionList[i][j];
+					theContext.moveTo( bi.x, bi.y );
+					theContext.lineTo( a.x, a.y );
+
+				}
+				theContext.closePath();
+				theContext.stroke();
+				this.InteractionList[i] = [];
+			}
+
+
 			
 			var arrowX;
 			var arrowY;
@@ -730,15 +852,15 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 			// draw desire vector arrows 
 			for (var rule = this.ruleCoeffs.length-1; rule >=0; rule --)
 			{
-				if (this.ruleVectorVisible[rule] && this.ruleCoeffs[rule]!=0)
+				if (this.ruleVectorVisible[rule] && bi.interactions[rule]) // rule vector set to visble AND an interaction occurred
 				{
 					theContext.strokeStyle = this.ruleColours[rule];
 					theContext.beginPath();
 					theContext.moveTo( boidX<<0 
 									 , boidY<<0 );
 									 							 
-					arrowX = bi.vXrule[rule]*ratio*this.ruleCoeffs[rule];
-					arrowY = bi.vYrule[rule]*ratio*this.ruleCoeffs[rule];
+					arrowX = bi.vXrule[rule]*ratio;
+					arrowY = bi.vYrule[rule]*ratio;
 					theContext.lineTo( ( boidX+arrowX )<<0 
 									 , ( boidY+arrowY )<<0 );
 
@@ -789,6 +911,15 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 
             pigeonX = bi.pigeon%pigeonholeWidth; // 0 : pigeonholeWidth-1
             pigeonY = Math.floor(bi.pigeon/pigeonholeWidth); // 0 : pigeonholeHeight -1??
+			
+			// GRAVITATIONAL HARDCODE
+			
+			if (this.blackHole = 1 && bi.type==4)
+			{
+				this.applyRulesNow(bi, 5, this.blackHoleX - bix, this.blackHoleY - biy);
+			}
+			
+			
 			
 			// Check for obstacles
 			if (this.Obstacles==1)
@@ -873,6 +1004,11 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 								
 							if ( (dx*dx + dy*dy) <= bi.perceptionRangeSquared ) {
 								this.applyRulesNow(bi, bj.type, dx, dy, bj);
+								
+								// HARDCODED INTERACTION LIST STUFF
+								
+								this.InteractionList[i].push(bj);								
+								
 							}
 						}
 						
@@ -884,64 +1020,127 @@ Boid.Agent = function(canvasWidth, canvasHeight)
         }
     }
 	
+
+
 	
 	
 	this.applyRulesNow = function(theBall, objectType, dx, dy, theObject)
 	{
+		var ruleCoeff = this.ruleCoeffs[objectType];
+		var invdistsq
+		
+		// HARDCODED INTERACTION LIST CODE    		
 	
-		var invdistsq = 4/(1 + dx*dx + dy*dy);
-		
-		if (objectType===1) //// repulsion from 4 walls
+		if (ruleCoeff[0]) // alignment
 		{
-			// Repulsion
-			theBall.vXrule[1] -= this.objectRepulsion*(dx?dx<0?-1:1:0)*(1+Math.abs(dx));
-			theBall.vYrule[1] -= this.objectRepulsion*(dy?dy<0?-1:1:0)*(1+Math.abs(dy));
-			theBall.interactions[1] ++;					
-		
-		} 
-		else if (objectType===0) // repulsion from object
-		{
-			// Repulsion
-			theBall.vXrule[1] -= this.objectRepulsion*dx*invdistsq;
-			theBall.vYrule[1] -= this.objectRepulsion*dy*invdistsq;
-			theBall.interactions[1] ++;				
-		
-		} 
-		else
-		{
-			if (objectType===3) // interacting with an object
-			{
-				// Repulsion
-				theBall.vXrule[1] -= this.objectRepulsion*dx*invdistsq;
-				theBall.vYrule[1] -= this.objectRepulsion*dy*invdistsq;
-				theBall.interactions[1] ++;			
-			
-			} // Repulsion
-			else if (objectType===2)// interacting with an agent
-			{
-
-				// Alignment: steer towards the average heading of local flockmates	
-				theBall.vXrule[0] += theObject.vX;
-				theBall.vYrule[0] += theObject.vY;
-				theBall.interactions[0] ++;
-
-				// Repulsion
-				theBall.vXrule[1] -= dx*invdistsq;
-				theBall.vYrule[1] -= dy*invdistsq;
-				theBall.interactions[1] ++;
-
-				// Cohesion: steer to move toward the average position of local flockmates
-				theBall.vXrule[2] += dx*Math.sqrt(invdistsq);
-				theBall.vYrule[2] += dy*Math.sqrt(invdistsq);	
-				theBall.interactions[2] ++;
-
-			} // All three rules
-			else
-			{
-				debugger;
-			}
+			theBall.vXrule[0] += ruleCoeff[0]*theObject.vX;
+			theBall.vYrule[0] += ruleCoeff[0]*theObject.vY;
+			theBall.interactions[0] ++;		
 		}
+			
+		if (ruleCoeff[1]) // boid repulsion
+		{
+			invdistsq = 4/(1 + dx*dx + dy*dy);
+			theBall.vXrule[1] -= ruleCoeff[1]*dx*invdistsq;
+			theBall.vYrule[1] -= ruleCoeff[1]*dy*invdistsq;
+			theBall.interactions[1] ++;		
+		}
+
+		if (ruleCoeff[2]) // cohesion
+		{
+			invdistsq = invdistsq || 4/(1 + dx*dx + dy*dy);
+			theBall.vXrule[2] += ruleCoeff[2]*dx*Math.sqrt(invdistsq);
+			theBall.vYrule[2] += ruleCoeff[2]*dy*Math.sqrt(invdistsq);	
+			theBall.interactions[2] ++;
+		}
+
+		if (ruleCoeff[3]) // wall repulsion
+		{
+			theBall.vXrule[3] -= ruleCoeff[3]*(dx?dx<0?-1:1:0)*(1+Math.abs(dx));
+			theBall.vYrule[3] -= ruleCoeff[3]*(dy?dy<0?-1:1:0)*(1+Math.abs(dy));
+			theBall.interactions[3] ++;	
+		}
+		
+		if (ruleCoeff[4]) // object repulsion
+		{
+			invdistsq = invdistsq || 4/(1 + dx*dx + dy*dy);
+			theBall.vXrule[4] -= ruleCoeff[4]*dx*invdistsq;
+			theBall.vYrule[4] -= ruleCoeff[4]*dy*invdistsq;
+			theBall.interactions[4] ++;		
+		}		
+		
+		if (ruleCoeff[5]) // object repulsion
+		{
+			invdistsq = invdistsq || 4/(1 + dx*dx + dy*dy);
+			theBall.vXrule[5] += ruleCoeff[5]*dx*invdistsq;
+			theBall.vYrule[5] += ruleCoeff[5]*dy*invdistsq;
+			theBall.interactions[5] ++;		
+		}			
+		
 	}
+	
+	
+	
+	
+	
+	
+	
+	// this.applyRulesNow = function(theBall, objectType, dx, dy, theObject)
+	// {
+	
+		// var invdistsq = 4/(1 + dx*dx + dy*dy);
+		
+		// if (objectType===1) //// repulsion from 4 walls
+		// {
+			// // Repulsion
+			// theBall.vXrule[1] -= this.objectRepulsion*(dx?dx<0?-1:1:0)*(1+Math.abs(dx));
+			// theBall.vYrule[1] -= this.objectRepulsion*(dy?dy<0?-1:1:0)*(1+Math.abs(dy));
+			// theBall.interactions[1] ++;					
+		
+		// } 
+		// else if (objectType===0) // repulsion from object
+		// {
+			// // Repulsion
+			// theBall.vXrule[1] -= this.objectRepulsion*dx*invdistsq;
+			// theBall.vYrule[1] -= this.objectRepulsion*dy*invdistsq;
+			// theBall.interactions[1] ++;				
+		
+		// } 
+		// else
+		// {
+			// if (objectType===3) // interacting with an object
+			// {
+				// // Repulsion
+				// theBall.vXrule[1] -= this.objectRepulsion*dx*invdistsq;
+				// theBall.vYrule[1] -= this.objectRepulsion*dy*invdistsq;
+				// theBall.interactions[1] ++;			
+			
+			// } // Repulsion
+			// else if (objectType===2)// interacting with an agent
+			// {
+
+				// // Alignment: steer towards the average heading of local flockmates	
+				// theBall.vXrule[0] += theObject.vX;
+				// theBall.vYrule[0] += theObject.vY;
+				// theBall.interactions[0] ++;
+
+				// // Repulsion
+				// theBall.vXrule[1] -= dx*invdistsq;
+				// theBall.vYrule[1] -= dy*invdistsq;
+				// theBall.interactions[1] ++;
+
+				// // Cohesion: steer to move toward the average position of local flockmates
+				// theBall.vXrule[2] += dx*Math.sqrt(invdistsq);
+				// theBall.vYrule[2] += dy*Math.sqrt(invdistsq);	
+				// theBall.interactions[2] ++;
+
+			// } // All three rules
+			// else
+			// {
+				// debugger;
+			// }
+		// }
+	// }
 	
 
 
@@ -951,6 +1150,12 @@ Boid.Agent = function(canvasWidth, canvasHeight)
         var theBalls = this.theBalls;
         var pigeonholeWidth = this.pigeonholeWidth;
         var pigeonholeHeight = this.pigeonholeHeight;
+		
+		// HARDCODED INTERACTION LIST CODE
+		this.InteractionList = [];
+        for(var i=theBalls.length-1; i>=0; i--) {
+            this.InteractionList[i] = [];
+        }		
 
         // what can interact with what
         this.createInteractionList(this.theBalls,this.pigeonholeWidth, this.pigeonholeHeight, this.canvasWidth, this.canvasHeight);
@@ -961,24 +1166,48 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 			var bi = theBalls[i];	
 			
 			// normalise the desire vectors
-			if (bi.interactions[0]>1)
-			{
-				bi.vXrule[0] /= bi.interactions[0];
-				bi.vYrule[0] /= bi.interactions[0];
-			}
-			if (bi.interactions[1]>1)
-			{
-				bi.vXrule[1] /= bi.interactions[1];
-				bi.vYrule[1] /= bi.interactions[1];
-			}
-			if (bi.interactions[2]>1)
-			{
-				bi.vXrule[2] /= bi.interactions[2];
-				bi.vYrule[2] /= bi.interactions[2];
-			}
+			// if (bi.interactions[0]>1)
+			// {
+				// bi.vXrule[0] /= bi.interactions[0];
+				// bi.vYrule[0] /= bi.interactions[0];
+			// }
+			// if (bi.interactions[1]>1)
+			// {
+				// bi.vXrule[1] /= bi.interactions[1];
+				// bi.vYrule[1] /= bi.interactions[1];
+			// }
+			// if (bi.interactions[2]>1)
+			// {
+				// bi.vXrule[2] /= bi.interactions[2];
+				// bi.vYrule[2] /= bi.interactions[2];
+			// }
+			// if (bi.interactions[3]>1)
+			// {
+				// bi.vXrule[3] /= bi.interactions[3];
+				// bi.vYrule[3] /= bi.interactions[3];
+			// }
+			// if (bi.interactions[4]>1)
+			// {
+				// bi.vXrule[4] /= bi.interactions[4];
+				// bi.vYrule[4] /= bi.interactions[4];
+			// }
 			
-			var nvx = bi.vX + this.ruleCoeffs[0]*bi.vXrule[0] + this.ruleCoeffs[1]*bi.vXrule[1] + this.ruleCoeffs[2]*bi.vXrule[2];
-			var nvy = bi.vY + this.ruleCoeffs[0]*bi.vYrule[0] + this.ruleCoeffs[1]*bi.vYrule[1] + this.ruleCoeffs[2]*bi.vYrule[2];	
+			// var nvx = bi.vX + bi.vXrule[0] + bi.vXrule[1] + bi.vXrule[2] + bi.vXrule[3] + bi.vXrule[4];
+			// var nvy = bi.vY + bi.vYrule[0] + bi.vYrule[1] + bi.vYrule[2] + bi.vXrule[3] + bi.vXrule[4];	
+			
+			
+			var nvx = bi.vX;
+			var nvy = bi.vY;
+			for (ruleNo = this.numRules; ruleNo>=0; ruleNo--)
+			{
+				if (bi.interactions[ruleNo])
+				{
+					bi.vXrule[ruleNo] /= bi.interactions[ruleNo];
+					nvx += bi.vXrule[ruleNo];
+					bi.vYrule[ruleNo] /= bi.interactions[ruleNo];
+					nvy += bi.vYrule[ruleNo];
+				}
+			}
 			
 			var z = Math.sqrt(nvx*nvx + nvy*nvy);
 			if (z<.001) {
@@ -999,6 +1228,21 @@ Boid.Agent = function(canvasWidth, canvasHeight)
         for(var i=theBalls.length-1; i>=0; i--) {
             theBalls[i].move();
         }
+
+	// fake trigger code	
+		this.changeAgent = Math.floor((this.theBalls.length)*Math.random());
+		this.changeAgentTo = 2*Math.ceil(Math.random()*2);
+		
+		if (this.changeAgent)
+		{
+			this.theBalls[this.changeAgent].type = this.changeAgentTo;
+		
+		
+		
+			this.changeAgent = null;
+			this.changeAgentTo = null;
+		}
+
 		
 		this.killagent = false;
 		if (this.killagent && this.theBalls.length>0)
@@ -1024,7 +1268,7 @@ Boid.Agent = function(canvasWidth, canvasHeight)
             // var randomAngleInRadians = Math.random()*this.circ;
             // b = self.makeBall( self.addAgentX, self.addAgentY, Math.cos(randomAngleInRadians) * self.genericSpeed, Math.sin(randomAngleInRadians) * self.genericSpeed, self.genericSpeed, self.genericRadius, self.genericStroke );
 
-			if (1)
+			if (0)
 			{
 			
 			
@@ -1036,7 +1280,9 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 								  Math.cos(randomAngleInRadians) * speed,
 								  Math.sin(randomAngleInRadians) * speed,
 								  speed,
-								  this.perceptionRange );			
+								  this.perceptionRange,
+								  2*Math.ceil(Math.random()*2) // 50% type 2, 50% type 4
+								  );			
 			
 				this.addAgent = 0;
 			}
@@ -1047,6 +1293,11 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 			}
 
         }	
+		
+		// HARDCODED INTERACTION LIST CODE
+        // for(var i=theBalls.length-1; i>=0; i--) {
+            // this.InteractionList[i] = [];
+        // }
 
     }
 	
@@ -1131,14 +1382,24 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 							  Math.cos(randomAngleInRadians) * speed,
 							  Math.sin(randomAngleInRadians) * speed,
 							  speed,
-							  this.perceptionRange );
+							  this.perceptionRange,
+							  2*Math.ceil(Math.random()*2) // 50% type 2, 50% type 4
+							  );
 			// this.theBalls.push(b);
 								// speed
 							  // this.genericSpeed*(1+Math.random()*.6-.3),		
 							  				//			  (1+Math.random()*.8-.4),	
 							  //this.genericStroke
-	  
+
 		}
+		
+		// HARDCODED INTERACTION LIST CODE
+        for(var i=this.theBalls.length-1; i>=0; i--) {
+            this.InteractionList[i] = [];
+        }		
+		
+		this.eagleSpriteHalfWidth = this.eagleSprite.width/2;
+		this.eagleSpriteHalfHeight = this.eagleSprite.height/2;			
 		
 		this.theCanvas.addEventListener("click",this.doClick.bind(this),false);
 		this.running = 1;
@@ -1153,7 +1414,12 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 
     }
 
-    this.init();
+
+
+
+
+	  
+    this.init();	  
 
 }
 
