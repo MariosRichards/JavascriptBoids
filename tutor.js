@@ -795,7 +795,10 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 			}
 			
 			
-			var ratio = this.perceptionRange/(bi.speed);			
+			var ratio = this.perceptionRange/(bi.speed);	
+			var boidX = bi.x;
+			var boidY = bi.y;
+			
 			if (bi.type==2)
 			{
 			
@@ -806,8 +809,7 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 				theContext.beginPath();			
 
 				
-				var boidX = bi.x;
-				var boidY = bi.y;
+
 				var normVx = bi.vX*ratio;
 				var normVy = bi.vY*ratio;
 				
@@ -829,10 +831,22 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 			}
 			else if (bi.type==4)
 			{
+				var centredX = boidX<<0;
+				var centredY = boidY<<0;
+				var angle = Math.atan2(bi.vY, bi.vX) - Math.PI/2;
+			
+			
+				theContext.translate(centredX,centredY);
+				theContext.rotate(angle);
+	
+				theContext.drawImage(this.eagleSprite, -(this.eagleSpriteHalfWidth<<0)
+				                                     , -(this.eagleSpriteHalfWidth<<0) )
+													 
+				theContext.rotate(-angle);
+				theContext.translate(-centredX, -centredY); 			
 			
 
-				theContext.drawImage(this.eagleSprite, (bi.x-this.eagleSpriteHalfWidth )<<0
-				                                     , (bi.y-this.eagleSpriteHalfHeight)<<0 )
+
 				// draw boid triangle
 				// theContext.strokeStyle = 'rgba(0,0,0,1)';
 	
@@ -874,7 +888,7 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 				{
 					// move to my location
 					var a = this.InteractionList[i][j];
-					theContext.moveTo( bi.x, bi.y );
+					theContext.moveTo( boidX, boidY );
 					theContext.lineTo( a.x, a.y );
 
 				}
