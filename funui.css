@@ -77,10 +77,10 @@ html {
 
 #dummy_pane {
 	position:absolute;
-	width:54.6%;
+	/*width:54.6%;
+	height:80%;*/
+	width:99.5%;
 	height:80%;
-	/*width:90%;
-	height:70%;*/
 	left:0;
 	right:0;
 	top:0;
@@ -94,24 +94,24 @@ html {
 	position:absolute;
 	
 	
-	width:54.6%;
+	/*width:54.6%;
+	height:80%;*/
+	
+	width:99.5%;
 	height:80%;
 	
-	/*width:100%;
-	height:100%;*/
 	
-	
-	left:30%;
-	top:1%;
-	
-	/*left:0%;
+	/*left:30%;
 	top:1%;*/
+	
+	left:0%;
+	top:8%;
 	
 	
 	border: thin solid #666;
 	border-radius:1%;
 	
-	z-index:1;
+	z-index:0;
 	}
 	
 	.birdeagle {
