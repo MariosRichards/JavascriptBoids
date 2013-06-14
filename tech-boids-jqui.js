@@ -50,9 +50,15 @@ $(document).ready(function(){
 	var w = $("#dummy_pane").width();	
 	var h = $("#dummy_pane").height();
 
+	var eagleSprite = new Image();
+	eagleSprite.src = "eagletop.png";
+	
 		
-	c = new Boid.Agent(w,h);
-	c.start();
+	c = new Boid(w, h, eagleSprite);
+	
+	eagleSprite.onload = function() {
+	    c.start(); 
+	};
 	
 	//Colour of rules Override:
 	
@@ -237,10 +243,10 @@ function restartButtonCB()
 function controlmySliders()
 {
 
-    createmySlider(1,0,10,"alignment",c.ruleColours[0],0.05,function(v){c.ruleCoeffs[0] = v});
-    createmySlider(1,0,10,"repulsion",c.ruleColours[1],0.05,function(v){c.ruleCoeffs[1] = v});
-    createmySlider(1,0,10,"cohesion",c.ruleColours[2],0.05,function(v){c.ruleCoeffs[2] = v});
-    createmySlider(1,-10,10,"simspeed","black",0.05,function(v){c.simulationSpeed = v}); 
+    createmySlider(1,0,10,"alignment",c.ruleColours[0],0.05,function(v){c.setCoeff0(v)});
+    createmySlider(1,0,10,"repulsion",c.ruleColours[1],0.05,function(v){c.setCoeff1(v)});
+    createmySlider(1,0,10,"cohesion",c.ruleColours[2],0.05,function(v){c.setCoeff2(v)});
+    createmySlider(1,-10,10,"simspeed","black",0.05,function(v){c.setCoeff3(v)}); 
         
 } 
 
