@@ -133,12 +133,20 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 	// these are effectively the constants	
 	
     // Semaphore variable to add agent
-    this.addAgent = false;
-    this.addAgentX = 0;
-    this.addAgentY = 0;
+    // this.addAgent = false;
+    // this.addAgentX = 0;
+    // this.addAgentY = 0;
 	
-	this.killagent = true;
-	this.killThisAgent = {};
+	// list of {x: ??, y: ??} objects
+	
+	this.addList = [];
+	
+	this.killList = [];
+	// list of ball objects
+	
+	this.changeList = [];
+	
+	// list of {ball: ??, newtype: ??} objects
 	
 	this.changeAgent = null;
 	this.changeAgentTo = null;
@@ -313,12 +321,17 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 		};
 
 		
-	this.makeRepulsor = function( x, y )
+	this.makeRepulsor = function( options )
 	{
 	
 	    Empty = function () {};
         Empty.prototype = this.repulsor;
         var repulsor = new Empty();	
+		
+		(options.x === undefined) ? x = this.canvasWidth*Math.random() : x = options.x;
+		(options.y === undefined) ? y = this.canvasHeight*Math.random() : y = options.y;		
+		
+		
 		
 		x = Math.min( Math.max(x , 1) , (this.canvasWidth-1));
 		y = Math.min( Math.max(y , 1) , (this.canvasHeight-1));		
@@ -587,42 +600,52 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 		// this.addAgent = true;
     // }
 
-	this.destroyBall = function(ball)
+	this.destroyBall = function(killList)
 	{
-		// delete from theBalls via a slice#
+		// INEFFICIENT CODE WARNING!
+		for (var j = killList.length-1; j>=0; j--)
+		{
+			var ball = killList[j];
+	
 		
-		// have to find it first - loop through entire list - not efficient if this happens a lot!
-		var i = 0;
-		while(this.theBalls[i]!==ball)
-		{
-			i++;
-		}
+			// delete from theBalls via a slice#
+			
+			// have to find it first - loop through entire list - not efficient if this happens a lot!
+			var i = 0;
+			while(this.theBalls[i]!==ball)
+			{
+				i++;
+			}
 
-		this.theBalls.splice(i,1);
-				
-		// remove from PigeonHoles
+			this.theBalls.splice(i,1);
+					
+			// remove from PigeonHoles
 
-		if (ball.prev===null) // obviously at top of list
-		{
-			// is this *really* at the head?
-			this.PigeonHoles[ball.pigeon] = ball.next; // point to next in list
-		}
-		else // not at top of list
-		{
-			ball.prev.next = ball.next;
-		}
+			if (ball.prev===null) // obviously at top of list
+			{
+				// is this *really* at the head?
+				this.PigeonHoles[ball.pigeon] = ball.next; // point to next in list
+			}
+			else // not at top of list
+			{
+				ball.prev.next = ball.next;
+			}
 
-		// if there is a next object
-		if (ball.next!==null)
-		{
-			ball.next.prev = ball.prev;
-		}		
+			// if there is a next object
+			if (ball.next!==null)
+			{
+				ball.next.prev = ball.prev;
+			}		
+			
+		}
 		
 	};
 	
 	
 	
-	this.makeBall = function(x, y, vX, vY, speed, perceptionRange , type) {
+	this.makeBall = function(options) {
+	
+//	x, y, vX, vY, speed, perceptionRange , type
 
         var theCanvas = this.theCanvas;
 
@@ -631,19 +654,26 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
         Empty.prototype = this.aBall;
         var ball = new Empty();
 		
-		
+
 		// handle defaults
-		if (x === undefined) x = this.canvasWidth*Math.random();
-		if (y === undefined) y = this.canvasHeight*Math.random();
-		if (speed === undefined) speed = 1;		
-		if (vX === undefined || vY === undefined)
+
+		
+		(options.x === undefined) ? (x = this.canvasWidth *Math.random()) : x = options.x ;
+		(options.y === undefined) ? (y = this.canvasHeight*Math.random()) : y = options.y ;
+		(options.speed === undefined) ? speed = 1 : speed = options.speed;		
+		if (options.vX === undefined || vY === undefined)
 		{				
 			var randomAngleInRadians = Math.random()*this.circ;
 			vX = Math.cos(randomAngleInRadians) * speed;
 			vY = Math.sin(randomAngleInRadians) * speed;
 		}
-		if (perceptionRange === undefined) perceptionRange = this.perceptionRange;
-		if (type === undefined) type = 2*Math.ceil(Math.random()*2);
+		else
+		{
+			vX = options.vX;
+			vY = options.vY;
+		}
+		(options.perceptionRange === undefined) ? perceptionRange = this.perceptionRange : perceptionRange = options.perceptionRange;
+		(options.type === undefined) ? type = 2*Math.ceil(Math.random()*2) : type = options.type;
 				
 		
 
@@ -1220,6 +1250,94 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
         var theBalls = this.theBalls;
         var pigeonholeWidth = this.pigeonholeWidth;
         var pigeonholeHeight = this.pigeonholeHeight;
+
+		if (this.theBalls.length>0)
+		{
+		
+			this.changeList.push({ball: this.theBalls[((this.theBalls.length)*Math.random())<<0],
+								  newType: 2*Math.ceil(Math.random()*2) });
+		}
+		
+		if (this.changeList.length>0)
+		{
+			for (var i = this.changeList.length-1; i>=0; i--)
+			{
+		
+				this.changeList[i].ball.type = this.changeList[i].newType;
+
+			}
+		
+			this.changeList.length = 0;
+			
+		}
+
+		if (this.theBalls.length>0 && Math.random()>.9)
+		{
+		
+			var c = Math.random();
+			var b = this.theBalls.length;
+			var a = Math.floor(c*b);
+			this.killList.push(this.theBalls[a]);
+		}
+
+
+
+		
+
+		if (this.killList.length>0)
+		{	
+			this.destroyBall(this.killList);
+			this.killList.length = 0;
+		
+			// INTERACTION LIST
+			
+			
+			// this.destroyBall(this.killThisAgent);
+			// this.killagent = false;
+			
+			// this.killagent = true;
+		}		
+		
+		
+			
+        // Note - this prevents new agent creation in the middle of a cycle
+        // Downside, reduces user agency noticeably (creation latency)!
+        if (this.addList.length>0) {
+
+			// CREATE AGENTS ON CLICK CODE
+            // var randomAngleInRadians = Math.random()*this.circ;
+            // b = self.makeBall( self.addAgentX, self.addAgentY, Math.cos(randomAngleInRadians) * self.genericSpeed, Math.sin(randomAngleInRadians) * self.genericSpeed, self.genericSpeed, self.genericRadius, self.genericStroke );
+
+			if (1)
+			{
+			
+				for (var i = this.addList.length-1; i>=0; i--)
+				{
+					this.makeBall(this.addList[i]);
+					
+					
+					// INTERACTION LIST
+					
+					
+				}
+			
+				this.addList.length = 0;
+			}
+			else
+			{
+				for (var i = this.addList.length-1; i>=0; i--)
+				{
+					this.makeRepulsor(this.addList[i]);
+				}			
+			
+				this.addList.length = 0;
+			}
+
+        }	
+
+
+
+
 		
 		// HARDCODED INTERACTION LIST CODE
 		this.InteractionList = [];
@@ -1300,69 +1418,7 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
         }
 
 	// fake trigger code	
-		this.changeAgent = Math.floor((this.theBalls.length)*Math.random());
-		this.changeAgentTo = 2*Math.ceil(Math.random()*2);
-		
-		if (this.changeAgent)
-		{
-			this.theBalls[this.changeAgent].type = this.changeAgentTo;
-		
-		
-		
-			this.changeAgent = null;
-			this.changeAgentTo = null;
-		}
 
-		
-		this.killagent = false;
-		if (this.killagent && this.theBalls.length>0)
-		{	
-			var c = Math.random();
-			var b = this.theBalls.length;
-			var a = Math.floor(c*b);
-			this.killThisAgent = this.theBalls[a];
-			
-			this.destroyBall(this.killThisAgent);
-			this.killagent = false;
-			
-			this.killagent = true;
-		}		
-		
-		
-			
-        // Note - this prevents new agent creation in the middle of a cycle
-        // Downside, reduces user agency noticeably (creation latency)!
-        if (this.addAgent && this.Objects==1) {
-
-			// CREATE AGENTS ON CLICK CODE
-            // var randomAngleInRadians = Math.random()*this.circ;
-            // b = self.makeBall( self.addAgentX, self.addAgentY, Math.cos(randomAngleInRadians) * self.genericSpeed, Math.sin(randomAngleInRadians) * self.genericSpeed, self.genericSpeed, self.genericRadius, self.genericStroke );
-
-			if (0)
-			{
-			
-				this.makeBall();
-
-				// var randomAngleInRadians = Math.random()*this.circ;
-				// var speed = 1;
-				// this.makeBall(    this.addAgentX,
-								  // this.addAgentY,
-								  // Math.cos(randomAngleInRadians) * speed,
-								  // Math.sin(randomAngleInRadians) * speed,
-								  // speed,
-								  // this.perceptionRange,
-								  // 2*Math.ceil(Math.random()*2) // 50% type 2, 50% type 4
-								  // );			
-			
-				this.addAgent = 0;
-			}
-			else
-			{
-				this.makeRepulsor(this.addAgentX, this.addAgentY);
-				this.addAgent = 0;
-			}
-
-        }	
 		
 		// HARDCODED INTERACTION LIST CODE
         // for(var i=theBalls.length-1; i>=0; i--) {
@@ -1376,12 +1432,13 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
     // what to do when things get clicked
     this.doClick = function(evt){
 		// aha! - lock this function so no multiple updates can occur!
-		if (!this.addAgent)
-		{
-			this.addAgent = true;
-			this.addAgentX = evt.pageX - this.theCanvas.offsetLeft;
-			this.addAgentY = evt.pageY - this.theCanvas.offsetTop;
-		}
+		// unlocked - BEWARE!
+		// if (!this.addAgent)
+		// {
+		this.addList.push( {x: evt.pageX - this.theCanvas.offsetLeft, y: evt.pageY - this.theCanvas.offsetTop} );
+			// this.addAgentX = evt.pageX - this.theCanvas.offsetLeft;
+			// this.addAgentY = evt.pageY - this.theCanvas.offsetTop;
+		// }
     }
 
 
@@ -1446,7 +1503,7 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 		for (var i=this.initialPopulation-1; i>=0; i--) {
 
 		
-			this.makeBall();	
+			this.makeBall({});	
 			// var randomAngleInRadians = Math.random()*this.circ;
 			// var speed = 1;
 			// this.makeBall(this.canvasWidth*Math.random(),
