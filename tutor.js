@@ -54,7 +54,7 @@ var BoidAgents       = [];
 // }
 
 
-Boid.Agent = function(canvasWidth, canvasHeight)
+Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 {
 
 // PLAYER STUFF
@@ -62,10 +62,8 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 	// this.thePlayers = [];
 	
 	
-	this.eagleSprite = new Image();
-	this.eagleSprite.src = "eagletop.png";
+	this.eagleSprite = eagleSprite;
 
-	
 
 	// shim layer with setTimeout fallback
 	reqFrame =window.requestAnimationFrame ||
@@ -215,12 +213,13 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 	// only tracks Boids/Repulsors etc
 
 
-	// rules
+	// RULES
 	// alignment
 	// repulsion	
 	// cohesion
 	// wall repulsion
 	// object repulsion
+	// black hole gravitation
 	
 	
 	// Rule coefficients
@@ -258,6 +257,47 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 						
 	
 	this.numObjects = 0; // global object counter!
+	
+	// slider set coefficient functions
+	
+	this.setCoeff0 = function(v)
+	{
+		this.ruleCoeffs[2][0] = v;
+		this.ruleCoeffs[4][0] = v;
+		
+	};
+	
+	this.setCoeff1 = function(v)
+	{
+		
+		this.ruleCoeffs[2][1] = v;
+		this.ruleCoeffs[4][1] = v;		
+		
+		
+	};
+
+	this.setCoeff2 = function(v)
+	{
+		
+		this.ruleCoeffs[2][2] = v;
+		this.ruleCoeffs[4][2] = v;				
+		
+		
+	};
+
+	this.setCoeff3 = function(v)
+	{
+		
+		this.simulationSpeed = v;
+
+		
+	};
+	
+	
+	
+	
+	
+	
 	
 	
 
@@ -578,7 +618,7 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 			ball.next.prev = ball.prev;
 		}		
 		
-	}
+	};
 	
 	
 	
@@ -652,7 +692,7 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 		}
 
         this.theBalls.push(ball);
-    }
+    };
 
 
 
@@ -889,7 +929,7 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 			}		
 		}
 				
-    }
+    };
 
 
 
@@ -1018,7 +1058,7 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 				}
 			}
         }
-    }
+    };
 	
 
 
@@ -1426,62 +1466,62 @@ Boid.Agent = function(canvasWidth, canvasHeight)
 
 
 	
-	// doubly linked list test function
-	this.testLinkedList = function(calledFromWhere)
-	{
-		var count = [];
+	// // doubly linked list test function
+	// this.testLinkedList = function(calledFromWhere)
+	// {
+		// var count = [];
 		
-		// traverse every list? FORWARDS
+		// // traverse every list? FORWARDS
 		
-		for (var i=this.pigeonholeWidth*this.pigeonholeHeight-1; i>=0; i--)
-        {
-			var bjprior=null;
-			var bj = this.PigeonHoles[i];
-			while (bj!==null)
-			{
+		// for (var i=this.pigeonholeWidth*this.pigeonholeHeight-1; i>=0; i--)
+        // {
+			// var bjprior=null;
+			// var bj = this.PigeonHoles[i];
+			// while (bj!==null)
+			// {
 
-				if (!count[bj.id])
-				{
-					count[bj.id]=i;
-				}
-				else // duplicate!
-				{
-					debugger; 
-				}
+				// if (!count[bj.id])
+				// {
+					// count[bj.id]=i;
+				// }
+				// else // duplicate!
+				// {
+					// debugger; 
+				// }
 
 
-				if (bj==bj.next) // infinite loop!
-				{
-					debugger;
-				}
-				if (bj!=null && !bj) // not null but some other 'falsy' state
-				{
-					debugger;			
-				}
-				bjprior = bj;
-				bj = bj.next;
-			}
+				// if (bj==bj.next) // infinite loop!
+				// {
+					// debugger;
+				// }
+				// if (bj!=null && !bj) // not null but some other 'falsy' state
+				// {
+					// debugger;			
+				// }
+				// bjprior = bj;
+				// bj = bj.next;
+			// }
 			
-			// now backwards
-			bj = bjprior;
-			while (bj!==null)
-			{
-				if (bj==bj.prev) // infinite loop!
-				{
-					debugger;
-				}			
+			// // now backwards
+			// bj = bjprior;
+			// while (bj!==null)
+			// {
+				// if (bj==bj.prev) // infinite loop!
+				// {
+					// debugger;
+				// }			
 			
-				bjprior = bj;
-				bj = bj.prev;
-			}
-			// if successful, should read the head of the list
+				// bjprior = bj;
+				// bj = bj.prev;
+			// }
+			// // if successful, should read the head of the list
 			
-			if (bjprior!=this.PigeonHoles[i])
-			{
-				debugger;
-			}
-        }	
-		// count number of instances of boids
-	}	
+			// if (bjprior!=this.PigeonHoles[i])
+			// {
+				// debugger;
+			// }
+        // }	
+		// // count number of instances of boids
+	// }	
 
 

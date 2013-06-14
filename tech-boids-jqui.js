@@ -53,8 +53,8 @@ $(document).ready(function(){
 	var eagleSprite = new Image();
 	eagleSprite.src = "eagletop.png";
 	
-		
-	c = new Boid(w, h, eagleSprite);
+	// c = new Boid.Agent(w, h);
+	c = new Boid.Agent(w, h, eagleSprite);
 	
 	eagleSprite.onload = function() {
 	    c.start(); 
