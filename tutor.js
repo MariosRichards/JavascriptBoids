@@ -111,8 +111,7 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 	
 	
 	
-	// HARDCODED INTERACTION LIST
-	this.InteractionList = [];
+
 	
 	
 
@@ -262,6 +261,17 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 	this.perceptionRangeVisible = true;
 	this.ruleVectorVisible = [true, true, true, true, true, true];	
 	this.displayBoidIDs = true;	
+	
+	
+	
+	
+	// HARDCODED INTERACTION LIST
+	this.InteractionList = [];	
+	this.InteractionListON = true;
+	
+	
+	
+	
 						
 	
 	this.numObjects = 0; // global object counter!
@@ -459,9 +469,9 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 
         // make 'em "bounce" when they go over the edge
         // no loss of velocity
-        move: function() {
-            this.x += this.vX*self.simulationSpeed;
-            this.y += this.vY*self.simulationSpeed;
+        move: function(timestep) {
+            this.x += this.vX*timestep*self.simulationSpeed;
+            this.y += this.vY*timestep*self.simulationSpeed;
 			
 			
             // Marios: Wouldn't need to check velocity if you could *only* hit the wall when moving in that direction
@@ -1106,8 +1116,10 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 								this.applyRulesNow(bi, bj.type, dx, dy, bj);
 								
 								// HARDCODED INTERACTION LIST STUFF
-								
-								this.InteractionList[i].push(bj);								
+								if (this.InteractionListON)
+								{
+									this.InteractionList[i].push(bj);								
+								}
 								
 							}
 						}
@@ -1246,7 +1258,7 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 
 
     // move the balls
-    this.moveBalls = function() {
+    this.moveBalls = function(timestep) {
         var theBalls = this.theBalls;
         var pigeonholeWidth = this.pigeonholeWidth;
         var pigeonholeHeight = this.pigeonholeHeight;
@@ -1340,10 +1352,13 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 
 		
 		// HARDCODED INTERACTION LIST CODE
-		this.InteractionList = [];
-        for(var i=theBalls.length-1; i>=0; i--) {
-            this.InteractionList[i] = [];
-        }		
+		if (this.InteractionListON)
+		{
+			this.InteractionList = [];
+			for(var i=theBalls.length-1; i>=0; i--) {
+				this.InteractionList[i] = [];
+			}		
+		}
 
         // what can interact with what
         this.createInteractionList(this.theBalls,this.pigeonholeWidth, this.pigeonholeHeight, this.canvasWidth, this.canvasHeight);
@@ -1414,7 +1429,7 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 		}					
 
         for(var i=theBalls.length-1; i>=0; i--) {
-            theBalls[i].move();
+            theBalls[i].move(timestep);
         }
 
 	// fake trigger code	
@@ -1445,13 +1460,21 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
     // what we need to do is define a function that updates the position
     // draws, then schedules another iteration in the future
     // WARNING: this is the simplest, but not the best, way to do this
-    this.drawLoop = function() {
+    this.drawLoop = function(lastTime) {
 	
 		if (this.running == 1) 
 		{	
-			this.moveBalls();    // new position
+		
+		    var now = Date.now();
+			var dt = (now - lastTime) *6 / 100; // time in ms - fraction of 1000/60 ms
+
+			//this.lastTime = now;
+		
+		
+		
+			this.moveBalls(dt);    // new position
 			this.drawBalls();    // show things
-			reqFrame(this.drawLoop.bind(this));
+			reqFrame(this.drawLoop.bind(this, now));
 		}
 		else if (this.restartNow == 1)
 		{
@@ -1523,16 +1546,20 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 		}
 		
 		// HARDCODED INTERACTION LIST CODE
-        for(var i=this.theBalls.length-1; i>=0; i--) {
-            this.InteractionList[i] = [];
-        }		
+		if (this.InteractionListON)
+		{
+			for(var i=this.theBalls.length-1; i>=0; i--) {
+				this.InteractionList[i] = [];
+			}		
+		}
 		
 		this.eagleSpriteHalfWidth = this.eagleSprite.width/2;
 		this.eagleSpriteHalfHeight = this.eagleSprite.height/2;			
 		
 		this.theCanvas.addEventListener("click",this.doClick.bind(this),false);
 		this.running = 1;
-		reqFrame(this.drawLoop.bind(this));
+		var now = Date.now();
+		reqFrame(this.drawLoop.bind(this,now));
     }
 
 	
