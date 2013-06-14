@@ -77,10 +77,10 @@ html {
 
 #dummy_pane {
 	position:absolute;
-	/*width:54.6%;
-	height:80%;*/
-	width:99.5%;
+	width:54.6%;
 	height:80%;
+	/*width:99.5%;
+	height:80%;*/
 	left:0;
 	right:0;
 	top:0;
@@ -94,18 +94,18 @@ html {
 	position:absolute;
 	
 	
-	/*width:54.6%;
-	height:80%;*/
-	
-	width:99.5%;
+	width:54.6%;
 	height:80%;
 	
+	/*width:99.5%;
+	height:80%;*/
 	
-	/*left:30%;
-	top:1%;*/
 	
-	left:0%;
-	top:8%;
+	left:30%;
+	top:1%;
+	
+	/*left:0%;
+	top:8%;*/
 	
 	
 	border: thin solid #666;
