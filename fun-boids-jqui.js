@@ -24,7 +24,6 @@ svg.objekt = function(path){
 
 var global;
 
-
 $(document).ready(function(){ 
 	
 	
@@ -71,6 +70,10 @@ $(document).ready(function(){
 	$("#eyerepulsion").click(toggleVisibility_RepulsionButtonCB);
 	$("#eyecohesion").click(toggleVisibility_CohesionButtonCB);
 
+	
+	$('#clickpanel1').click(togglePanel1Show);
+	
+	
 	//$("#Alignment").click(toggleAlignment);
 
 	//$('#Alignment').css('color','purple');
@@ -475,6 +478,28 @@ function changeWallCollisionState(number) {
 	}
 	
 }
+
+function togglePanel1Show(panel) {
+	
+	var $clickpanel1 = $('#clickpanel1');
+	var $panel1 = $('#panel1');
+	
+	if($clickpanel1.hasClass("active"))
+	{
+		$clickpanel1.css("left", "85%");
+		$clickpanel1.removeClass("active");
+		$panel1.css("left", "100%");
+	}
+	
+	else {
+		$clickpanel1.css("left", "-15%");
+		$clickpanel1.addClass("active");
+		$panel1.css("left", "0%");
+	}
+	
+	
+}
+
 
 function scaleAndDrawPaths(width,height) {
 	
