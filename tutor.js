@@ -630,6 +630,22 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
         Empty = function () {};
         Empty.prototype = this.aBall;
         var ball = new Empty();
+		
+		
+		// handle defaults
+		if (x === undefined) x = this.canvasWidth*Math.random();
+		if (y === undefined) y = this.canvasHeight*Math.random();
+		if (speed === undefined) speed = 1;		
+		if (vX === undefined || vY === undefined)
+		{				
+			var randomAngleInRadians = Math.random()*this.circ;
+			vX = Math.cos(randomAngleInRadians) * speed;
+			vY = Math.sin(randomAngleInRadians) * speed;
+		}
+		if (perceptionRange === undefined) perceptionRange = this.perceptionRange;
+		if (type === undefined) type = 2*Math.ceil(Math.random()*2);
+				
+		
 
         // Prevent balls from being created overlapping with walls
         x = Math.min( Math.max(x , perceptionRange) , (this.canvasWidth-perceptionRange));
@@ -1325,18 +1341,18 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 			if (0)
 			{
 			
-			
+				this.makeBall();
 
-				var randomAngleInRadians = Math.random()*this.circ;
-				var speed = 1;
-				this.makeBall(this.addAgentX,
-								  this.addAgentY,
-								  Math.cos(randomAngleInRadians) * speed,
-								  Math.sin(randomAngleInRadians) * speed,
-								  speed,
-								  this.perceptionRange,
-								  2*Math.ceil(Math.random()*2) // 50% type 2, 50% type 4
-								  );			
+				// var randomAngleInRadians = Math.random()*this.circ;
+				// var speed = 1;
+				// this.makeBall(    this.addAgentX,
+								  // this.addAgentY,
+								  // Math.cos(randomAngleInRadians) * speed,
+								  // Math.sin(randomAngleInRadians) * speed,
+								  // speed,
+								  // this.perceptionRange,
+								  // 2*Math.ceil(Math.random()*2) // 50% type 2, 50% type 4
+								  // );			
 			
 				this.addAgent = 0;
 			}
@@ -1429,16 +1445,18 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 	
 		for (var i=this.initialPopulation-1; i>=0; i--) {
 
-			var randomAngleInRadians = Math.random()*this.circ;
-			var speed = 1;
-			this.makeBall(this.canvasWidth*Math.random(),
-							  this.canvasHeight*Math.random(),
-							  Math.cos(randomAngleInRadians) * speed,
-							  Math.sin(randomAngleInRadians) * speed,
-							  speed,
-							  this.perceptionRange,
-							  2*Math.ceil(Math.random()*2) // 50% type 2, 50% type 4
-							  );
+		
+			this.makeBall();	
+			// var randomAngleInRadians = Math.random()*this.circ;
+			// var speed = 1;
+			// this.makeBall(this.canvasWidth*Math.random(),
+							  // this.canvasHeight*Math.random(),
+							  // Math.cos(randomAngleInRadians) * speed,
+							  // Math.sin(randomAngleInRadians) * speed,
+							  // speed,
+							  // this.perceptionRange,
+							  // 2*Math.ceil(Math.random()*2) // 50% type 2, 50% type 4
+							  // );
 			// this.theBalls.push(b);
 								// speed
 							  // this.genericSpeed*(1+Math.random()*.6-.3),		
