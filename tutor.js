@@ -271,6 +271,13 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 	
 	
 	
+	// 
+	this.shrineON = true;
+	this.shrineRadiusSquared = 900;
+	this.shrineX = this.canvasWidth/2;
+	this.shrineY = this.canvasHeight/2;
+	
+	
 	
 						
 	
@@ -1263,12 +1270,12 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
         var pigeonholeWidth = this.pigeonholeWidth;
         var pigeonholeHeight = this.pigeonholeHeight;
 
-		if (this.theBalls.length>0)
-		{
+		// if (this.theBalls.length>0)
+		// {
 		
-			this.changeList.push({ball: this.theBalls[((this.theBalls.length)*Math.random())<<0],
-								  newType: 2*Math.ceil(Math.random()*2) });
-		}
+			// this.changeList.push({ball: this.theBalls[((this.theBalls.length)*Math.random())<<0],
+								  // newType: 2*Math.ceil(Math.random()*2) });
+		// }
 		
 		if (this.changeList.length>0)
 		{
@@ -1283,14 +1290,14 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 			
 		}
 
-		if (this.theBalls.length>0 && Math.random()>.9)
-		{
+		// if (this.theBalls.length>0 && Math.random()>.9)
+		// {
 		
-			var c = Math.random();
-			var b = this.theBalls.length;
-			var a = Math.floor(c*b);
-			this.killList.push(this.theBalls[a]);
-		}
+			// var c = Math.random();
+			// var b = this.theBalls.length;
+			// var a = Math.floor(c*b);
+			// this.killList.push(this.theBalls[a]);
+		// }
 
 
 
@@ -1430,15 +1437,30 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 
         for(var i=theBalls.length-1; i>=0; i--) {
             theBalls[i].move(timestep);
+			
+			// 
+			
+			if (this.shrineON)
+			{
+				var x = theBalls[i].x - this.shrineX ;
+				var y = theBalls[i].y - this.shrineY;
+				if ((x*x + y*y) < this.shrineRadiusSquared && theBalls[i].type == 2)
+				{
+				
+					this.changeList.push({ball: theBalls[i] ,
+								          newType: 4 });
+					
+				}
+			}
+			
+			
+			
         }
 
 	// fake trigger code	
 
 		
-		// HARDCODED INTERACTION LIST CODE
-        // for(var i=theBalls.length-1; i>=0; i--) {
-            // this.InteractionList[i] = [];
-        // }
+
 
     }
 	
@@ -1526,7 +1548,7 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 		for (var i=this.initialPopulation-1; i>=0; i--) {
 
 		
-			this.makeBall({});	
+			this.makeBall({type:2});	
 			// var randomAngleInRadians = Math.random()*this.circ;
 			// var speed = 1;
 			// this.makeBall(this.canvasWidth*Math.random(),
