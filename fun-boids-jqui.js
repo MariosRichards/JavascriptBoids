@@ -233,7 +233,8 @@ function stopButtonCB()
 	} else {
 		c.running = 1;
 		$("#stopbutton").html("stop");
-		reqFrame(c.drawLoop.bind(c,c.now));
+		var now = Date.now();
+		reqFrame(c.drawLoop.bind(c,now));
 	
 	}
 }
@@ -294,7 +295,8 @@ function restartButtonCB()
 	c.restartNow = 1;
 	if (c.running == 0)
 	{
-		reqFrame(c.drawLoop.bind(c,c.now));
+		var now = Date.now();
+		reqFrame(c.drawLoop.bind(c,now));
 	}
 	else
 	{
