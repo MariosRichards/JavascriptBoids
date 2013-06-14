@@ -10,10 +10,15 @@ $(document).ready(function(){
 	var w = $("#dummy_pane").width();	
 	var h = $("#dummy_pane").height();
 
+	var eagleSprite = new Image();
+	eagleSprite.src = "eagletop.png";
 	
 	
-	c = new Boid.Agent(w,h);
-	c.start();
+	c = new Boid.Agent(w, h, eagleSprite);
+	
+	eagleSprite.onload = function() {
+	    c.start(); 
+	};
 	
 		
 	resizeFonts();
