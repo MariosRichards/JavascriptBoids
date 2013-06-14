@@ -111,7 +111,6 @@ html {
 	border: thin solid #666;
 	border-radius:1%;
 	
-	
 	background-color:white;
 	z-index:5;
 	}
@@ -125,7 +124,7 @@ html {
 		
 		width:5%;
 		height:8%;
-		background-color:
+		
 		z-index:2;
 	}
 
@@ -153,12 +152,12 @@ body {
 	
 	position:absolute;
 
-	width:20%;
+	width:26%;
 	height:80%;
 
-	left:5%;
+	left:4%;
 	top:1%;
-	background-color:green;
+	/*background-color:green;*/
 }
 
 	
@@ -188,7 +187,7 @@ body {
 
 		border: thin solid #666; 
 		    
-		text-align: left;
+		text-align: center;
 			
 		-webkit-transition: all .1s ease;
 		-moz-transition: all .1s ease;
@@ -198,24 +197,20 @@ body {
 		
 	}
 	
-		
 	.panel {
 	
 		position:absolute;
-		
+		width:100%;
+		height:50%;
 	
-		border: thin solid #666; 
+			
 		background-color: #CCC;
 		width: 85%;
 		height: 49%;
 		border-radius:10%;
 		margin-top:0.6%;
 		
-		-webkit-transition: all .1s ease;
-		-moz-transition: all .1s ease;
-		-ms-transition: all .1s ease;
-		-o-transition: all .1s ease;
-		transition: all .5s ease;
+	
 	}
 	
 	#panel1 {
@@ -227,7 +222,19 @@ body {
 		    -webkit-border-radius: 11%;
 		    -moz-border-radius: 11%;
 		    border-radius: 11%;
+		    -webkit-box-shadow: 0px 9px  rgba(0,0,0,.7);
+    		-moz-box-shadow: 0px 9px 25px rgba(0,0,0,.7);
+    		box-shadow: 0px 9px 25px rgba(0,0,0,.7);
+
+		   
 		    
+			text-align: center;
+			
+			-webkit-transition: all .1s ease;
+			-moz-transition: all .1s ease;
+			-ms-transition: all .1s ease;
+			-o-transition: all .1s ease;
+			transition: all .5s ease;
 		
 	}
 	
