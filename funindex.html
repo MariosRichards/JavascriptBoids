@@ -113,17 +113,17 @@
 				
         	</canvas>
         	<!--<div class="birdeagle"> <img src="eagletop.png"/> </div> -->
-        	<div id="democontainer">
+        	<!--<div id="democontainer">
         		
         		<div id="demo">
         			
         		</div> 
-        	</div>
+        	</div> -->
         	
         </div>
 		
 		
-		<div id="canvas_infopanel">
+		<!--<div id="canvas_infopanel">
 			<div id="canvas_info_numberboids">
 				<button id="button_numberboids">Toggle Number of Boids
 					<div id="canvas_info">100</div>
@@ -138,14 +138,14 @@
 			<div id="canvas_info_boidids">
 				<button class="button_perceptionrange">Toggle Boid Ids</button>
 			</div>
-		</div>
+		</div> -->
 		
-		<div class="toolcontainer">
+		<div class="toolcontainer" id="toolcontainer1">
 		
 	        
 	        <!--<input id="demo_box_1" class="css-checkbox" type="checkbox" /> -->
 	        <div class="clickforpanel" id="clickpanel1">
-	        	POWERS
+	        	<div class="rotateclick1">POWERS</div>
 	        </div>	
 	        <div class="panel" id="panel1">
 	        	<div class="panelheader"><div class="panelheadertext">Require Restart Controls</div></div>
@@ -221,6 +221,10 @@
 					</div>
 	        	</div>	
 	        	
+	        	
+	        	<div class="clickforpanel" id="clickpanel2">
+	        		<div class="rotateclick2">OMNISCIENCE</div>
+	       	    </div>	
 	        	<div class="panel" id="panel2">
 	        		<div class="panelheader"><div class="panelheadertext">Real-time Controls</div></div>
 	        		<div class="panelbottom">
@@ -302,7 +306,188 @@
 		        		</div>
 	        		</div>
 	        	</div>
+	        </div>
+	        
+	        
+	        
+	        
+	        
+	        <!-- -------------------------------------------------------------------------->
+	        
+	        
+	       <div class="toolcontainer" id="toolcontainer2">
+	 
+	 
+	 			<!--<input id="demo_box_1" class="css-checkbox" type="checkbox" /> -->
+	        <div class="clickforpanel" id="clickpanel3">
+	        	<div class="rotateclick3">DEVILS</div>
 	        </div>	
+	        <div class="panel" id="panel3">
+	        	<div class="panelheader"><div class="panelheadertext">Require Restart Controls</div></div>
+				<div class="panelinset" id="controls2">
+				<!--<button id="restartbutton">Restart</button>	 -->
+	
+					
+					
+						<div class="panelinput">
+							<div class="trclass">
+								<div class="panelinputlabel">Initial Population</div>
+								<div class="panelinputnumber"><input class="panelinputfield" id="initpop" type="number" /></div>
+							</div>
+							<!--<tr>
+								<td>Speed</td>
+								<td><input id="speed" type="number" /></td>
+							</tr> -->
+							<div class="trclass">
+								<div class="panelinputlabel">Perception Range</div>
+								<div class="panelinputnumber"><input class="panelinputfield" id="percRange" type="number" /></div>							
+							</div>
+							<div class="trclass">
+								<div class="panelinputlabel">Obstacles</div>
+								<div class="panelinputnumber">
+									<div class="panelinputradio">
+										
+										<div class="labelradio"><div id="labelradiolabel1"><label for="obstaclebuttonon" >On</label></div></div>
+  										
+  										<div class="labelradio"><div id="labelradiolabel2"><label for="obstaclebuttonoff">Off</label></div></div>
+  										
+  										<div class="arearadio">
+  											<input class="buttonobstacle" id="obstaclebuttonon" name="radion-obstacle" type="radio" checked="checked"/>
+  											<input class="buttonobstacle" id="obstaclebuttonoff" name="radion-obstacle" type="radio" />
+  											<input class="hidden" id="obstacles" type="number"/>
+  										</div>
+  									</div>
+  								</div>
+							</div>
+							<div class="trclass">
+								<div class="panelinputlabel">Wall Collision Type</div>
+								<div class="panelinputnumber">
+									<div class="panelinputradio">
+								<!--<div class="panelinputnumber"><input class="panelinputfield" id="wallColl" type="number" />-->
+										<div class="labelradio"><div id="labelradiolabel3"><label for="wallcollision1" >Bounce</label></div></div>
+										
+										<div class="labelradio"><div id="labelradiolabel4"><label for="wallcollision2">Toroidal</label></div></div>
+  										
+  										<div class="labelradio"><div id="labelradiolabel5"><label for="wallcollision3">Repulsion</label></div></div>
+  										
+  										<div class="arearadio">
+  											<input class="buttonwall" id="wallcollision1" name="radion-wall" type="radio" checked="checked"/>
+											<input class="buttonwall" id="wallcollision2" name="radion-wall" type="radio" />
+											<input class="buttonwall" id="wallcollision3" name="radion-wall" type="radio" />
+											<input class="hidden" id="wallColl" type="number"/>
+
+										</div>
+
+									</div>
+								</div>
+							</div>
+								
+							
+							
+						</div>
+						 						
+					
+				
+					</div>
+					<div class="panelbottom">
+						<div id="restartbuttonpanel">
+							<input class="panelbutton" type="button" id="restartbutton" value="Restart Button"/>	
+						</div>		
+					</div>
+	        	</div>	
+	 
+	 
+	 
+	 			<div class="clickforpanel" id="clickpanel4">
+	        		<div class="rotateclick4">OMNIDIABLOS</div>
+	       	    </div>	
+	        	<div class="panel" id="panel4">
+	        		<div class="panelheader"><div class="panelheadertext">Real-time Controls</div></div>
+	        		<div class="panelbottom">
+	        			<div id="stopbuttonpanel">
+	        				<button class="panelbutton" id="stopbutton">stop</button>
+	        			</div>
+	        		</div>
+	        		<div class="panelinset" id="controls" >
+	        			
+	        			<div id="allslidersbox">
+	        				<div class="sliderbox">
+			        			<div class="sliderinputsbar">
+	
+			        				<div class="slidereye" id="eyealignment"> <img src="openedeye.svg"/> </div>		
+				        			<div class="sliderlabel">
+			  							<label for="amountalignment" id="labelalignment">Alignment:</label>
+									</div>
+									<div class="slideramount">
+			  							<input class="slideramountfield" type="text" id="amountalignment"/>										
+									</div>
+								</div>
+								<div class="slider">
+				        			<div class="my_slideralignment">
+				        				
+				        			</div>
+			        			</div>
+			        		</div>
+		        			
+		        			<div class="sliderbox">
+			        			<div class="sliderinputsbar">
+			        				<div class="slidereye" id="eyerepulsion"> <img src="openedeye.svg"/> </div>		
+	
+			        				
+				        			<div class="sliderlabel">
+			  							<label for="amountrepulsion" id="labelrepulsion">Repulsion:</label>
+									</div>
+									<div class="slideramount">
+			  							<input class="slideramountfield" type="text" id="amountrepulsion"/>
+									</div>
+								</div>
+								<div class="slider">
+				        			<div class="my_sliderrepulsion">
+				        				
+				        			</div>
+			        			</div>
+			        		</div>
+		        			<div class="sliderbox">
+			        			<div class="sliderinputsbar">
+			        				<div class="sliderlabel">	
+			  							<label for="amountcohesion" id="labelcohesion">Cohesion:</label>
+			  						</div>
+									<div class="slideramount">
+										<input class="slideramountfield" type="text" id="amountcohesion"/>	
+									</div>
+									<div class="slidereye" id="eyecohesion"> <img src="openedeye.svg"/> </div>
+								</div>
+								<div class="slider">
+				        			<div class="my_slidercohesion">
+				        				
+				        			</div>
+			        			</div>
+		        			</div>
+		        			<div class="sliderbox">
+			        			<div class="sliderinputsbar">
+			        				<div class="sliderlabel">	
+			  							<label for="amountsimspeed" id="labelsimspeed">SimSpeed:</label>
+			  						</div>
+									<div class="slideramount">
+										<input class="slideramountfield" type="text" id="amountsimspeed"/>	
+									</div>
+								</div>
+								<div class="slider">
+				        			<div class="my_slidersimspeed">
+				        				
+				        			</div>
+			        			</div>
+		       
+			        		</div>
+		        		</div>
+	        		</div>
+	        	</div>
+	 
+	 
+	       </div>
+	      
+	        
+	        	
 	</div>	
     </body>
 </html>

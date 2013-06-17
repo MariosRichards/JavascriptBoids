@@ -77,7 +77,7 @@ html {
 
 #dummy_pane {
 	position:absolute;
-	width:54.6%;
+	width:58%;
 	height:80%;
 	/*width:99.5%;
 	height:80%;*/
@@ -94,21 +94,25 @@ html {
 	position:absolute;
 	
 	
-	width:54.6%;
+	width:58%;
 	height:80%;
 	
 	/*width:99.5%;
 	height:80%;*/
 	
 	
-	left:30%;
-	top:1%;
+	left:21%;
+	top:10%;
 	
 	/*left:0%;
 	top:8%;*/
 	
 	
 	border: thin solid #666;
+	border: 2px solid #4A4547; 
+
+	box-shadow: 0px 0px 30px 0px rgba(0,0,0,.7);
+
 	border-radius:1%;
 	
 	background-color:white;
@@ -152,40 +156,45 @@ body {
 	
 	position:absolute;
 
-	width:26%;
+	width:20%;
 	height:80%;
 
-	left:4%;
-	top:1%;
+	
 	/*background-color:green;*/
 }
 
+#toolcontainer1 {
+	
+	left:4%;
+	top:10%;
+}
 	
 	
 	.clickforpanel {
 		
 		position:absolute;
 		width:100%;
-		height:49%;
+		height:50%;
 		 
 		left:-15%;
 		top:0%;
-		
-		margin-top:0.6%;
 
 
 		color: white;
 		text-decoration: none;
-		background-color: rgba(219,87,5,1);		 
+		background-color: rgba(219,87,5,1);
+		background-color: rgba(250,87,5,1);			 
 		display: block;
 		-webkit-border-radius: 11%;
 		-moz-border-radius: 11%;
 		border-radius: 11%;
-		-webkit-box-shadow: 0px 9px  rgba(0,0,0,.7);
+		-webkit-box-shadow: 0px 9px 25px  rgba(0,0,0,.7);
     	-moz-box-shadow: 0px 9px 25px rgba(0,0,0,.7);
-    	box-shadow: 0px 9px 25px rgba(0,0,0,.7);
+    	box-shadow: 0px 0px 45px rgba(0,0,0,.7);
 
 		border: thin solid #666; 
+		border: 2px solid #4A4547; 
+
 		    
 		text-align: center;
 			
@@ -197,6 +206,30 @@ body {
 		
 	}
 	
+	
+	#clickpanel2 {
+		
+		top:50%;
+		
+
+	}
+	
+	#clickpanel3 {
+		
+		left:0%;
+		top:0%;
+	}
+	
+	#clickpanel4 {
+		
+		left:0%;
+		top:50%;
+		
+
+		
+	}
+	
+	
 	.panel {
 	
 		position:absolute;
@@ -206,9 +239,10 @@ body {
 			
 		background-color: #CCC;
 		width: 85%;
-		height: 49%;
-		border-radius:10%;
-		margin-top:0.6%;
+		height: 50%;
+		
+		border: 2px solid #4A4547; 
+
 		
 	
 	}
@@ -219,12 +253,11 @@ body {
 		    text-decoration: none;
 		    background-color: rgba(219,87,5,1);		 
 		    display: block;
-		    -webkit-border-radius: 11%;
-		    -moz-border-radius: 11%;
-		    border-radius: 11%;
-		    -webkit-box-shadow: 0px 9px  rgba(0,0,0,.7);
+		    
+		  
+		    /*-webkit-box-shadow: 0px 9px  rgba(0,0,0,.7);
     		-moz-box-shadow: 0px 9px 25px rgba(0,0,0,.7);
-    		box-shadow: 0px 9px 25px rgba(0,0,0,.7);
+    		box-shadow: 0px 9px 25px rgba(0,0,0,.7);*/
 
 		   
 		    
@@ -509,10 +542,29 @@ body {
 
 	#panel2 {
 		
+		
+		
 		top:50%;
 		left:0%;
 		
-		
+		color: white;
+		    text-decoration: none;
+		    background-color: rgba(219,87,5,1);		 
+		    display: block;
+		    
+		    /*-webkit-box-shadow: 0px 9px  rgba(0,0,0,.7);
+    		-moz-box-shadow: 0px 9px 25px rgba(0,0,0,.7);
+    		box-shadow: 0px 9px 25px rgba(0,0,0,.7);*/
+
+		   
+		    
+			text-align: center;
+			
+			-webkit-transition: all .1s ease;
+			-moz-transition: all .1s ease;
+			-ms-transition: all .1s ease;
+			-o-transition: all .1s ease;
+			transition: all .5s ease;
 	}
 	
 		#stopbuttonpanel {
@@ -692,6 +744,70 @@ body {
 					top:-35%;
 					
 				}
+
+
+
+#toolcontainer2 {
+	
+	
+	left:79%;
+	top:10%;
+	
+}
+
+
+#panel3 {
+					
+			color: white;
+		    text-decoration: none;
+		    background-color: rgba(219,87,5,1);		 
+		    display: block;
+		    
+		  
+		    /*-webkit-box-shadow: 0px 9px  rgba(0,0,0,.7);
+    		-moz-box-shadow: 0px 9px 25px rgba(0,0,0,.7);
+    		box-shadow: 0px 9px 25px rgba(0,0,0,.7);*/
+
+		   
+		    
+			text-align: center;
+			
+			-webkit-transition: all .1s ease;
+			-moz-transition: all .1s ease;
+			-ms-transition: all .1s ease;
+			-o-transition: all .1s ease;
+			transition: all .5s ease;
+		
+}
+	
+#panel4 {
+		
+		
+		top:50%;
+		left:0%;
+					
+		color: white;
+		text-decoration: none;
+		background-color: rgba(219,87,5,1);		 
+		display: block;
+		    
+		  
+		    /*-webkit-box-shadow: 0px 9px  rgba(0,0,0,.7);
+    		-moz-box-shadow: 0px 9px 25px rgba(0,0,0,.7);
+    		box-shadow: 0px 9px 25px rgba(0,0,0,.7);*/
+
+		   
+		    
+		text-align: center;
+			
+		-webkit-transition: all .1s ease;
+		-moz-transition: all .1s ease;
+		-ms-transition: all .1s ease;
+		-o-transition: all .1s ease;
+		transition: all .5s ease;
+		
+}
+
 				        				
 
 #canvas_infopanel {
@@ -914,5 +1030,101 @@ td:nth-child(2) {
 	
 	visibility:hidden;
 	display:none;
+}
+
+.rotateclick1 {
+	
+	position:absolute;
+		
+		left:0%;
+		top:75%;	
+	
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  -o-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+
+  /* also accepts left, right, top, bottom coordinates; not required, but a good idea for styling */
+  -webkit-transform-origin: 0% 0%;
+  -moz-transform-origin: 0% 0%;
+  -ms-transform-origin: 0% 0%;
+  -o-transform-origin: 0% 0%;
+  transform-origin: 0% 0%;
+
+  /* Should be unset in IE9+ I think. */
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+}
+
+.rotateclick2 {
+	
+	position:absolute;
+		
+		left:0%;
+		top:95%;	
+	
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  -o-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+
+  /* also accepts left, right, top, bottom coordinates; not required, but a good idea for styling */
+  -webkit-transform-origin: 0% 0%;
+  -moz-transform-origin: 0% 0%;
+  -ms-transform-origin: 0% 0%;
+  -o-transform-origin: 0% 0%;
+  transform-origin: 0% 0%;
+
+  /* Should be unset in IE9+ I think. */
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+}
+
+.rotateclick3 {
+	
+	position:absolute;
+		
+		left:86%;
+		top:75%;	
+	
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  -o-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+
+  /* also accepts left, right, top, bottom coordinates; not required, but a good idea for styling */
+  -webkit-transform-origin: 0% 0%;
+  -moz-transform-origin: 0% 0%;
+  -ms-transform-origin: 0% 0%;
+  -o-transform-origin: 0% 0%;
+  transform-origin: 0% 0%;
+
+  /* Should be unset in IE9+ I think. */
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+}
+
+.rotateclick4 {
+	
+	position:absolute;
+		
+		left:86%;
+		top:95%;	
+	
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  -o-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+
+  /* also accepts left, right, top, bottom coordinates; not required, but a good idea for styling */
+  -webkit-transform-origin: 0% 0%;
+  -moz-transform-origin: 0% 0%;
+  -ms-transform-origin: 0% 0%;
+  -o-transform-origin: 0% 0%;
+  transform-origin: 0% 0%;
+
+  /* Should be unset in IE9+ I think. */
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
 }
 

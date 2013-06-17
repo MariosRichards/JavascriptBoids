@@ -71,7 +71,11 @@ $(document).ready(function(){
 	$("#eyecohesion").click(toggleVisibility_CohesionButtonCB);
 
 	
+	
 	$('#clickpanel1').click(togglePanel1Show);
+	$('#clickpanel2').click(togglePanel2Show);
+	$('#clickpanel3').click(togglePanel3Show);
+	$('#clickpanel4').click(togglePanel4Show);
 	
 	
 	//$("#Alignment").click(toggleAlignment);
@@ -486,9 +490,9 @@ function togglePanel1Show(panel) {
 	
 	if($clickpanel1.hasClass("active"))
 	{
-		$clickpanel1.css("left", "85%");
+		$clickpanel1.css("left", "70%");
 		$clickpanel1.removeClass("active");
-		$panel1.css("left", "100%");
+		$panel1.css("left", "85%");
 	}
 	
 	else {
@@ -499,6 +503,73 @@ function togglePanel1Show(panel) {
 	
 	
 }
+
+function togglePanel2Show(panel) {
+	
+	var $clickpanel2 = $('#clickpanel2');
+	var $panel2 = $('#panel2');
+	
+	if($clickpanel2.hasClass("active"))
+	{
+		$clickpanel2.css("left", "70%");
+		$clickpanel2.removeClass("active");
+		$panel2.css("left", "85%");
+	}
+	
+	else {
+		$clickpanel2.css("left", "-15%");
+		$clickpanel2.addClass("active");
+		$panel2.css("left", "0%");
+		
+	}
+	
+	
+}
+
+function togglePanel3Show(panel) {
+	
+	var $clickpanel3 = $('#clickpanel3');
+	var $panel3 = $('#panel3');
+	
+	if($clickpanel3.hasClass("active"))
+	{
+		$clickpanel3.css("left", "0%");
+		$clickpanel3.removeClass("active");
+		$panel3.css("left", "0%");
+	}
+	
+	else {
+		$clickpanel3.css("left", "-85%");
+		$clickpanel3.addClass("active");
+		$panel3.css("left", "-85%");
+	}
+	
+	
+}
+
+function togglePanel4Show(panel) {
+	
+	var $clickpanel4 = $('#clickpanel4');
+	var $panel4 = $('#panel4');
+	
+	if($clickpanel4.hasClass("active"))
+	{
+		$clickpanel4.css("left", "0%");
+		$clickpanel4.removeClass("active");
+		$panel4.css("left", "0%");
+	}
+	
+	else {
+		$clickpanel4.css("left", "-85%");
+		$clickpanel4.addClass("active");
+		$panel4.css("left", "-85%");
+	}
+	
+	
+}
+
+
+
 
 
 function scaleAndDrawPaths(width,height) {
