@@ -232,9 +232,9 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 	// Rule coefficients
 
 	
+	// How BOIDS respond to PERCEPTS
 	
-	
-	this.ruleCoeffs = [];
+	this.ruleCoeffs = [];							// list of objects a boid can perceive and react to
 	this.ruleCoeffs[0] = [0, 0, 0, 0,    1000, 0]; // obstacle
 	this.ruleCoeffs[1] = [0, 0, 0, 1000, 0,    0]; // wall
 	this.ruleCoeffs[2] = [1, 1, 0, 0,    0,    0]; // boid
@@ -320,7 +320,23 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 	
 	
 	
-	
+	this.testUndefinedValue = function(calledFromWhere)
+	{
+		for (var pigeon = 0; pigeon < this.PigeonHoles.length; pigeon++)
+		{
+			var bj = this.PigeonHoles[pigeon];
+			while (bj!==null)	
+			{
+				if (bj===undefined)
+				{
+					debugger;
+				}
+
+				bj = bj.next;
+			}
+			
+		}	
+	}	
 	
 	
 	
@@ -595,6 +611,10 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 
 				if (this.next!==null)
 				{				
+					if (!this.next)
+					{
+						debugger;
+					}
 					this.next.prev = this;
 				}
 
@@ -1270,6 +1290,9 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
         var pigeonholeWidth = this.pigeonholeWidth;
         var pigeonholeHeight = this.pigeonholeHeight;
 
+		
+		this.testUndefinedValue.bind(this);
+		this.testUndefinedValue("beginning of move balls");
 		// if (this.theBalls.length>0)
 		// {
 		
@@ -1456,6 +1479,8 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 			
 			
         }
+		this.testUndefinedValue.bind(this);
+		this.testUndefinedValue("end of move balls");			
 
 	// fake trigger code	
 
@@ -1566,7 +1591,8 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 							  //this.genericStroke
 
 		}
-		
+		this.testUndefinedValue.bind(this);		
+		this.testUndefinedValue("right after make");			
 		// HARDCODED INTERACTION LIST CODE
 		if (this.InteractionListON)
 		{
@@ -1592,14 +1618,13 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 
     }
 
-
-
-
-
-	  
     this.init();	  
 
 }
+
+
+
+
 
 
 
@@ -1663,3 +1688,5 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 	// }	
 
 
+
+	
