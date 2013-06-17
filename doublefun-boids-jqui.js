@@ -24,6 +24,13 @@ svg.objekt = function(path){
 
 var global;
 
+
+var godversusdemonpanel13 = 0;
+var godversusdemonpanel24 = 0;
+
+var godversusdemon = godversusdemonpanel13 + godversusdemonpanel24; 
+
+
 $(document).ready(function(){ 
 	
 	
@@ -69,13 +76,36 @@ $(document).ready(function(){
 	$("#eyealignment").click(toggleVisibility_AlignmentButtonCB);
 	$("#eyerepulsion").click(toggleVisibility_RepulsionButtonCB);
 	$("#eyecohesion").click(toggleVisibility_CohesionButtonCB);
-
+	
 	
 	
 	$('#clickpanel1').click(togglePanel1Show);
 	$('#clickpanel2').click(togglePanel2Show);
 	$('#clickpanel3').click(togglePanel3Show);
 	$('#clickpanel4').click(togglePanel4Show);
+	
+	
+	
+	
+	
+	$('#godlypower1').click(activateGodlyPower1);	
+	$('#godlypower2').click(activateGodlyPower2);
+	$('#godlypower3').click(activateGodlyPower3);
+	$('#godlypower4').click(activateGodlyPower4);
+	$('#demonpower1').click(activateDemonPower1);	
+	$('#demonpower2').click(activateDemonPower2);
+	$('#demonpower3').click(activateDemonPower3);
+	$('#demonpower4').click(activateDemonPower4);
+	$('#godlyomni1').click(toggleGodlyOmni1);
+	$('#godlyomni2').click(toggleGodlyOmni2);
+	$('#godlyomni3').click(toggleGodlyOmni3);
+	$('#demonomni1').click(toggleDemonOmni1);
+	$('#demonomni2').click(toggleDemonOmni2);
+	$('#demonomni3').click(toggleDemonOmni3);
+
+
+	
+	
 	
 	
 	//$("#Alignment").click(toggleAlignment);
@@ -483,7 +513,7 @@ function changeWallCollisionState(number) {
 	
 }
 
-function togglePanel1Show(panel) {
+function togglePanel1Show() {
 	
 	var $clickpanel1 = $('#clickpanel1');
 	var $panel1 = $('#panel1');
@@ -493,18 +523,31 @@ function togglePanel1Show(panel) {
 		$clickpanel1.css("left", "70%");
 		$clickpanel1.removeClass("active");
 		$panel1.css("left", "85%");
+		
+		
+		if(godversusdemonpanel13 != -1) godversusdemonpanel13 = 0;
+		
 	}
 	
 	else {
 		$clickpanel1.css("left", "-15%");
 		$clickpanel1.addClass("active");
 		$panel1.css("left", "0%");
+		
+		if($('#clickpanel3').hasClass("active"))
+		{
+			
+			togglePanel3Show();
+		}
+		
+		godversusdemonpanel13 = +1;
 	}
 	
+	calculateGodVersusDemon();
 	
 }
 
-function togglePanel2Show(panel) {
+function togglePanel2Show() {
 	
 	var $clickpanel2 = $('#clickpanel2');
 	var $panel2 = $('#panel2');
@@ -514,6 +557,10 @@ function togglePanel2Show(panel) {
 		$clickpanel2.css("left", "70%");
 		$clickpanel2.removeClass("active");
 		$panel2.css("left", "85%");
+		
+		
+		if(godversusdemonpanel24 != -1) godversusdemonpanel24 = 0;
+	
 	}
 	
 	else {
@@ -521,54 +568,180 @@ function togglePanel2Show(panel) {
 		$clickpanel2.addClass("active");
 		$panel2.css("left", "0%");
 		
+		if($('#clickpanel4').hasClass("active"))
+		{
+			
+			togglePanel4Show();
+		}
+		godversusdemonpanel24 = +1;
+		
 	}
-	
-	
+	calculateGodVersusDemon();
+		
 }
 
-function togglePanel3Show(panel) {
+function togglePanel3Show() {
 	
 	var $clickpanel3 = $('#clickpanel3');
 	var $panel3 = $('#panel3');
 	
 	if($clickpanel3.hasClass("active"))
 	{
-		$clickpanel3.css("left", "0%");
+		$clickpanel3.css("left", "-85%");
 		$clickpanel3.removeClass("active");
-		$panel3.css("left", "0%");
+		$panel3.css("left", "-85%");
+		
+		
+		
+		if(godversusdemonpanel13 != +1) godversusdemonpanel13 = 0;
+		
+		
 	}
 	
 	else {
-		$clickpanel3.css("left", "-85%");
+		$clickpanel3.css("left", "0%");
 		$clickpanel3.addClass("active");
-		$panel3.css("left", "-85%");
+		$panel3.css("left", "0%");
+		
+		if($('#clickpanel1').hasClass("active"))
+		{
+			
+			togglePanel1Show();	
+		}
+		godversusdemonpanel13 = -1;
 	}
 	
+	calculateGodVersusDemon();
 	
 }
 
-function togglePanel4Show(panel) {
+function togglePanel4Show() {
 	
 	var $clickpanel4 = $('#clickpanel4');
 	var $panel4 = $('#panel4');
+	//var $clickpanel2 = $('#clickpanel2');
+	//var $panel2 = $('#panel2');
 	
 	if($clickpanel4.hasClass("active"))
 	{
-		$clickpanel4.css("left", "0%");
+		$clickpanel4.css("left", "-85%");
 		$clickpanel4.removeClass("active");
-		$panel4.css("left", "0%");
+		$panel4.css("left", "-85%");
+		
+		
+		if(godversusdemonpanel24 != +1) godversusdemonpanel24 = 0;
+		
+		
 	}
 	
 	else {
-		$clickpanel4.css("left", "-85%");
+		$clickpanel4.css("left", "0%");
 		$clickpanel4.addClass("active");
-		$panel4.css("left", "-85%");
+		$panel4.css("left", "0%");
+		
+		
+		if($('#clickpanel2').hasClass("active"))
+		{
+			
+			togglePanel2Show();
+	
+		}	
+		godversusdemonpanel24 = -1;	
 	}
 	
+	calculateGodVersusDemon();
 	
 }
 
 
+function activateGodlyPower1 () {
+	
+	alert(this);
+	
+}
+
+function activateGodlyPower2 () {
+	
+	alert(this);
+	
+}
+
+function activateGodlyPower3 () {
+	
+	alert(this);
+	
+}
+
+function activateGodlyPower4 () {
+	
+	alert(this);
+	
+}
+
+function activateDemonPower1 () {
+	
+	alert(this);
+	
+}
+
+function activateDemonPower2 () {
+	
+	alert(this);
+	
+}
+
+function activateDemonPower3 () {
+	
+	alert(this);
+	
+}
+
+function activateDemonPower4 () {
+	
+	alert(this);
+	
+}
+
+function toggleGodlyOmni1 () {
+	
+	alert(this);
+	
+}
+
+function toggleGodlyOmni2 () {
+	
+	alert(this);
+	
+}
+function toggleGodlyOmni3 () {
+	
+	alert(this);
+	
+}
+
+function toggleDemonOmni1 () {
+	
+	alert(this);
+	
+}
+
+function toggleDemonOmni2 () {
+	
+	alert(this);
+	
+}
+
+function toggleDemonOmni3 () {
+	
+	alert(this);
+	
+}
+
+
+function calculateGodVersusDemon() {
+	
+	godversusdemon = godversusdemonpanel13 + godversusdemonpanel24; 
+}
 
 
 

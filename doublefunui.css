@@ -207,22 +207,28 @@ body {
 	}
 	
 	
+	#clickpanel1 {
+		
+		left:70%;
+
+	}
+	
 	#clickpanel2 {
 		
 		top:50%;
-		
+		left:70%;
 
 	}
 	
 	#clickpanel3 {
 		
-		left:0%;
+		left:-85%;
 		top:0%;
 	}
 	
 	#clickpanel4 {
 		
-		left:0%;
+		left:-85%;
 		top:50%;
 		
 
@@ -248,6 +254,10 @@ body {
 	}
 	
 	#panel1 {
+			
+			
+			left:85%;
+			
 					
 			color: white;
 		    text-decoration: none;
@@ -337,6 +347,17 @@ body {
 					margin-top:3%;
 				}
 				
+				.omnitrclass {
+					position:relative;
+					float:left;
+					text-align:center;
+					height:22%;
+					width:100%;
+					
+					
+					margin-top:10%;
+				}
+				
 										
 					.godlypower {
 						
@@ -349,7 +370,29 @@ body {
 						
 					}
 					
+					.godlyomni {
+						
+						position:absolute;
+						
+						top:0%;
+						left:5%;
+						width:35%;
+						height:100%;
+						
+					}
+					
 					.demonpower {
+						
+						position:absolute;
+						
+						top:0%;
+						right:5%;
+						width:35%;
+						height:100%;
+						
+					}
+					
+					.demonomni {
 						
 						position:absolute;
 						
@@ -586,7 +629,7 @@ body {
 		
 		
 		top:50%;
-		left:0%;
+		left:85%;
 		
 		color: white;
 		    text-decoration: none;
@@ -724,7 +767,6 @@ body {
 						
 						top:0%;
 						left:0%;
-					
 					}
 			
 			.slider {
@@ -798,6 +840,9 @@ body {
 
 
 #panel3 {
+			
+			
+			left:-85%;
 					
 			color: white;
 		    text-decoration: none;
@@ -825,7 +870,7 @@ body {
 		
 		
 		top:50%;
-		left:0%;
+		left:-85%;
 					
 		color: white;
 		text-decoration: none;
@@ -1080,7 +1125,7 @@ td:nth-child(2) {
 	position:absolute;
 		
 		left:0%;
-		top:75%;	
+		top:85%;	
 	
   -webkit-transform: rotate(-90deg);
   -moz-transform: rotate(-90deg);
@@ -1152,7 +1197,7 @@ td:nth-child(2) {
 	position:absolute;
 		
 		left:86%;
-		top:95%;	
+		top:85%;	
 	
   -webkit-transform: rotate(-90deg);
   -moz-transform: rotate(-90deg);
