@@ -1461,6 +1461,9 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
         for(var i=theBalls.length-1; i>=0; i--) {
             theBalls[i].move(timestep);
 			
+			this.testUndefinedValue.bind(this);		
+			this.testUndefinedValue("right after move");		
+			
 			// 
 			
 			if (this.shrineON)
