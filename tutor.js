@@ -320,23 +320,23 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 	
 	
 	
-	this.testUndefinedValue = function(calledFromWhere)
-	{
-		for (var pigeon = 0; pigeon < this.PigeonHoles.length; pigeon++)
-		{
-			var bj = this.PigeonHoles[pigeon];
-			while (bj!==null)	
-			{
-				if (bj===undefined)
-				{
-					debugger;
-				}
+	// this.testUndefinedValue = function(calledFromWhere)
+	// {
+		// for (var pigeon = 0; pigeon < this.PigeonHoles.length; pigeon++)
+		// {
+			// var bj = this.PigeonHoles[pigeon];
+			// while (bj!==null)	
+			// {
+				// if (bj===undefined)
+				// {
+					// debugger;
+				// }
 
-				bj = bj.next;
-			}
+				// bj = bj.next;
+			// }
 			
-		}	
-	}	
+		// }	
+	// }	
 	
 	
 	
@@ -600,6 +600,9 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 					this.next.prev = this.prev;
 				}
 
+				// self.testUndefinedValue.bind(self);		
+				// self.testUndefinedValue("middle of move");
+				
 				// AT THIS POINT ORPHANS SHOULD BE ENTIRELY REMOVED!				
 				
 				// add to new pigeonhole list
@@ -611,10 +614,10 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 
 				if (this.next!==null)
 				{				
-					if (!this.next)
-					{
-						debugger;
-					}
+					// if (!this.next)
+					// {
+						// debugger;
+					// }
 					this.next.prev = this;
 				}
 
@@ -1289,10 +1292,13 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
         var theBalls = this.theBalls;
         var pigeonholeWidth = this.pigeonholeWidth;
         var pigeonholeHeight = this.pigeonholeHeight;
-
+		// if (timestep>200)
+		// {
+			// console.log(timestep);
+		// }
 		
-		this.testUndefinedValue.bind(this);
-		this.testUndefinedValue("beginning of move balls");
+		// this.testUndefinedValue.bind(this);
+		// this.testUndefinedValue("beginning of move balls");
 		// if (this.theBalls.length>0)
 		// {
 		
@@ -1461,8 +1467,8 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
         for(var i=theBalls.length-1; i>=0; i--) {
             theBalls[i].move(timestep);
 			
-			this.testUndefinedValue.bind(this);		
-			this.testUndefinedValue("right after move");		
+			// this.testUndefinedValue.bind(this);		
+			// this.testUndefinedValue("right after move");		
 			
 			// 
 			
@@ -1482,8 +1488,8 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 			
 			
         }
-		this.testUndefinedValue.bind(this);
-		this.testUndefinedValue("end of move balls");			
+		// this.testUndefinedValue.bind(this);
+		// this.testUndefinedValue("end of move balls");			
 
 	// fake trigger code	
 
@@ -1594,8 +1600,8 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 							  //this.genericStroke
 
 		}
-		this.testUndefinedValue.bind(this);		
-		this.testUndefinedValue("right after make");			
+		// this.testUndefinedValue.bind(this);		
+		// this.testUndefinedValue("right after make");			
 		// HARDCODED INTERACTION LIST CODE
 		if (this.InteractionListON)
 		{
