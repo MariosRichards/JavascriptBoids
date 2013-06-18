@@ -1524,6 +1524,11 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 		    var now = Date.now();
 			var dt = (now - lastTime) *6 / 100; // time in ms - fraction of 1000/60 ms
 
+			if (dt > 100)
+			{
+				console.log(lastTime,now,dt);
+			
+			}
 			//this.lastTime = now;
 		
 		
