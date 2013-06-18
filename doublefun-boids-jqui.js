@@ -834,13 +834,15 @@ function toggleGodlyOmni1 () {
 	$godlyomni = $(this);
 	
 	if (!$godlyomni.hasClass("imagehighlight")) {
-		alert("Godly Omni 1 Activated!");
+		c.pigeonholesVisible = true;
 		$godlyomni.addClass("imagehighlight");
 	}
 	else{
-		alert("Godly Omni 1 Deactivated!");
+		c.pigeonholesVisible = false;
 		$godlyomni.removeClass("imagehighlight");
 	}
+	
+	if(!$godlyomni) c.pigeonholesVisible = false;
 	
 }
 
@@ -886,7 +888,7 @@ function toggleDemonOmni1 () {
 		$demonomni.removeClass("imagehighlight");
 	}
 	
-	if(!$godlyomni) c.pigeonholesVisible = false;
+	if(!$demonomni) c.pigeonholesVisible = false;
 
 }
 
