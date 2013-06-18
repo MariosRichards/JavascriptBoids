@@ -24,6 +24,7 @@ svg.objekt = function(path){
 
 var global;
 
+var isInGame = true;
 
 var godversusdemonpanel13 = 0;
 var godversusdemonpanel24 = 0;
@@ -41,6 +42,35 @@ $(document).ready(function(){
 	$("#canvas_info_perceptionrange").click(perceptionrangeButtonCB);
 	$("#canvas_info_boidids").click(boididsButtonCB);*/
 	
+	/*Actions to trigger when users goes out and in the tab*/
+	////////////////
+	/////
+	
+	$(window).blur(function(e) {
+    // Do Blur Actions Here
+    	if(isInGame==true) {
+    		
+    		stopButtonCB();
+    		console.log("Byeee!");
+    		isInGame = false;
+    	}
+    	
+	});
+	
+	$(window).focus(function(e) {
+    // Do Focus Actions Here
+    	if(isInGame==false) {
+    		
+    		startButtonCB();
+    		console.log("Welcome back!");
+    		isInGame = true;
+    	}
+    	
+    	
+	});
+		
+	//////////////////
+	//////////////////
 	
 	
 	$("#obstaclebuttonon").click(function(){
@@ -262,7 +292,7 @@ function checkbutton()
 }
 
 
-function stopButtonCB()
+/*function stopButtonCB()
 {
 	if (c.running) {
 		c.running = 0;
@@ -274,6 +304,39 @@ function stopButtonCB()
 		reqFrame(c.drawLoop.bind(c,now));
 	
 	}
+}*/
+
+function stopButtonCB()
+{
+	
+	if (c.running == 1) {
+		
+		c.running = 0;
+			
+	}
+	/*if (c.running) {
+		c.running = 0;
+		$("#stopbutton").html("start");
+	} else {
+		c.running = 1;
+		$("#stopbutton").html("stop");
+		var now = Date.now();
+		reqFrame(c.drawLoop.bind(c,now));
+	
+	}*/
+}
+
+function startButtonCB()
+{
+	if (c.running == 0) {
+		
+		c.running = 1;
+		var now = Date.now();
+		
+		reqFrame(c.drawLoop.bind(c,now));
+		
+	}
+	
 }
 
 function numberboidsButtonCB()
