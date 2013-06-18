@@ -50,8 +50,8 @@ $(document).ready(function(){
     // Do Blur Actions Here
     	if(isInGame==true) {
     		
-    		stopButtonCB();
     		console.log("Byeee!");
+    		stopButtonCB();
     		isInGame = false;
     	}
     	
