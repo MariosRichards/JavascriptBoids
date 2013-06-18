@@ -1524,9 +1524,9 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 		    var now = Date.now();
 			var dt = (now - lastTime) *6 / 100; // time in ms - fraction of 1000/60 ms
 
-			if (dt > 100)
+			if (dt > 10) // assume this means that a different tab had been selected, so movement jumps won't be offensive
 			{
-				console.log(lastTime,now,dt);
+				dt = 1;
 			
 			}
 			//this.lastTime = now;
