@@ -29,7 +29,7 @@ var isInGame = true;
 var godversusdemonpanel13 = 0;
 var godversusdemonpanel24 = 0;
 
-var godversusdemon = godversusdemonpanel13 + godversusdemonpanel24; 
+var godversusdemon = godversusdemonpanel13 + godversusdemonpanel24;
 
 
 $(document).ready(function(){ 
@@ -50,7 +50,6 @@ $(document).ready(function(){
     // Do Blur Actions Here
     	if(isInGame==true) {
     		
-    		console.log("Byeee!");
     		stopButtonCB();
     		isInGame = false;
     	}
@@ -62,7 +61,6 @@ $(document).ready(function(){
     	if(isInGame==false) {
     		
     		startButtonCB();
-    		console.log("Welcome back!");
     		isInGame = true;
     	}
     	
@@ -197,6 +195,13 @@ $(document).ready(function(){
 	
 	$("#initpop").val(c.initialPopulation);
 	$("#percRange").val(c.perceptionRange);
+	
+	
+	//Deactivate Perception Range, BoidNumber and Grid to false in beginning
+		
+	initializeViewToFalse();
+
+	
 	
 	controlmySliders();
 	changeWallCollisionState(0);
@@ -354,7 +359,7 @@ function numberboidsButtonCB()
 	
 }
 
-function pigeonholesButtonCB()
+/*function pigeonholesButtonCB()
 {	
 	if (c.pigeonholesVisible) {
 		c.pigeonholesVisible = false;
@@ -363,7 +368,7 @@ function pigeonholesButtonCB()
 		c.pigeonholesVisible = true;
 	}
 	
-}
+}*/
 
 /*function perceptionrangeButtonCB(value)
 {	
@@ -376,7 +381,7 @@ function pigeonholesButtonCB()
 	}
 }*/
 
-function boididsButtonCB()
+/*function boididsButtonCB()
 {	
 	
 	if (c.displayBoidIDs) {
@@ -385,7 +390,7 @@ function boididsButtonCB()
 	else{
 		c.displayBoidIDs = true;
 	}
-}
+}*/
 
 
 function restartButtonCB()
@@ -844,11 +849,11 @@ function toggleGodlyOmni2 () {
 	$godlyomni = $(this);
 	
 	if (!$godlyomni.hasClass("imagehighlight")) {
-		alert("Godly Omni 2 Activated!");
+		c.ruleVectorVisible = [true, true, false, false, false, false];	
 		$godlyomni.addClass("imagehighlight");
 	}
 	else{
-		alert("Godly Omni 2 Deactivated!");
+		c.ruleVectorVisible = [false, false, false, false, false, false];	
 		$godlyomni.removeClass("imagehighlight");
 	}
 	
@@ -871,16 +876,18 @@ function toggleGodlyOmni3 () {
 function toggleDemonOmni1 () {
 	
 	$demonomni = $(this);
-	
+		
 	if (!$demonomni.hasClass("imagehighlight")) {
-		alert("Demon Omni 1 Activated!");
+		c.pigeonholesVisible = true;
 		$demonomni.addClass("imagehighlight");
 	}
 	else{
-		alert("Demon Omni 1 Deactivated!");
+		c.pigeonholesVisible = false;
 		$demonomni.removeClass("imagehighlight");
 	}
 	
+	if(!$godlyomni) c.pigeonholesVisible = false;
+
 }
 
 function toggleDemonOmni2 () {
@@ -888,17 +895,18 @@ function toggleDemonOmni2 () {
 	$demonomni = $(this);
 	
 	if (!$demonomni.hasClass("imagehighlight")) {
-		alert("Demon Omni 2 Activated!");
+		c.displayBoidIDs = true;
 		$demonomni.addClass("imagehighlight");
+		
 	}
 	else{
-		alert("Demon Omni 2 Deactivated!");
+		c.displayBoidIDs = false;
 		$demonomni.removeClass("imagehighlight");
 	}
 	
 }
 
-function toggleDemonOmni3 (value) {
+function toggleDemonOmni3 () {
 	
 	$demonomni = $(this);
 	
@@ -912,6 +920,7 @@ function toggleDemonOmni3 (value) {
 		$demonomni.removeClass("imagehighlight");
 	}
 	
+		
 }
 
 function cleanPowers ($actualpower) {
@@ -938,6 +947,7 @@ function cleanOmni () {
 		$('#demonomni1').removeClass("imagehighlight");
 		$('#demonomni2').removeClass("imagehighlight");
 		$('#demonomni3').removeClass("imagehighlight");
+		
 	}
 	
 	else if(godversusdemonpanel24 == -1)
@@ -945,6 +955,10 @@ function cleanOmni () {
 		$('#godlyomni1').removeClass("imagehighlight");
 		$('#godlyomni2').removeClass("imagehighlight");
 		$('#godlyomni3').removeClass("imagehighlight");
+		
+		if(!$('#demonomni1').hasClass("imagehighlight")) c.pigeonholesVisible = false;
+		if(!$('#demonomni2').hasClass("imagehighlight")) c.displayBoidIDs = false;
+		if(!$('#demonomni3').hasClass("imagehighlight")) c.perceptionRangeVisible = false;
 	}
 	
 	else
@@ -956,10 +970,24 @@ function cleanOmni () {
 		$('#godlyomni1').removeClass("imagehighlight");
 		$('#godlyomni2').removeClass("imagehighlight");
 		$('#godlyomni3').removeClass("imagehighlight");
+
+		
+		initializeViewToFalse();
 	}
 	
 }
 
+
+function initializeViewToFalse() {
+		
+	c.pigeonholesVisible = false;
+	c.displayBoidIDs = false;
+	c.perceptionRangeVisible = false;
+	c.ruleVectorVisible = [false, false, false, false, false, false];
+
+
+}
+	
 
 function calculateGodVersusDemon() {
 	
