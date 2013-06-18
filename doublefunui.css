@@ -412,9 +412,11 @@ body {
 						
 						width:100%;
 						height:100%;
-							
+						
+										
 					}
-				
+					
+									
 					.godlypowerlabel {
 						
 						position:absolute;
@@ -1119,6 +1121,17 @@ td:nth-child(2) {
 }
 
 
+.imagehighlight {
+						
+						
+			-webkit-box-shadow: inset 0 0 40px #FFF67A, 0 0 40px #FFF67A;
+			-moz-box-shadow: inset 0 0 40px #FFF67A, 0 0 40px #FFF67A;
+			box-shadow:  inset 0 0 40px #FFF67A, 0 0 40px #FFF67A;
+				    
+		
+}
+
+
 
 .rotateclick1 {
 	
@@ -1215,4 +1228,5 @@ td:nth-child(2) {
   /* Should be unset in IE9+ I think. */
   filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
 }
+
 

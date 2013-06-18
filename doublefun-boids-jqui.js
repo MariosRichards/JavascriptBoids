@@ -302,7 +302,7 @@ function pigeonholesButtonCB()
 	
 }
 
-function perceptionrangeButtonCB()
+/*function perceptionrangeButtonCB(value)
 {	
 	
 	if (c.perceptionRangeVisible) {
@@ -311,7 +311,7 @@ function perceptionrangeButtonCB()
 	else{
 		c.perceptionRangeVisible = true;
 	}
-}
+}*/
 
 function boididsButtonCB()
 {	
@@ -523,7 +523,7 @@ function togglePanel1Show() {
 		$clickpanel1.css("left", "70%");
 		$clickpanel1.removeClass("active");
 		$panel1.css("left", "85%");
-		
+		cleanPowers();
 		
 		if(godversusdemonpanel13 != -1) godversusdemonpanel13 = 0;
 		
@@ -577,6 +577,7 @@ function togglePanel2Show() {
 		
 	}
 	calculateGodVersusDemon();
+	cleanOmni();
 		
 }
 
@@ -590,7 +591,7 @@ function togglePanel3Show() {
 		$clickpanel3.css("left", "-85%");
 		$clickpanel3.removeClass("active");
 		$panel3.css("left", "-85%");
-		
+		cleanPowers();
 		
 		
 		if(godversusdemonpanel13 != +1) godversusdemonpanel13 = 0;
@@ -628,7 +629,6 @@ function togglePanel4Show() {
 		$clickpanel4.removeClass("active");
 		$panel4.css("left", "-85%");
 		
-		
 		if(godversusdemonpanel24 != +1) godversusdemonpanel24 = 0;
 		
 		
@@ -650,90 +650,250 @@ function togglePanel4Show() {
 	}
 	
 	calculateGodVersusDemon();
+	cleanOmni();
 	
 }
 
 
 function activateGodlyPower1 () {
 	
-	alert(this);
+	$godlypower = $(this);
+	
+	cleanPowers($godlypower);
+	
+	
+	if ($godlypower.hasClass("imagehighlight")) {
+		alert("Godly Power 1 Activated!");
+		
+	}
 	
 }
 
 function activateGodlyPower2 () {
 	
-	alert(this);
+	$godlypower = $(this);
+	
+	cleanPowers($godlypower);
+	
+	if ($godlypower.hasClass("imagehighlight")) {
+		alert("Godly Power 2 Activated!");		
+	}
 	
 }
 
 function activateGodlyPower3 () {
 	
-	alert(this);
+	$godlypower = $(this);
+	
+	cleanPowers($godlypower);
+	
+	if ($godlypower.hasClass("imagehighlight")) {
+		alert("Godly Power 3 Activated!");
+		
+	}
 	
 }
 
 function activateGodlyPower4 () {
 	
-	alert(this);
+	$godlypower = $(this);
+	
+	cleanPowers($godlypower);
+	
+	if ($godlypower.hasClass("imagehighlight")) {
+		alert("Godly Power 4 Activated!");
+		
+	}
 	
 }
 
 function activateDemonPower1 () {
 	
-	alert(this);
+	$demonpower = $(this);
+	
+	cleanPowers($demonpower);
+	
+	if ($demonpower.hasClass("imagehighlight")) {
+		alert("Demon Power 1 Activated!");
+		
+	}
 	
 }
 
 function activateDemonPower2 () {
 	
-	alert(this);
+	$demonpower = $(this);
+	
+	cleanPowers($demonpower);
+
+	
+	if ($demonpower.hasClass("imagehighlight")) {
+		alert("Demon Power 2 Activated!");
+		
+	}
 	
 }
 
 function activateDemonPower3 () {
 	
-	alert(this);
+	$demonpower = $(this);
+	
+	cleanPowers($demonpower);
+
+	
+	if ($demonpower.hasClass("imagehighlight")) {
+		alert("Demon Power 3 Activated!");
+		
+	}
 	
 }
 
 function activateDemonPower4 () {
 	
-	alert(this);
+	$demonpower = $(this);
+	
+	cleanPowers($demonpower);
+	
+	if ($demonpower.hasClass("imagehighlight")) {
+		alert("Demon Power 4 Activated!");
+		
+	}
 	
 }
 
 function toggleGodlyOmni1 () {
 	
-	alert(this);
+	$godlyomni = $(this);
+	
+	if (!$godlyomni.hasClass("imagehighlight")) {
+		alert("Godly Omni 1 Activated!");
+		$godlyomni.addClass("imagehighlight");
+	}
+	else{
+		alert("Godly Omni 1 Deactivated!");
+		$godlyomni.removeClass("imagehighlight");
+	}
 	
 }
 
 function toggleGodlyOmni2 () {
 	
-	alert(this);
+	$godlyomni = $(this);
+	
+	if (!$godlyomni.hasClass("imagehighlight")) {
+		alert("Godly Omni 2 Activated!");
+		$godlyomni.addClass("imagehighlight");
+	}
+	else{
+		alert("Godly Omni 2 Deactivated!");
+		$godlyomni.removeClass("imagehighlight");
+	}
 	
 }
 function toggleGodlyOmni3 () {
 	
-	alert(this);
+	$godlyomni = $(this);
+	
+	if (!$godlyomni.hasClass("imagehighlight")) {
+		alert("Godly Omni 3 Activated!");
+		$godlyomni.addClass("imagehighlight");
+	}
+	else{
+		alert("Godly Omni 3 Deactivated!");
+		$godlyomni.removeClass("imagehighlight");
+	}
 	
 }
 
 function toggleDemonOmni1 () {
 	
-	alert(this);
+	$demonomni = $(this);
+	
+	if (!$demonomni.hasClass("imagehighlight")) {
+		alert("Demon Omni 1 Activated!");
+		$demonomni.addClass("imagehighlight");
+	}
+	else{
+		alert("Demon Omni 1 Deactivated!");
+		$demonomni.removeClass("imagehighlight");
+	}
 	
 }
 
 function toggleDemonOmni2 () {
 	
-	alert(this);
+	$demonomni = $(this);
+	
+	if (!$demonomni.hasClass("imagehighlight")) {
+		alert("Demon Omni 2 Activated!");
+		$demonomni.addClass("imagehighlight");
+	}
+	else{
+		alert("Demon Omni 2 Deactivated!");
+		$demonomni.removeClass("imagehighlight");
+	}
 	
 }
 
-function toggleDemonOmni3 () {
+function toggleDemonOmni3 (value) {
 	
-	alert(this);
+	$demonomni = $(this);
+	
+	if (!$demonomni.hasClass("imagehighlight")) {
+		c.perceptionRangeVisible = true;
+		$demonomni.addClass("imagehighlight");
+		
+	}
+	else{
+		c.perceptionRangeVisible = false;
+		$demonomni.removeClass("imagehighlight");
+	}
+	
+}
+
+function cleanPowers ($actualpower) {
+		
+	
+	$('#godlypower1').removeClass("imagehighlight");
+	$('#godlypower2').removeClass("imagehighlight");
+	$('#godlypower3').removeClass("imagehighlight");
+	$('#godlypower4').removeClass("imagehighlight");
+	$('#demonpower1').removeClass("imagehighlight");	
+	$('#demonpower2').removeClass("imagehighlight");
+	$('#demonpower3').removeClass("imagehighlight");
+	$('#demonpower4').removeClass("imagehighlight");
+	
+	if(!$actualpower);
+	else $actualpower.addClass("imagehighlight");
+		
+}
+
+function cleanOmni () {
+	
+	if(godversusdemonpanel24 == 1)
+	{
+		$('#demonomni1').removeClass("imagehighlight");
+		$('#demonomni2').removeClass("imagehighlight");
+		$('#demonomni3').removeClass("imagehighlight");
+	}
+	
+	else if(godversusdemonpanel24 == -1)
+	{
+		$('#godlyomni1').removeClass("imagehighlight");
+		$('#godlyomni2').removeClass("imagehighlight");
+		$('#godlyomni3').removeClass("imagehighlight");
+	}
+	
+	else
+	{
+		$('#demonomni1').removeClass("imagehighlight");
+		$('#demonomni2').removeClass("imagehighlight");
+		$('#demonomni3').removeClass("imagehighlight");
+		
+		$('#godlyomni1').removeClass("imagehighlight");
+		$('#godlyomni2').removeClass("imagehighlight");
+		$('#godlyomni3').removeClass("imagehighlight");
+	}
 	
 }
 
