@@ -856,11 +856,13 @@ function toggleGodlyOmni2 () {
 	$godlyomni = $(this);
 	
 	if (!$godlyomni.hasClass("imagehighlight")) {
-		c.ruleVectorVisible = [true, true, false, false, false, false];	
+		c.ruleVectorVisible = [true, true, false, false, false, false];
+		c.setVisibiliyInteractionList(true);	
 		$godlyomni.addClass("imagehighlight");
 	}
 	else{
-		c.ruleVectorVisible = [false, false, false, false, false, false];	
+		c.ruleVectorVisible = [false, false, false, false, false, false];
+		c.setVisibiliyInteractionList(false);	
 		$godlyomni.removeClass("imagehighlight");
 	}
 	
