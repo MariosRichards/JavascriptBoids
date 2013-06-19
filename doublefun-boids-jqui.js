@@ -131,9 +131,6 @@ $(document).ready(function(){
 	$('#demonomni2').click(toggleDemonOmni2);
 	$('#demonomni3').click(toggleDemonOmni3);
 
-
-	
-	
 	
 	
 	//$("#Alignment").click(toggleAlignment);
@@ -735,6 +732,9 @@ function activateGodlyPower1 () {
 		
 	}
 	
+	updateCanvasIcon("url(http://i46.tinypic.com/mlr0jr.jpg)");
+	
+	
 }
 
 function activateGodlyPower2 () {
@@ -976,6 +976,12 @@ function cleanOmni () {
 		
 		initializeViewToFalse();
 	}
+	
+}
+
+function updateCanvasIcon(imageurl) {
+	
+	$("#mycanvas").css("cursor",imageurl);
 	
 }
 
