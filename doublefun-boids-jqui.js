@@ -592,7 +592,11 @@ function togglePanel1Show() {
 		$panel1.css("left", "85%");
 		cleanPowers();
 		
-		if(godversusdemonpanel13 != -1) godversusdemonpanel13 = 0;
+		if(godversusdemonpanel13 != -1) {
+			
+			updateActivePower();
+			godversusdemonpanel13 = 0;
+		}
 		
 	}
 	
@@ -661,7 +665,11 @@ function togglePanel3Show() {
 		cleanPowers();
 		
 		
-		if(godversusdemonpanel13 != +1) godversusdemonpanel13 = 0;
+		if(godversusdemonpanel13 != +1) {
+			
+			updateActivePower();
+			godversusdemonpanel13 = 0;
+		} 
 		
 		
 	}
@@ -730,7 +738,6 @@ function activateGodlyPower1 () {
 	
 	
 	if ($godlypower.hasClass("imagehighlight")) {
-		alert("Godly Power 1 Activated!");
 		updateActivePower("messiah");
 	}
 	
@@ -746,8 +753,7 @@ function activateGodlyPower2 () {
 	cleanPowers($godlypower);
 	
 	if ($godlypower.hasClass("imagehighlight")) {
-		alert("Godly Power 2 Activated!");	
-		updateActivePower();
+		updateActivePower("friendship");
 	
 	}
 	
@@ -760,8 +766,7 @@ function activateGodlyPower3 () {
 	cleanPowers($godlypower);
 	
 	if ($godlypower.hasClass("imagehighlight")) {
-		alert("Godly Power 3 Activated!");
-		
+		updateActivePower("immaculate");
 	}
 	
 }
@@ -773,8 +778,7 @@ function activateGodlyPower4 () {
 	cleanPowers($godlypower);
 	
 	if ($godlypower.hasClass("imagehighlight")) {
-		alert("Godly Power 4 Activated!");
-		
+		updateActivePower("healblindness");
 	}
 	
 }
@@ -786,8 +790,7 @@ function activateDemonPower1 () {
 	cleanPowers($demonpower);
 	
 	if ($demonpower.hasClass("imagehighlight")) {
-		alert("Demon Power 1 Activated!");
-		
+		updateActivePower("outcast");
 	}
 	
 }
@@ -800,8 +803,7 @@ function activateDemonPower2 () {
 
 	
 	if ($demonpower.hasClass("imagehighlight")) {
-		alert("Demon Power 2 Activated!");
-		
+		updateActivePower("blindness");
 	}
 	
 }
@@ -814,8 +816,7 @@ function activateDemonPower3 () {
 
 	
 	if ($demonpower.hasClass("imagehighlight")) {
-		alert("Demon Power 3 Activated!");
-		
+		updateActivePower("suddendeath");
 	}
 	
 }
@@ -827,7 +828,7 @@ function activateDemonPower4 () {
 	cleanPowers($demonpower);
 	
 	if ($demonpower.hasClass("imagehighlight")) {
-		alert("Demon Power 4 Activated!");
+		updateActivePower("sacrifice");
 		
 	}
 	
@@ -986,6 +987,7 @@ function cleanOmni () {
 function updateActivePower(iconname) {
 	
 	
+	
 	activepower = iconname;
 	
 	switch(iconname)
@@ -993,6 +995,36 @@ function updateActivePower(iconname) {
 		case "messiah":
 			$("#mycanvas").css({'cursor': 'url(img/01_messiah_icon.png), pointer'});
 		break;
+		
+		case "friendship":
+			$("#mycanvas").css({'cursor': 'url(img/02_friendship_icon.png), pointer'});
+		break;
+		
+		case "immaculate":
+			$("#mycanvas").css({'cursor': 'url(img/03_immaculate_icon.png), pointer'});
+		break;
+		
+		case "healblindness":
+			$("#mycanvas").css({'cursor': 'url(img/04_healblindness_icon.png), pointer'});
+		break;
+		
+		case "outcast":
+			$("#mycanvas").css({'cursor': 'url(img/05_outcast_icon.png), pointer'});
+		break;
+		
+		case "blindness":
+			$("#mycanvas").css({'cursor': 'url(img/06_blindness_icon.png), pointer'});
+		break;
+		
+		case "suddendeath":
+			$("#mycanvas").css({'cursor': 'url(img/07_suddendeath_icon.png), pointer'});
+		break;
+		
+		case "sacrifice":
+			$("#mycanvas").css({'cursor': 'url(img/08_sacrifice_icon.png), pointer'});
+		break;
+		
+		
 		
 		default:
 			activepower="none";
