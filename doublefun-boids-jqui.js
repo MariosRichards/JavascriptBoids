@@ -114,7 +114,47 @@ $(document).ready(function(){
 	$('#clickpanel3').click(togglePanel3Show);
 	$('#clickpanel4').click(togglePanel4Show);
 	
+	$('#clickpanel1').hover(function(){
+		$(this).css("background-color","#00CCCC");
+		$(this).addClass("imagehighlight");
+
+	},function(){
+		
+		$(this).css("background-color","#ABFFFF");
+		$(this).removeClass("imagehighlight");
+
+	});
 	
+	$('#clickpanel2').hover(function(){
+		$(this).css("background-color","#00CCCC");
+		$(this).addClass("imagehighlight");
+
+	},function(){
+		
+		$(this).css("background-color","#ABFFFF");
+		$(this).removeClass("imagehighlight");
+
+	});
+	
+	$('#clickpanel3').hover(function(){
+		$(this).css("background-color","#CC0000");
+		$(this).addClass("imagehighlight2");
+	},function(){
+		
+		$(this).css("background-color","#FFABAB");
+		$(this).removeClass("imagehighlight2");
+
+	});
+	
+	$('#clickpanel4').hover(function(){
+		$(this).css("background-color","#CC0000");
+		$(this).addClass("imagehighlight2");
+	},function(){
+		
+		$(this).css("background-color","#FFABAB");
+		$(this).removeClass("imagehighlight2");
+
+	});
 	
 	
 	
