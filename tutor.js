@@ -268,6 +268,7 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 	// HARDCODED INTERACTION LIST
 	this.InteractionList = [];	
 	this.InteractionListON = true;
+	this.InteractionListVisible = true;
 	
 	
 	
@@ -317,6 +318,12 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 
 		
 	};
+	
+	this.setVisibiliyInteractionList = function(v)
+	{
+		// acceptable values = true or false!!!
+		this.InteractionListVisible = v;
+	}
 	
 	
 	
@@ -964,7 +971,7 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 			
 			// HARCODED INTERACTION LIST STUFF
 			// iterate through interaction list drawing lines
-			if (this.InteractionList[i].length>0)
+			if (this.InteractionListVisible && this.InteractionList[i].length>0)
 			{
 
 				theContext.strokeStyle = 'rgb(255,105,180)';
