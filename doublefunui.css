@@ -135,7 +135,7 @@ html {
 	background-color:white;
 	z-index:5;
 	
-	cursor: url(img/giftest.jpg),pointer;
+	cursor: pointer;
 	
 	}
 	
