@@ -31,6 +31,8 @@ var godversusdemonpanel24 = 0;
 
 var godversusdemon = godversusdemonpanel13 + godversusdemonpanel24;
 
+var activepower = "none";
+
 
 $(document).ready(function(){ 
 	
@@ -729,10 +731,10 @@ function activateGodlyPower1 () {
 	
 	if ($godlypower.hasClass("imagehighlight")) {
 		alert("Godly Power 1 Activated!");
-		
+		updateActivePower("messiah");
 	}
 	
-	updateCanvasIcon("url(http://i46.tinypic.com/mlr0jr.jpg)");
+	
 	
 	
 }
@@ -744,7 +746,9 @@ function activateGodlyPower2 () {
 	cleanPowers($godlypower);
 	
 	if ($godlypower.hasClass("imagehighlight")) {
-		alert("Godly Power 2 Activated!");		
+		alert("Godly Power 2 Activated!");	
+		updateActivePower();
+	
 	}
 	
 }
@@ -979,9 +983,24 @@ function cleanOmni () {
 	
 }
 
-function updateCanvasIcon(imageurl) {
+function updateActivePower(iconname) {
 	
-	$("#mycanvas").css("cursor",imageurl);
+	
+	activepower = iconname;
+	
+	switch(iconname)
+	{
+		case "messiah":
+			$("#mycanvas").css({'cursor': 'url(img/01_messiah_icon.png), pointer'});
+		break;
+		
+		default:
+			activepower="none";
+			$("#mycanvas").css({'cursor': 'pointer'});
+
+			
+	}
+	
 	
 }
 
