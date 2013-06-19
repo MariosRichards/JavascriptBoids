@@ -1306,6 +1306,9 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 								  // newType: 2*Math.ceil(Math.random()*2) });
 		// }
 		
+		
+		
+		// changeType processing
 		if (this.changeList.length>0)
 		{
 			for (var i = this.changeList.length-1; i>=0; i--)
@@ -1529,6 +1532,7 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 				dt = 1;
 			
 			}
+			console.log(dt);
 			//this.lastTime = now;
 		
 		
