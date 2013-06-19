@@ -1035,35 +1035,35 @@ function updateActivePower(iconname) {
 	switch(iconname)
 	{
 		case "messiah":
-			$("#mycanvas").css({'cursor': 'url(img/01_messiah_icon.png), pointer'});
+			$("#mycanvas").css({'cursor': 'url(img/01_messiah_icon.png) 15 15, pointer'});
 		break;
 		
 		case "friendship":
-			$("#mycanvas").css({'cursor': 'url(img/02_friendship_icon.png), pointer'});
+			$("#mycanvas").css({'cursor': 'url(img/02_friendship_icon.png) 15 15, pointer'});
 		break;
 		
 		case "immaculate":
-			$("#mycanvas").css({'cursor': 'url(img/03_immaculate_icon.png), pointer'});
+			$("#mycanvas").css({'cursor': 'url(img/03_immaculate_icon.png) 15 15, pointer'});
 		break;
 		
 		case "healblindness":
-			$("#mycanvas").css({'cursor': 'url(img/04_healblindness_icon.png), pointer'});
-		break;
+			$("#mycanvas").css({'cursor': 'url(img/04_healblindness_icon.png) 15 15, pointer'});
+		break; 
 		
 		case "outcast":
-			$("#mycanvas").css({'cursor': 'url(img/05_outcast_icon.png), pointer'});
+			$("#mycanvas").css({'cursor': 'url(img/05_outcast_icon.png) 15 15, pointer'});
 		break;
 		
 		case "blindness":
-			$("#mycanvas").css({'cursor': 'url(img/06_blindness_icon.png), pointer'});
+			$("#mycanvas").css({'cursor': 'url(img/06_blindness_icon.png) 15 15, pointer'});
 		break;
 		
 		case "suddendeath":
-			$("#mycanvas").css({'cursor': 'url(img/07_suddendeath_icon.png), pointer'});
+			$("#mycanvas").css({'cursor': 'url(img/07_suddendeath_icon.png) 15 15, pointer'});
 		break;
 		
 		case "sacrifice":
-			$("#mycanvas").css({'cursor': 'url(img/08_sacrifice_icon.png), pointer'});
+			$("#mycanvas").css({'cursor': 'url(img/08_sacrifice_icon.png) 15 15, pointer'});
 		break;
 		
 		
