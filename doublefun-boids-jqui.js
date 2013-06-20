@@ -119,23 +119,23 @@ $(document).ready(function(){
 	
 	$('#clickpanel1').hover(function(){
 		$(this).css("background-color","#00CCCC");
-		$(this).addClass("imagehighlight");
+		$(this).addClass("imagehighlight1");
 
 	},function(){
 		
 		$(this).css("background-color","#ABFFFF");
-		$(this).removeClass("imagehighlight");
+		$(this).removeClass("imagehighlight1");
 
 	});
 	
 	$('#clickpanel2').hover(function(){
 		$(this).css("background-color","#00CCCC");
-		$(this).addClass("imagehighlight");
+		$(this).addClass("imagehighlight1");
 
 	},function(){
 		
 		$(this).css("background-color","#ABFFFF");
-		$(this).removeClass("imagehighlight");
+		$(this).removeClass("imagehighlight1");
 
 	});
 	
