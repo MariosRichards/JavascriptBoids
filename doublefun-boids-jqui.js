@@ -1073,7 +1073,7 @@ function updateActivePower(iconname) {
 		
 		default:
 			activepower="none";
-			$("#mycanvas").css({'cursor': 'url(img/defaultpointer.png) 15 15, pointer'});
+			$("#mycanvas").css({'cursor': 'url(img/defaultpointer.png), pointer'});
 		break;
 			
 	}
