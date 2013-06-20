@@ -114,6 +114,9 @@ $(document).ready(function(){
 	$('#clickpanel3').click(togglePanel3Show);
 	$('#clickpanel4').click(togglePanel4Show);
 	
+	
+		
+	
 	$('#clickpanel1').hover(function(){
 		$(this).css("background-color","#00CCCC");
 		$(this).addClass("imagehighlight");
@@ -1070,14 +1073,43 @@ function updateActivePower(iconname) {
 		
 		default:
 			activepower="none";
-			$("#mycanvas").css({'cursor': 'pointer'});
-
+			$("#mycanvas").css({'cursor': 'url(img/defaultpointer.png) 15 15, pointer'});
+		break;
 			
 	}
 	
 	
 }
 
+
+function updateCanvasHighlight() {
+	
+	switch(godversusdemon) {
+		
+		case -2:
+			$('#mycanvas').animate({boxShadow:'0px 0px 30px 0px rgba(255,162,0,0.5)'}, 200);
+			break;
+		case -1:
+			$('#mycanvas').animate({boxShadow:'0px 0px 10px 0px rgba(255,162,0,0.5)'}, 200);
+			break;
+		case 1:
+			//$("#mycanvas").css("box-shadow","0px 0px 10px 0px rgba(255,246,122,0.7)");
+			$('#mycanvas').animate({boxShadow:'0px 0px 10px 0px rgba(255,246,122,0.7)'}, 200);
+			break;
+		case 2:
+			//$("#mycanvas").css("box-shadow","0px 0px 30px 0px rgba(255,246,122,0.7)");
+			$('#mycanvas').animate({boxShadow:'0px 0px 30px 0px rgba(255,246,122,0.7)'}, 200);
+			break;
+		default:
+			
+			$('#mycanvas').animate({boxShadow:'0px 0px 20px 0px rgba(204,255,204,0.8)'}, 200);
+
+			//$("#mycanvas").css("box-shadow","0px 0px 5px 0px rgba(131,255,122,0.7)");
+			break;
+	}
+	
+	
+}
 
 function initializeViewToFalse() {
 		
@@ -1093,6 +1125,8 @@ function initializeViewToFalse() {
 function calculateGodVersusDemon() {
 	
 	godversusdemon = godversusdemonpanel13 + godversusdemonpanel24; 
+	
+	updateCanvasHighlight();
 }
 
 

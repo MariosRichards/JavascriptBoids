@@ -9,7 +9,8 @@ html {
 	    -o-user-select: none;
 	    user-select: none;
 	   
-	 cursor: pointer;
+	 
+	 cursor: url(img/defaultpointer.png) 15 15,pointer;
 }
 
 
@@ -128,14 +129,22 @@ html {
 	border: thin solid #666;
 	border: 2px solid #4A4547; 
 
-	box-shadow: 0px 0px 30px 0px rgba(0,0,0,.7);
+	/*box-shadow: 0px 0px 10px 0px rgba(255,242,184,.7);*/
+	box-shadow: 0px 0px 20px 0px rgba(204,255,204,0.8);
 
 	border-radius:1%;
 	
 	background-color:white;
 	z-index:5;
 	
-	cursor: pointer;
+	 cursor: url(img/defaultpointer.png) 15 15,pointer;
+	
+	-webkit-transition: all .1s ease;
+		-moz-transition: all .1s ease;
+		-ms-transition: all .1s ease;
+		-o-transition: all .1s ease;
+		transition: all .5s ease;
+	
 	
 	}
 	
@@ -161,7 +170,7 @@ head {
 
 body {
 
-	font-family: Verdana, Geneva, sans-serif;
+	font-family: Open Sans,Verdana, Geneva, sans-serif;
 	width: 65%;
 	height:60%;
 	font-size: 100%;
@@ -208,9 +217,9 @@ body {
 		-webkit-border-radius: 11%;
 		-moz-border-radius: 11%;
 		border-radius: 11%;
-		-webkit-box-shadow: 0px 9px 25px  rgba(0,0,0,.7);
-    	-moz-box-shadow: 0px 9px 25px rgba(0,0,0,.7);
-    	box-shadow: 0px 0px 45px rgba(0,0,0,.7);
+		-webkit-box-shadow: 0px 0px 6px  rgba(0,0,0,.7);
+    	-moz-box-shadow: 0px 0px 6px rgba(0,0,0,.7);
+    	box-shadow: 0px 0px 6px rgba(0,0,0,.7);
 
 		border: thin solid #666; 
 		border: 2px solid #4A4547; 
@@ -230,10 +239,10 @@ body {
 	#clickpanel1 {
 		
 		left:70%;
-		background-color:#00CCCC;
+		background-color:#ABFFFF;
 		color: black;
 		
-
+		
 	}
 	
 		
@@ -241,7 +250,7 @@ body {
 		
 		top:50%;
 		left:70%;
-		background-color:#00CCCC;
+		background-color:#ABFFFF;
 		color: black;
 	}
 	
@@ -289,8 +298,8 @@ body {
 					
 			color: white;
 		    text-decoration: none;
-		    background-color: rgba(219,87,5,1);	
-		    background-color: #00CCCC; 
+		    /*background-color: rgba(219,87,5,1);	*/
+		    background-color: #00B0B0; 
 		    display: block;
 		    
 		  
@@ -891,7 +900,7 @@ body {
 			color: white;
 		    text-decoration: none;
 		    background-color: rgba(219,87,5,1);	
-		    background-color:#CC0000; 
+		    background-color:#b30000; 
 		    display: block;
 		    
 		  
@@ -1168,9 +1177,9 @@ td:nth-child(2) {
 .imagehighlight {
 						
 						
-			-webkit-box-shadow: inset 0 0 40px #FFF67A, 0 0 40px #FFF67A;
-			-moz-box-shadow: inset 0 0 40px #FFF67A, 0 0 40px #FFF67A;
-			box-shadow:  inset 0 0 40px #FFF67A, 0 0 40px #FFF67A;
+			-webkit-box-shadow: inset 0px 0px 40px 0px rgba(255,246,122,0.7), 0px 0px 40px 0px rgba(255,246,122,0.7);
+			-moz-box-shadow: inset 0px 0px 40px 0px rgba(255,246,122,0.7), 0px 0px 40px 0px rgba(255,246,122,0.7);
+			box-shadow:  inset 0px 0px 40px 0px rgba(255,246,122,0.7), 0px 0px 40px 0px rgba(255,246,122,0.7);
 				    
 		
 }
@@ -1178,13 +1187,12 @@ td:nth-child(2) {
 .imagehighlight2 {
 						
 						
-			-webkit-box-shadow: inset 0 0 40px #FFA200, 0 0 40px #FFA200;
-			-moz-box-shadow: inset 0 0 40px #FFA200, 0 0 40px #FFA200;
-			box-shadow:  inset 0 0 40px #FFA200, 0 0 40px #FFA200;
+			-webkit-box-shadow: inset 0px 0px 40px 0px rgba(255,162,0,0.6), 0px 0px 40px 0px rgba(255,162,0,0.6);
+			-moz-box-shadow: inset 0px 0px 40px 0px rgba(255,162,0,0.6), 0px 0px 40px 0px rgba(255,162,0,0.6);
+			box-shadow:  inset 0px 0px 40px 0px rgba(255,162,0,0.6), 0px 0px 40px 0px rgba(255,162,0,0.6);
 				    
 		
 }
-
 
 
 
@@ -1193,9 +1201,9 @@ td:nth-child(2) {
 	position:absolute;
 		
 		left:0%;
-		top:85%;	
+		top:78%;	
 
-
+  font-weight:600;
 	
   -webkit-transform: rotate(-90deg);
   -moz-transform: rotate(-90deg);
@@ -1219,7 +1227,9 @@ td:nth-child(2) {
 	position:absolute;
 		
 		left:0%;
-		top:98%;	
+		top:88%;	
+		
+	font-weight:600;		
 	
   -webkit-transform: rotate(-90deg);
   -moz-transform: rotate(-90deg);
@@ -1242,8 +1252,10 @@ td:nth-child(2) {
 	
 	position:absolute;
 		
-		left:86%;
-		top:75%;	
+		left:85%;
+		top:70%;	
+		
+	font-weight:600;
 	
   -webkit-transform: rotate(-90deg);
   -moz-transform: rotate(-90deg);
@@ -1266,8 +1278,10 @@ td:nth-child(2) {
 	
 	position:absolute;
 		
-		left:86%;
-		top:85%;	
+		left:85%;
+		top:81%;	
+	
+	font-weight:600;
 	
   -webkit-transform: rotate(-90deg);
   -moz-transform: rotate(-90deg);
