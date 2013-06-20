@@ -108,10 +108,16 @@ $(document).ready(function(){
 	$("#eyecohesion").click(toggleVisibility_CohesionButtonCB);
 	
 	
+	//Make DoubleHand attached to cursor from the beginning
+	
 	
 	$("body").mousemove(function(e){
-      $('#followmouse').css({'top': e.clientY - 20, 'left': e.clientX - 20});
+      $('#followmouse').css({'top': e.clientY +3, 'left': e.clientX -24});
 	});
+	
+	
+	
+	
 	/*$('#clickpanel1').hover(function(){
 		$("#mycanvas").css({'cursor': 'url(img/godlyhand.png) 15 15, pointer'});
 		$(this).addClass("imagehighlight1");
@@ -121,9 +127,10 @@ $(document).ready(function(){
 		$(this).css("background-color","#ABFFFF");
 		$(this).removeClass("imagehighlight1");
 
-	});	*/
+	});*/
 	
 	
+	updateHand(0);
 	
 	
 	$('#clickpanel1').click(togglePanel1Show);
@@ -137,44 +144,80 @@ $(document).ready(function(){
 	$('#clickpanel1').hover(function(){
 		$(this).css("background-color","#00CCCC");
 		$(this).addClass("imagehighlight1");
+		updateHand(1);
 
 	},function(){
 		
 		$(this).css("background-color","#ABFFFF");
 		$(this).removeClass("imagehighlight1");
-
+		
 	});
 	
 	$('#clickpanel2').hover(function(){
 		$(this).css("background-color","#00CCCC");
 		$(this).addClass("imagehighlight1");
-
+		updateHand(1);
+		
 	},function(){
 		
 		$(this).css("background-color","#ABFFFF");
 		$(this).removeClass("imagehighlight1");
-
+		
 	});
 	
 	$('#clickpanel3').hover(function(){
 		$(this).css("background-color","#CC0000");
 		$(this).addClass("imagehighlight2");
+		updateHand(-1);
+		
 	},function(){
 		
 		$(this).css("background-color","#FFABAB");
 		$(this).removeClass("imagehighlight2");
-
+		
 	});
 	
 	$('#clickpanel4').hover(function(){
 		$(this).css("background-color","#CC0000");
 		$(this).addClass("imagehighlight2");
+		updateHand(-1);
 	},function(){
 		
 		$(this).css("background-color","#FFABAB");
 		$(this).removeClass("imagehighlight2");
-
+		
 	});
+	
+	
+	$('#panel1').hover(function(){
+		updateHand(1);
+	},function(){
+		
+	});
+	$('#panel2').hover(function(){
+		updateHand(1);
+	},function(){
+		
+	});
+	$('#panel3').hover(function(){
+		updateHand(-1);
+	},function(){
+		
+	});
+	$('#panel4').hover(function(){
+		updateHand(-1);
+	},function(){
+		
+	});
+	
+	$('#mycanvas').hover(function(){
+		if(godversusdemon == 0) updateHand(0);
+	},function(){
+		
+	});
+	
+	
+	
 	
 	
 	
@@ -1127,6 +1170,33 @@ function updateCanvasHighlight() {
 	
 	
 }
+
+function updateHand(value) {
+	
+	
+
+	
+		switch(value) 
+		{
+			case 1:
+				$("#handfollowmouse+1").css("visibility","visible");
+				$("#handfollowmouse0").css("visibility","hidden");
+				$("#handfollowmouse-1").css("visibility","hidden");
+				break;
+			case -1:
+				$("#handfollowmouse-1").css("visibility","visible");
+				$("#handfollowmouse0").css("visibility","hidden");
+				$("#handfollowmouse+1").css("visibility","hidden");
+				break;
+		
+			default:
+				$("#handfollowmouse0").css("visibility","visible");
+				$("#handfollowmouse+1").css("visibility","hidden");
+				$("#handfollowmouse-1").css("visibility","hidden");
+				break;
+		}
+}
+
 
 function initializeViewToFalse() {
 		
