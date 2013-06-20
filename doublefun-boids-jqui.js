@@ -109,6 +109,23 @@ $(document).ready(function(){
 	
 	
 	
+	$("body").mousemove(function(e){
+      $('#followmouse').css({'top': e.clientY - 20, 'left': e.clientX - 20});
+	});
+	/*$('#clickpanel1').hover(function(){
+		$("#mycanvas").css({'cursor': 'url(img/godlyhand.png) 15 15, pointer'});
+		$(this).addClass("imagehighlight1");
+
+	},function(){
+		
+		$(this).css("background-color","#ABFFFF");
+		$(this).removeClass("imagehighlight1");
+
+	});	*/
+	
+	
+	
+	
 	$('#clickpanel1').click(togglePanel1Show);
 	$('#clickpanel2').click(togglePanel2Show);
 	$('#clickpanel3').click(togglePanel3Show);
