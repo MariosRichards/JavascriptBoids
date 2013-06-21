@@ -111,26 +111,170 @@ $(document).ready(function(){
 	//Make DoubleHand attached to cursor from the beginning
 	
 	
-	$("body").mousemove(function(e){
+	/*$("body").mousemove(function(e){
       $('#followmouse').css({'top': e.clientY +3, 'left': e.clientX -24});
-	});
+	});*/
+	
+	
+	
+	/*$('html').hover(function(){
+		
+		
+	});*/
 	
 	
 	
 	
-	$('#clickpanel1').hover(function(){
-		$("#mycanvas").css({'cursor': 'url(img/godlyhand.png) 15 15, pointer'});
-		$(this).addClass("imagehighlight1");
+	$('#godlytrclass1').hover(function(){
+		$('#godlypowerlabel1').css("opacity","1");
+		
 
 	},function(){
 		
-		$(this).css("background-color","#ABFFFF");
-		$(this).removeClass("imagehighlight1");
+		
+		if(!$('#godlytrclass1').hasClass("imagehighlight")) $('#godlypowerlabel1').css("opacity","0");
+	});
+	
+	$('#godlytrclass2').hover(function(){
+		$('#godlypowerlabel2').css("opacity","1");
+		
 
+	},function(){
+		
+		
+		if(!$('#godlytrclass2').hasClass("imagehighlight")) $('#godlypowerlabel2').css("opacity","0");
+	});
+	
+	$('#godlytrclass3').hover(function(){
+		$('#godlypowerlabel3').css("opacity","1");
+		
+
+	},function(){
+		
+		
+		if(!$('#godlytrclass3').hasClass("imagehighlight")) $('#godlypowerlabel3').css("opacity","0");
+	});
+	
+	$('#godlytrclass4').hover(function(){
+		$('#godlypowerlabel4').css("opacity","1");
+		
+
+	},function(){
+		
+		
+		if(!$('#godlytrclass4').hasClass("imagehighlight")) $('#godlypowerlabel4').css("opacity","0");
+	});
+	
+	$('#godlyomnitrclass1').hover(function(){
+		$('#godlypowerlabel5').css("opacity","1");
+		
+
+	},function(){
+		
+		
+		if(!$('#godlyomnitrclass1').hasClass("imagehighlight")) $('#godlypowerlabel5').css("opacity","0");
+	});
+	
+	$('#godlyomnitrclass2').hover(function(){
+		$('#godlypowerlabel6').css("opacity","1");
+		
+
+	},function(){
+		
+		
+		if(!$('#godlyomnitrclass2').hasClass("imagehighlight")) $('#godlypowerlabel6').css("opacity","0");
+	});
+	
+	$('#godlyomnitrclass3').hover(function(){
+		$('#godlypowerlabel7').css("opacity","1");
+		
+
+	},function(){
+		
+		
+		if(!$('#godlyomnitrclass3').hasClass("imagehighlight")) $('#godlypowerlabel7').css("opacity","0");
 	});
 	
 	
-	updateHand(0);
+	$('#demontrclass1').hover(function(){
+		$('#demonpowerlabel1').css("opacity","1");
+		
+
+	},function(){
+		
+		
+		if(!$('#demontrclass1').hasClass("imagehighlight-1")) $('#demonpowerlabel1').css("opacity","0");
+	});
+	
+	$('#demontrclass2').hover(function(){
+		$('#demonpowerlabel2').css("opacity","1");
+		
+
+	},function(){
+		
+		
+		if(!$('#demontrclass2').hasClass("imagehighlight-1")) $('#demonpowerlabel2').css("opacity","0");
+	});
+	
+	$('#demontrclass3').hover(function(){
+		$('#demonpowerlabel3').css("opacity","1");
+		
+
+	},function(){
+		
+		
+		if(!$('#demontrclass3').hasClass("imagehighlight-1")) $('#demonpowerlabel3').css("opacity","0");
+	});
+	
+	$('#demontrclass4').hover(function(){
+		$('#demonpowerlabel4').css("opacity","1");
+		
+
+	},function(){
+		
+		
+		if(!$('#demontrclass4').hasClass("imagehighlight-1")) $('#demonpowerlabel4').css("opacity","0");
+	});
+	
+	$('#demonomnitrclass1').hover(function(){
+		$('#demonpowerlabel5').css("opacity","1");
+		
+
+	},function(){
+		
+		
+		if(!$('#demonomnitrclass1').hasClass("imagehighlight-1")) $('#demonpowerlabel5').css("opacity","0");
+	});
+	
+	$('#demonomnitrclass2').hover(function(){
+		$('#demonpowerlabel6').css("opacity","1");
+		
+
+	},function(){
+		
+		
+		if(!$('#demonomnitrclass2').hasClass("imagehighlight-1")) $('#demonpowerlabel6').css("opacity","0");
+	});
+	
+	$('#demonomnitrclass3').hover(function(){
+		$('#demonpowerlabel7').css("opacity","1");
+		
+
+	},function(){
+		
+		
+		if(!$('#demonomnitrclass3').hasClass("imagehighlight-1")) $('#demonpowerlabel7').css("opacity","0");
+	});
+	
+	
+	
+	
+	
+	
+	
+	
+	//updateHand(0);
+		
 	
 	
 	$('#clickpanel1').click(togglePanel1Show);
@@ -139,12 +283,12 @@ $(document).ready(function(){
 	$('#clickpanel4').click(togglePanel4Show);
 	
 	
-		
+	
 	
 	$('#clickpanel1').hover(function(){
 		$(this).css("background-color","rgba(217,255,255,0.4)");
 		$(this).addClass("imagehighlight1");
-		updateHand(1);
+		//updateHand(1);
 
 	},function(){
 		
@@ -156,7 +300,7 @@ $(document).ready(function(){
 	$('#clickpanel2').hover(function(){
 		$(this).css("background-color","rgba(217,255,255,0.4)");
 		$(this).addClass("imagehighlight1");
-		updateHand(1);
+		//updateHand(1);
 		
 	},function(){
 		
@@ -168,7 +312,7 @@ $(document).ready(function(){
 	$('#clickpanel3').hover(function(){
 		$(this).css("background-color","rgba(255,143,143,0.4)");
 		$(this).addClass("imagehighlight2");
-		updateHand(-1);
+		//updateHand(-1);
 		
 	},function(){
 		
@@ -180,7 +324,7 @@ $(document).ready(function(){
 	$('#clickpanel4').hover(function(){
 		$(this).css("background-color","rgba(255,143,143,0.4)");
 		$(this).addClass("imagehighlight2");
-		updateHand(-1);
+		//updateHand(-1);
 	},function(){
 		
 		$(this).css("background-color","rgba(250,255,255,0.4)");
@@ -189,52 +333,52 @@ $(document).ready(function(){
 	});
 	
 	
-	$('#panel1').hover(function(){
-		updateHand(1);
+	/*$('#panel1').hover(function(){
+		//updateHand(1);
 	},function(){
 		
 	});
 	$('#panel2').hover(function(){
-		updateHand(1);
+		//updateHand(1);
 	},function(){
 		
 	});
 	$('#panel3').hover(function(){
-		updateHand(-1);
+		//updateHand(-1);
 	},function(){
 		
 	});
 	$('#panel4').hover(function(){
-		updateHand(-1);
+		//updateHand(-1);
 	},function(){
 		
-	});
+	});*/
 	
-	$('#mycanvas').hover(function(){
+	/*$('#mycanvas').hover(function(){
 		if(godversusdemon == 0) updateHand(0);
 	},function(){
 		
-	});
+	});*/
 	
 	
 	
 	
 	
 	
-	$('#godlypower1').click(activateGodlyPower1);	
-	$('#godlypower2').click(activateGodlyPower2);
-	$('#godlypower3').click(activateGodlyPower3);
-	$('#godlypower4').click(activateGodlyPower4);
-	$('#demonpower1').click(activateDemonPower1);	
-	$('#demonpower2').click(activateDemonPower2);
-	$('#demonpower3').click(activateDemonPower3);
-	$('#demonpower4').click(activateDemonPower4);
-	$('#godlyomni1').click(toggleGodlyOmni1);
-	$('#godlyomni2').click(toggleGodlyOmni2);
-	$('#godlyomni3').click(toggleGodlyOmni3);
-	$('#demonomni1').click(toggleDemonOmni1);
-	$('#demonomni2').click(toggleDemonOmni2);
-	$('#demonomni3').click(toggleDemonOmni3);
+	$('#godlytrclass1').click(activateGodlyPower1);	
+	$('#godlytrclass2').click(activateGodlyPower2);
+	$('#godlytrclass3').click(activateGodlyPower3);
+	$('#godlytrclass4').click(activateGodlyPower4);
+	$('#demontrclass1').click(activateDemonPower1);	
+	$('#demontrclass2').click(activateDemonPower2);
+	$('#demontrclass3').click(activateDemonPower3);
+	$('#demontrclass4').click(activateDemonPower4);
+	$('#godlyomnitrclass1').click(toggleGodlyOmni1);
+	$('#godlyomnitrclass2').click(toggleGodlyOmni2);
+	$('#godlyomnitrclass3').click(toggleGodlyOmni3);
+	$('#demonomnitrclass1').click(toggleDemonOmni1);
+	$('#demonomnitrclass2').click(toggleDemonOmni2);
+	$('#demonomnitrclass3').click(toggleDemonOmni3);
 
 	
 	
@@ -693,7 +837,7 @@ function togglePanel1Show() {
 		$clickpanel1.css("left", "70%");
 		$clickpanel1.removeClass("active");
 		$panel1.css("left", "85%");
-		cleanPowers();
+		cleanPowersGodly();
 		
 		if(godversusdemonpanel13 != -1) {
 			
@@ -765,7 +909,7 @@ function togglePanel3Show() {
 		$clickpanel3.css("left", "-85%");
 		$clickpanel3.removeClass("active");
 		$panel3.css("left", "-85%");
-		cleanPowers();
+		cleanPowersGodly();
 		
 		
 		if(godversusdemonpanel13 != +1) {
@@ -837,7 +981,7 @@ function activateGodlyPower1 () {
 	
 	$godlypower = $(this);
 	
-	cleanPowers($godlypower);
+	cleanPowersGodly($godlypower);
 	
 	
 	if ($godlypower.hasClass("imagehighlight")) {
@@ -853,7 +997,7 @@ function activateGodlyPower2 () {
 	
 	$godlypower = $(this);
 	
-	cleanPowers($godlypower);
+	cleanPowersGodly($godlypower);
 	
 	if ($godlypower.hasClass("imagehighlight")) {
 		updateActivePower("friendship");
@@ -866,7 +1010,7 @@ function activateGodlyPower3 () {
 	
 	$godlypower = $(this);
 	
-	cleanPowers($godlypower);
+	cleanPowersGodly($godlypower);
 	
 	if ($godlypower.hasClass("imagehighlight")) {
 		updateActivePower("immaculate");
@@ -878,7 +1022,7 @@ function activateGodlyPower4 () {
 	
 	$godlypower = $(this);
 	
-	cleanPowers($godlypower);
+	cleanPowersGodly($godlypower);
 	
 	if ($godlypower.hasClass("imagehighlight")) {
 		updateActivePower("healblindness");
@@ -890,7 +1034,7 @@ function activateDemonPower1 () {
 	
 	$demonpower = $(this);
 	
-	cleanPowers($demonpower);
+	cleanPowersDemon($demonpower);
 	
 	if ($demonpower.hasClass("imagehighlight")) {
 		updateActivePower("outcast");
@@ -902,7 +1046,7 @@ function activateDemonPower2 () {
 	
 	$demonpower = $(this);
 	
-	cleanPowers($demonpower);
+	cleanPowersDemon($demonpower);
 
 	
 	if ($demonpower.hasClass("imagehighlight")) {
@@ -915,7 +1059,7 @@ function activateDemonPower3 () {
 	
 	$demonpower = $(this);
 	
-	cleanPowers($demonpower);
+	cleanPowersDemon($demonpower);
 
 	
 	if ($demonpower.hasClass("imagehighlight")) {
@@ -928,7 +1072,7 @@ function activateDemonPower4 () {
 	
 	$demonpower = $(this);
 	
-	cleanPowers($demonpower);
+	cleanPowersDemon($demonpower);
 	
 	if ($demonpower.hasClass("imagehighlight")) {
 		updateActivePower("sacrifice");
@@ -989,13 +1133,13 @@ function toggleDemonOmni1 () {
 	
 	$demonomni = $(this);
 		
-	if (!$demonomni.hasClass("imagehighlight")) {
+	if (!$demonomni.hasClass("imagehighlight-1")) {
 		c.pigeonholesVisible = true;
-		$demonomni.addClass("imagehighlight");
+		$demonomni.addClass("imagehighlight-1");
 	}
 	else{
 		c.pigeonholesVisible = false;
-		$demonomni.removeClass("imagehighlight");
+		$demonomni.removeClass("imagehighlight-1");
 	}
 	
 	if(!$demonomni) c.pigeonholesVisible = false;
@@ -1006,14 +1150,14 @@ function toggleDemonOmni2 () {
 	
 	$demonomni = $(this);
 	
-	if (!$demonomni.hasClass("imagehighlight")) {
+	if (!$demonomni.hasClass("imagehighlight-1")) {
 		c.displayBoidIDs = true;
-		$demonomni.addClass("imagehighlight");
+		$demonomni.addClass("imagehighlight-1");
 		
 	}
 	else{
 		c.displayBoidIDs = false;
-		$demonomni.removeClass("imagehighlight");
+		$demonomni.removeClass("imagehighlight-1");
 	}
 	
 }
@@ -1022,33 +1166,50 @@ function toggleDemonOmni3 () {
 	
 	$demonomni = $(this);
 	
-	if (!$demonomni.hasClass("imagehighlight")) {
+	if (!$demonomni.hasClass("imagehighlight-1")) {
 		c.perceptionRangeVisible = true;
-		$demonomni.addClass("imagehighlight");
+		$demonomni.addClass("imagehighlight-1");
 		
 	}
 	else{
 		c.perceptionRangeVisible = false;
-		$demonomni.removeClass("imagehighlight");
+		$demonomni.removeClass("imagehighlight-1");
 	}
 	
 		
 }
 
-function cleanPowers ($actualpower) {
+function cleanPowersGodly ($actualpower) {
 		
 	
-	$('#godlypower1').removeClass("imagehighlight");
-	$('#godlypower2').removeClass("imagehighlight");
-	$('#godlypower3').removeClass("imagehighlight");
-	$('#godlypower4').removeClass("imagehighlight");
-	$('#demonpower1').removeClass("imagehighlight");	
-	$('#demonpower2').removeClass("imagehighlight");
-	$('#demonpower3').removeClass("imagehighlight");
-	$('#demonpower4').removeClass("imagehighlight");
+	$('#godlytrclass1').removeClass("imagehighlight");
+	$('#godlytrclass2').removeClass("imagehighlight");
+	$('#godlytrclass3').removeClass("imagehighlight");
+	$('#godlytrclass4').removeClass("imagehighlight");
+	$('#demontrclass1').removeClass("imagehighlight-1");	
+	$('#demontrclass2').removeClass("imagehighlight-1");
+	$('#demontrclass3').removeClass("imagehighlight-1");
+	$('#demontrclass4').removeClass("imagehighlight-1");
 	
 	if(!$actualpower);
 	else $actualpower.addClass("imagehighlight");
+		
+}
+
+function cleanPowersDemon ($actualpower) {
+		
+	
+	$('#godlytrclass1').removeClass("imagehighlight");
+	$('#godlytrclass2').removeClass("imagehighlight");
+	$('#godlytrclass3').removeClass("imagehighlight");
+	$('#godlytrclass4').removeClass("imagehighlight");
+	$('#demontrclass1').removeClass("imagehighlight-1");	
+	$('#demontrclass2').removeClass("imagehighlight-1");
+	$('#demontrclass3').removeClass("imagehighlight-1");
+	$('#demontrclass4').removeClass("imagehighlight-1");
+	
+	if(!$actualpower);
+	else $actualpower.addClass("imagehighlight-1");
 		
 }
 
@@ -1056,32 +1217,32 @@ function cleanOmni () {
 	
 	if(godversusdemonpanel24 == 1)
 	{
-		$('#demonomni1').removeClass("imagehighlight");
-		$('#demonomni2').removeClass("imagehighlight");
-		$('#demonomni3').removeClass("imagehighlight");
+		$('#demonomnitrclass1').removeClass("imagehighlight-1");
+		$('#demonomnitrclass2').removeClass("imagehighlight-1");
+		$('#demonomnitrclass3').removeClass("imagehighlight-1");
 		
 	}
 	
 	else if(godversusdemonpanel24 == -1)
 	{
-		$('#godlyomni1').removeClass("imagehighlight");
-		$('#godlyomni2').removeClass("imagehighlight");
-		$('#godlyomni3').removeClass("imagehighlight");
+		$('#godlyomnitrclass1').removeClass("imagehighlight");
+		$('#godlyomnitrclass2').removeClass("imagehighlight");
+		$('#godlyomnitrclass3').removeClass("imagehighlight");
 		
-		if(!$('#demonomni1').hasClass("imagehighlight")) c.pigeonholesVisible = false;
-		if(!$('#demonomni2').hasClass("imagehighlight")) c.displayBoidIDs = false;
-		if(!$('#demonomni3').hasClass("imagehighlight")) c.perceptionRangeVisible = false;
+		if(!$('#demonomnitrclass1').hasClass("imagehighlight-1")) c.pigeonholesVisible = false;
+		if(!$('#demonomnitrclass2').hasClass("imagehighlight-1")) c.displayBoidIDs = false;
+		if(!$('#demonomnitrclass3').hasClass("imagehighlight-1")) c.perceptionRangeVisible = false;
 	}
 	
 	else
 	{
-		$('#demonomni1').removeClass("imagehighlight");
-		$('#demonomni2').removeClass("imagehighlight");
-		$('#demonomni3').removeClass("imagehighlight");
+		$('#demonomnitrclass1').removeClass("imagehighlight-1");
+		$('#demonomnitrclass2').removeClass("imagehighlight-1");
+		$('#demonomnitrclass3').removeClass("imagehighlight-1");
 		
-		$('#godlyomni1').removeClass("imagehighlight");
-		$('#godlyomni2').removeClass("imagehighlight");
-		$('#godlyomni3').removeClass("imagehighlight");
+		$('#godlyomnitrclass1').removeClass("imagehighlight");
+		$('#godlyomnitrclass2').removeClass("imagehighlight");
+		$('#godlyomnitrclass3').removeClass("imagehighlight");
 
 		
 		initializeViewToFalse();
@@ -1133,7 +1294,7 @@ function updateActivePower(iconname) {
 		
 		default:
 			activepower="none";
-			$("#mycanvas").css({'cursor': 'url(img/defaultpointer.png), pointer'});
+			$("#mycanvas").css({'cursor': 'url(img/demonhand_icon.png), pointer'});
 		break;
 			
 	}
