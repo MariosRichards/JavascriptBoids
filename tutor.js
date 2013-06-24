@@ -139,11 +139,17 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 	// list of {x: ??, y: ??} objects
 	
 	this.addList = [];
+	// list of parameter objects
+	// [ { ......}, 
 	
 	this.killList = [];
 	// list of ball objects
+	// [ {ball objects} ]
 	
 	this.changeList = [];
+	
+	// list of pairs of ball object and newtype integers
+	// [ {ball object, newType} ...]
 	
 	// list of {ball: ??, newtype: ??} objects
 	
@@ -327,6 +333,10 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 	
 	
 	
+	
+	
+	
+	
 	// this.testUndefinedValue = function(calledFromWhere)
 	// {
 		// for (var pigeon = 0; pigeon < this.PigeonHoles.length; pigeon++)
@@ -345,6 +355,65 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 		// }	
 	// }	
 	
+	
+	
+	
+	
+	// maximum_number_boids_to_select,array_pigeonholes_in_area
+	this.selectBoids = function(maximumSelection, x, y, selectionRadius )
+	{
+			
+	// select pigeonholes how?
+		
+		// iterate through pigeonholes
+		selectedBoids = [];
+		
+		// keep selecting until reach maximum_number_boids_to_select
+		boidNumber = 0;
+		while(maximumSelection >0 && boidNumber < this.theBalls.length)
+		{
+		
+			// does boid fulfill criterion
+			
+			if ( (this.theBalls[boidNumber].x - x)*(this.theBalls[boidNumber].x - x) +
+				 (this.theBalls[boidNumber].y - y)*(this.theBalls[boidNumber].y - y) <
+				 selectionRadius * selectionRadius ) // boid within radius of x, y
+			{
+				selectedBoids.push(this.theBalls[boidNumber]);
+				maximumSelection--;
+			
+			
+			
+			}
+			
+			boidNumber++;
+		
+		
+		}
+		
+		return selectedBoids;
+		
+		
+	}
+	
+	
+	
+	
+	
+	this.pushToAddList = function(a)
+	{
+		this.addList.push(a);
+	}	
+	
+	this.pushToChangeList = function(a)
+	{
+		this.changeList.push(a);
+	}		
+	
+	this.pushToKillList = function(a)
+	{
+		this.killList.push(a);
+	}		
 	
 	
 	
@@ -1520,6 +1589,14 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 			// this.addAgentX = evt.pageX - this.theCanvas.offsetLeft;
 			// this.addAgentY = evt.pageY - this.theCanvas.offsetTop;
 		// }
+		
+		
+		// selectedBoids = this.selectBoids(3, evt.pageX - this.theCanvas.offsetLeft, evt.pageY - this.theCanvas.offsetTop, 20);
+		// debugger;
+		
+		
+		
+		
     }
 
 
@@ -1631,7 +1708,7 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 		this.eagleSpriteHalfWidth = this.eagleSprite.width/2;
 		this.eagleSpriteHalfHeight = this.eagleSprite.height/2;			
 		
-		this.theCanvas.addEventListener("click",this.doClick.bind(this),false);
+		// this.theCanvas.addEventListener("click",this.doClick.bind(this),false);
 		this.running = 1;
 		var now = Date.now();
 		reqFrame(this.drawLoop.bind(this,now));
