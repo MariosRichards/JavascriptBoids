@@ -26,6 +26,7 @@ html {
 	left:30%;
 	top:1%;
 
+	display:none;
 	
 	/*z-index:4;*/
 	
@@ -45,7 +46,7 @@ html {
 	top:0%;
 	
 	/*z-index:5;*/
-	
+	display:none;
 	
 	
 }
@@ -60,7 +61,7 @@ html {
 		left:-7%;
 		top:0%;
 		
-		
+		display:none;
 		/*z-index:5;*/
 		
 	}

@@ -68,6 +68,10 @@ $(document).ready(function(){
     	
     	
 	});*/
+	
+	
+	$('#mycanvas').mousedown(executePower);
+	
 		
 	//////////////////
 	//////////////////
@@ -1338,6 +1342,126 @@ function updateActivePower(iconname) {
 	}
 	
 	
+}
+
+function executePower(e) {
+	
+	
+	 var selectedboids="";	
+     
+      //alert(activepower);
+      
+	switch(activepower)
+	{
+		case "messiah":
+			
+			
+			selectedboids = c.selectBoids(10,e.clientX - c.theCanvas.offsetLeft, e.clientY - c.theCanvas.offsetTop, 30);
+			if(selectedboids.length>0)
+			{	
+				//c.pushToAddList({type:4,x: e.clientX - c.theCanvas.offsetLeft, y: e.clientY - c.theCanvas.offsetTop });
+				for(i=0;i<selectedboids.length;i++)
+				{
+					c.pushToChangeList( {ball:selectedboids[i],  newType: 4 });
+				}
+					
+			}
+			
+			
+			
+		break;
+		
+		case "friendship":
+			selectedboids = c.selectBoids(10,e.clientX - c.theCanvas.offsetLeft, e.clientY - c.theCanvas.offsetTop, 30);
+			if(selectedboids.length>0)
+			{	
+				//c.pushToAddList({type:4,x: e.clientX - c.theCanvas.offsetLeft, y: e.clientY - c.theCanvas.offsetTop });
+				for(i=0;i<selectedboids.length;i++)
+				{
+					c.pushToChangeList( {ball:selectedboids[i],  newType: 4 });
+				}
+					
+			}
+		break;
+		
+		case "immaculate":
+			selectedboids = c.selectBoids(1,e.clientX - c.theCanvas.offsetLeft, e.clientY - c.theCanvas.offsetTop, 10);
+			if(selectedboids.length>0)
+			{	
+				c.pushToAddList({type:4,x: e.clientX - c.theCanvas.offsetLeft, y: e.clientY - c.theCanvas.offsetTop });
+							
+			}
+		break;
+		
+		case "healblindness":
+			selectedboids = c.selectBoids(1,e.clientX - c.theCanvas.offsetLeft, e.clientY - c.theCanvas.offsetTop, 30);
+			if(selectedboids.length>0)
+			{	
+				//c.pushToAddList({type:4,x: e.clientX - c.theCanvas.offsetLeft, y: e.clientY - c.theCanvas.offsetTop });
+				for(i=0;i<selectedboids.length;i++)
+				{
+					c.pushToChangeList( {ball:selectedboids[i],  newType: 4 });
+				}
+					
+			}
+		break; 
+		
+		case "outcast":
+			selectedboids = c.selectBoids(1,e.clientX - c.theCanvas.offsetLeft, e.clientY - c.theCanvas.offsetTop, 30);
+			if(selectedboids.length>0)
+			{	
+				//c.pushToAddList({type:4,x: e.clientX - c.theCanvas.offsetLeft, y: e.clientY - c.theCanvas.offsetTop });
+				for(i=0;i<selectedboids.length;i++)
+				{
+					c.pushToChangeList( {ball:selectedboids[i],  newType: 4 });
+				}
+					
+			}
+		break;
+		
+		case "blindness":
+			selectedboids = c.selectBoids(10,e.clientX - c.theCanvas.offsetLeft, e.clientY - c.theCanvas.offsetTop, 30);
+			if(selectedboids.length>0)
+			{	
+				//c.pushToAddList({type:4,x: e.clientX - c.theCanvas.offsetLeft, y: e.clientY - c.theCanvas.offsetTop });
+				for(i=0;i<selectedboids.length;i++)
+				{
+					c.pushToChangeList( {ball:selectedboids[i],  newType: 4 });
+				}
+					
+			}
+		break;
+		
+		case "suddendeath":
+			selectedboids = c.selectBoids(1,e.clientX - c.theCanvas.offsetLeft, e.clientY - c.theCanvas.offsetTop, 20);
+			if(selectedboids.length>0)
+			{	
+				c.pushToKillList(selectedboids[0]);
+				
+					
+			}
+		break;
+		
+		case "sacrifice":
+			selectedboids = c.selectBoids(20,e.clientX - c.theCanvas.offsetLeft, e.clientY - c.theCanvas.offsetTop, 100);
+			if(selectedboids.length>0)
+			{	
+				//c.pushToAddList({type:4,x: e.clientX - c.theCanvas.offsetLeft, y: e.clientY - c.theCanvas.offsetTop });
+				for(i=0;i<selectedboids.length;i++)
+				{
+					c.pushToKillList(selectedboids[i]);
+				}
+					
+			}
+		break;
+		
+		
+		
+		default:
+			activepower="none";
+			break;
+			
+	}
 }
 
 
