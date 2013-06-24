@@ -499,9 +499,9 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 
         // make 'em "bounce" when they go over the edge
         // no loss of velocity
-        move: function(timestep) {
-            this.x += this.vX*timestep*self.simulationSpeed;
-            this.y += this.vY*timestep*self.simulationSpeed;
+        move: function() { //(timestep)
+            this.x += this.vX*self.simulationSpeed; // *timestep*
+            this.y += this.vY*self.simulationSpeed; // *timestep*
 			
 			
             // Marios: Wouldn't need to check velocity if you could *only* hit the wall when moving in that direction
@@ -1295,7 +1295,7 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 
 
     // move the balls
-    this.moveBalls = function(timestep) {
+    this.moveBalls = function() {
         var theBalls = this.theBalls;
         var pigeonholeWidth = this.pigeonholeWidth;
         var pigeonholeHeight = this.pigeonholeHeight;
@@ -1475,7 +1475,7 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 		}					
 
         for(var i=theBalls.length-1; i>=0; i--) {
-            theBalls[i].move(timestep);
+            theBalls[i].move();
 			
 			// this.testUndefinedValue.bind(this);		
 			// this.testUndefinedValue("right after move");		
@@ -1528,25 +1528,27 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
     // WARNING: this is the simplest, but not the best, way to do this
     this.drawLoop = function(lastTime) {
 	
+		// remove this lastTime argument when Xanto has updated his code
+	
 		if (this.running == 1) 
 		{	
 		
-		    var now = Date.now();
-			var dt = (now - lastTime) *6 / 100; // time in ms - fraction of 1000/60 ms
+		    // var now = Date.now();
+			// var dt = (now - lastTime) *6 / 100; // time in ms - fraction of 1000/60 ms
 
-			if (dt > 10) // assume this means that a different tab had been selected, so movement jumps won't be offensive
-			{
-				dt = 1;
+			// if (dt > 10) // assume this means that a different tab had been selected, so movement jumps won't be offensive
+			// {
+				// dt = 1;
 			
-			}
-			console.log(dt);
+			// }
+			// console.log(dt);
 			//this.lastTime = now;
 		
 		
 		
-			this.moveBalls(dt);    // new position
+			this.moveBalls();    // new position //dt
 			this.drawBalls();    // show things
-			reqFrame(this.drawLoop.bind(this, now));
+			reqFrame(this.drawLoop.bind(this)); //, now
 		}
 		else if (this.restartNow == 1)
 		{
