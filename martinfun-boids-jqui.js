@@ -1385,7 +1385,7 @@ function executePower(e) {
 		break;
 		
 		case "immaculate":
-			selectedboids = c.selectBoids(1,e.clientX - c.theCanvas.offsetLeft, e.clientY - c.theCanvas.offsetTop, 10);
+			selectedboids = c.selectBoids(1,e.clientX - c.theCanvas.offsetLeft, e.clientY - c.theCanvas.offsetTop, 30);
 			if(selectedboids.length>0)
 			{	
 				c.pushToAddList({type:4,x: e.clientX - c.theCanvas.offsetLeft, y: e.clientY - c.theCanvas.offsetTop });
