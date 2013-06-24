@@ -1,4 +1,4 @@
-svg = {};
+/*svg = {};
 svg.svgarray = [];
 
 svg.objekt = function(path){
@@ -20,7 +20,7 @@ svg.objekt = function(path){
 	}
 	
 	self.init();
-}
+}*/
 
 var global;
 
@@ -476,7 +476,7 @@ $(document).ready(function(){
 
 
 
-function checkbutton()
+/*function checkbutton()
 {
 
 	var minvalueonscreen=(Math.min($("#dummy_pane").width(),$("#dummy_pane").height()))/2;
@@ -517,7 +517,7 @@ function checkbutton()
 		inputtest=false;
 	}*/
 	
-	if(inputtest===false)
+	/*if(inputtest===false)
 	{
 		alert(alertmessage);
 	}
@@ -544,7 +544,7 @@ function checkbutton()
 		restartButtonCB();
 	}
 	
-}
+}*/
 
 
 /*function stopButtonCB()
