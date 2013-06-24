@@ -150,6 +150,9 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 	
 	// list of pairs of ball object and newtype integers
 	// [ {ball object, newType} ...]
+	// my function({ ball: selectedObjects[obj], newType: 4 })
+
+	
 	
 	// list of {ball: ??, newtype: ??} objects
 	
@@ -160,7 +163,7 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 	this.circ = Math.PI*2;            // complete circle
 	
 	// BlackHole code
-	this.blackHole = 1;
+	this.blackHole = true;
 	this.blackHoleX = this.canvasWidth/2;
 	this.blackHoleY = this.canvasHeight/2
 
@@ -239,16 +242,66 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 
 	
 	// How BOIDS respond to PERCEPTS
+
+	this.ruleCoeffs = [];							// list of objects a boid can perceive and react to	
 	
-	this.ruleCoeffs = [];							// list of objects a boid can perceive and react to
-	this.ruleCoeffs[0] = [0, 0, 0, 0,    1000, 0]; // obstacle
-	this.ruleCoeffs[1] = [0, 0, 0, 1000, 0,    0]; // wall
-	this.ruleCoeffs[2] = [1, 1, 0, 0,    0,    0]; // boid
-	this.ruleCoeffs[3] = [0, 0, 0, 0,    1000, 0]; // repulsor
-	this.ruleCoeffs[4] = [1, 1, 0, 0,    0,    0]; // boid2
-	this.ruleCoeffs[5] = [0, 0, 0, 0,    0,    1]; // black hole gravitation
+	// agents now have BEHAVIOURS RANGING FROM 0 -3
 	
-	this.numRules = this.ruleCoeffs[0].length;
+	// Normal behaviour type
+
+	this.ruleCoeffs[0] = [];
+	this.ruleCoeffs[0][0] = [0, 0, 0, 0,    1000, 0]; // obstacle 					PERCEPT TYPE 0
+	this.ruleCoeffs[0][1] = [0, 0, 0, 1000, 0,    0]; // wall     					PERCEPT TYPE 1
+	this.ruleCoeffs[0][2] = [0.4, 1, 0, 0,  0,    0]; // NORMAL boid       			PERCEPT TYPE 2
+	this.ruleCoeffs[0][3] = [0, 0, 0, 0,    1000, 0]; // repulsor 					PERCEPT TYPE 3
+	this.ruleCoeffs[0][4] = [1, 1, 0, 0,    0,    0]; // FRIEND BOID    			PERCEPT TYPE 4
+	this.ruleCoeffs[0][5] = [0, 0, 0, 0,    0,    1000]; // black hole gravitation     PERCEPT TYPE 5
+	this.ruleCoeffs[0][6] = [1, 0, 1, 0,    0,    0]; // MESSIAH BOID               PERCEPT TYPE 6
+	this.ruleCoeffs[0][7] = [1, 0, 1, 0,    0,    0]; // PARIAH BOID                PERCEPT TYPE 7	
+	
+	// Friend behaviour type
+	this.ruleCoeffs[1] = [];							// list of objects a boid can perceive and react to
+	this.ruleCoeffs[1][0] = [0, 0, 0, 0,    1000, 0]; // obstacle 					PERCEPT TYPE 0
+	this.ruleCoeffs[1][1] = [0, 0, 0, 1000, 0,    0]; // wall     					PERCEPT TYPE 1
+	this.ruleCoeffs[1][2] = [0.4, 1, 0, 0,  0,    0]; // NORMAL boid 				PERCEPT TYPE 2
+	this.ruleCoeffs[1][3] = [0, 0, 0, 0,    1000, 0]; // repulsor 					PERCEPT TYPE 3
+	this.ruleCoeffs[1][4] = [1, 1, 0, 0,    0,    0]; // FRIEND BOID				PERCEPT TYPE 4
+	this.ruleCoeffs[1][5] = [0, 0, 0, 0,    0,    1]; // black hole gravitation     PERCEPT TYPE 5
+	this.ruleCoeffs[1][6] = [1, 0, 1, 0,    0,    0]; // MESSIAH BOID               PERCEPT TYPE 6
+	this.ruleCoeffs[1][7] = [1, 0, 1, 0,    0,    0]; // PARIAH BOID                PERCEPT TYPE 7
+
+	// Pariah behaviour type
+	this.ruleCoeffs[2] = [];							// list of objects a boid can perceive and react to
+	this.ruleCoeffs[2][0] = [0, 0, 0, 0,    1000, 0]; // obstacle 					PERCEPT TYPE 0
+	this.ruleCoeffs[2][1] = [0, 0, 0, 1000, 0,    0]; // wall     					PERCEPT TYPE 1
+	this.ruleCoeffs[2][2] = [0.4, 1, 0, 0,  0,    0]; // boid       				PERCEPT TYPE 2
+	this.ruleCoeffs[2][3] = [0, 0, 0, 0,    1000, 0]; // repulsor 					PERCEPT TYPE 3
+	this.ruleCoeffs[2][4] = [1, 1, 0, 0,    0,    0]; // boid2    					PERCEPT TYPE 4
+	this.ruleCoeffs[2][5] = [0, 0, 0, 0,    0,    1]; // black hole gravitation    PERCEPT TYPE 5
+	this.ruleCoeffs[2][6] = [1, 0, 1, 0,    0,    0]; // messiah                   PERCEPT TYPE 6
+	this.ruleCoeffs[2][7] = [1, 0, 1, 0,    0,    0]; // PARIAH BOID                PERCEPT TYPE 7
+
+	
+	// Messiah behaviour type
+	this.ruleCoeffs[3] = [];							// list of objects a boid can perceive and react to
+	this.ruleCoeffs[3][0] = [0, 0, 0, 0,    1000, 0]; // obstacle 					PERCEPT TYPE 0
+	this.ruleCoeffs[3][1] = [0, 0, 0, 1000, 0,    0]; // wall     					PERCEPT TYPE 1
+	this.ruleCoeffs[3][2] = [0.4, 1, 0, 0,  0,    0]; // boid       				PERCEPT TYPE 2
+	this.ruleCoeffs[3][3] = [0, 0, 0, 0,    1000, 0]; // repulsor 					PERCEPT TYPE 3
+	this.ruleCoeffs[3][4] = [1, 1, 0, 0,    0,    0]; // boid2    					PERCEPT TYPE 4
+	this.ruleCoeffs[3][5] = [0, 0, 0, 0,    0,    1]; // black hole gravitation    PERCEPT TYPE 5
+	this.ruleCoeffs[3][6] = [1, 0, 1, 0,    0,    0]; // messiah                   PERCEPT TYPE 6	
+	this.ruleCoeffs[3][7] = [1, 0, 1, 0,    0,    0]; // PARIAH BOID                PERCEPT TYPE 7	
+
+
+
+
+	
+//	this.numRules = this.ruleCoeffs[0].length;
+	// THERE ARE 5 RULES
+	this.numRules = 6;
+	this.numBehaviours = 4;
+	this.numPercepts = 8;
 
 	
 	// this.ruleCoeffs[0] = 1; // alignment coefficient
@@ -286,11 +339,19 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 	
 	
 	
-						
 	
 	this.numObjects = 0; // global object counter!
 	
 	// slider set coefficient functions
+	
+	
+	this.setCoeffs = function(perceptType, ruleType, newCoeffValue)
+	{
+		this.ruleCoeffs[perceptType][ruleType] = newCoeffValue;
+	
+	}
+	
+	
 	
 	this.setCoeff0 = function(v)
 	{
@@ -480,9 +541,9 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
         y : 0,
         vX : 0,
         vY : 0,
-		vXrule : [0, 0, 0],
-		vYrule : [0, 0, 0],
-		interactions : [0, 0, 0],
+		vXrule :       [0, 0, 0, 0, 0, 0],
+		vYrule :       [0, 0, 0, 0, 0, 0],
+		interactions : [0, 0, 0, 0, 0, 0],
 		id : 0,
         pigeon : 0, // pigeonhole
         speed : 1,
@@ -491,6 +552,7 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 		next: null,
 		prev: null,
 		type: 2,
+		behaviour: 0,
 
         // draw : function() {
 
@@ -823,10 +885,11 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 		ball.perceptionRangeSquared = perceptionRange*perceptionRange;
         // ball.stroke = stroke;
 		ball.speed = speed;
-		ball.vXrule = [0,0,0];
-		ball.vYrule = [0,0,0];
-		ball.interactions = [0,0,0];
+		ball.vXrule = [0,0,0,0,0,0];
+		ball.vYrule = [0,0,0,0,0,0];
+		ball.interactions = [0,0,0,0,0,0];
 		ball.type = type; // Boid Type
+		ball.behaviour = 0;
 		
 
         // make Ball note which pigeonhole it is in
@@ -874,7 +937,7 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 		// draw pigeonhole grid on screen
 		// would relate to 'global' perceptionRange
 		if (this.pigeonholesVisible)
-			{
+		{
 			
 			theContext.strokeStyle = 'rgba(0,0,0,.1)';
 			theContext.lineWidth = 1;			
@@ -1066,7 +1129,7 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 			var arrowRatio = .2;
 			
 			// draw desire vector arrows 
-			for (var rule = this.ruleCoeffs.length-1; rule >=0; rule --)
+			for (var rule = this.numRules-1; rule >=0; rule --)
 			{
 				if (this.ruleVectorVisible[rule] && bi.interactions[rule]) // rule vector set to visble AND an interaction occurred
 				{
@@ -1130,7 +1193,7 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 			
 			// GRAVITATIONAL HARDCODE
 			
-			if (this.blackHole = 1 && bi.type==4)
+			if (this.blackHole == 1 && bi.type==2)
 			{
 				this.applyRulesNow(bi, 5, this.blackHoleX - bix, this.blackHoleY - biy);
 			}
@@ -1244,8 +1307,8 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 	
 	this.applyRulesNow = function(theBall, objectType, dx, dy, theObject)
 	{
-		var ruleCoeff = this.ruleCoeffs[objectType];
-		var invdistsq
+		var ruleCoeff = this.ruleCoeffs[theBall.behaviour][objectType];
+		var invdistsq;
 		
 		// HARDCODED INTERACTION LIST CODE    		
 	
@@ -1287,13 +1350,14 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 			theBall.interactions[4] ++;		
 		}		
 		
-		if (ruleCoeff[5]) // object repulsion
+		if (ruleCoeff[5]) // black hole attraction
 		{
 			invdistsq = invdistsq || 4/(1 + dx*dx + dy*dy);
 			theBall.vXrule[5] += ruleCoeff[5]*dx*invdistsq;
 			theBall.vYrule[5] += ruleCoeff[5]*dy*invdistsq;
 			theBall.interactions[5] ++;		
 		}			
+					
 		
 	}
 	
@@ -1482,36 +1546,6 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 		for(var i=theBalls.length-1; i>=0; i--) {
 			// any chance of zero velocity?
 			var bi = theBalls[i];	
-			
-			// normalise the desire vectors
-			// if (bi.interactions[0]>1)
-			// {
-				// bi.vXrule[0] /= bi.interactions[0];
-				// bi.vYrule[0] /= bi.interactions[0];
-			// }
-			// if (bi.interactions[1]>1)
-			// {
-				// bi.vXrule[1] /= bi.interactions[1];
-				// bi.vYrule[1] /= bi.interactions[1];
-			// }
-			// if (bi.interactions[2]>1)
-			// {
-				// bi.vXrule[2] /= bi.interactions[2];
-				// bi.vYrule[2] /= bi.interactions[2];
-			// }
-			// if (bi.interactions[3]>1)
-			// {
-				// bi.vXrule[3] /= bi.interactions[3];
-				// bi.vYrule[3] /= bi.interactions[3];
-			// }
-			// if (bi.interactions[4]>1)
-			// {
-				// bi.vXrule[4] /= bi.interactions[4];
-				// bi.vYrule[4] /= bi.interactions[4];
-			// }
-			
-			// var nvx = bi.vX + bi.vXrule[0] + bi.vXrule[1] + bi.vXrule[2] + bi.vXrule[3] + bi.vXrule[4];
-			// var nvy = bi.vY + bi.vYrule[0] + bi.vYrule[1] + bi.vYrule[2] + bi.vXrule[3] + bi.vXrule[4];	
 			
 			
 			var nvx = bi.vX;
