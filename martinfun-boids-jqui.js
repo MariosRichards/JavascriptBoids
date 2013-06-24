@@ -48,7 +48,7 @@ $(document).ready(function(){
 	////////////////
 	/////
 	
-	$(window).blur(function(e) {
+	/*$(window).blur(function(e) {
     // Do Blur Actions Here
     	if(isInGame==true) {
     		
@@ -67,7 +67,7 @@ $(document).ready(function(){
     	}
     	
     	
-	});
+	});*/
 		
 	//////////////////
 	//////////////////
@@ -557,14 +557,16 @@ function checkbutton()
 	}
 }*/
 
-function stopButtonCB()
+/*function stopButtonCB()
 {
 	
 	if (c.running == 1) {
 		
 		c.running = 0;
 			
-	}
+	}*/
+	
+	
 	/*if (c.running) {
 		c.running = 0;
 		$("#stopbutton").html("start");
@@ -575,9 +577,9 @@ function stopButtonCB()
 		reqFrame(c.drawLoop.bind(c,now));
 	
 	}*/
-}
+//}
 
-function startButtonCB()
+/*function startButtonCB()
 {
 	if (c.running == 0) {
 		
@@ -588,7 +590,7 @@ function startButtonCB()
 		
 	}
 	
-}
+}*/
 
 function numberboidsButtonCB()
 {
