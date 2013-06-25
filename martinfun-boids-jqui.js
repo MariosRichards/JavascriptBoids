@@ -1400,7 +1400,7 @@ function executePower(e) {
 				//c.pushToAddList({type:4,x: e.clientX - c.theCanvas.offsetLeft, y: e.clientY - c.theCanvas.offsetTop });
 				for(i=0;i<selectedboids.length;i++)
 				{
-					c.pushToChangeList( {ball:selectedboids[i],  newType: 4 });
+					c.changePerceptionRange(selectedboids[i],50);
 				}
 					
 			}
@@ -1426,7 +1426,7 @@ function executePower(e) {
 				//c.pushToAddList({type:4,x: e.clientX - c.theCanvas.offsetLeft, y: e.clientY - c.theCanvas.offsetTop });
 				for(i=0;i<selectedboids.length;i++)
 				{
-					c.pushToChangeList( {ball:selectedboids[i],  newType: 4 });
+					c.changePerceptionRange(selectedboids[i],3);
 				}
 					
 			}
