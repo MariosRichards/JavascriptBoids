@@ -1388,7 +1388,7 @@ function executePower(e) {
 		break;
 		
 		case "friendship":
-			selectedboids = c.selectBoids(10,e.clientX - c.theCanvas.offsetLeft, e.clientY - c.theCanvas.offsetTop, 200);
+			selectedboids = c.selectBoids(10,e.clientX - c.theCanvas.offsetLeft, e.clientY - c.theCanvas.offsetTop, 50);
 			if(selectedboids.length>0)
 			{	
 				//c.pushToAddList({type:4,x: e.clientX - c.theCanvas.offsetLeft, y: e.clientY - c.theCanvas.offsetTop });
