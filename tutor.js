@@ -147,6 +147,12 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 	// [ {ball objects} ]
 	
 	this.changeList = [];
+	// changes percept types!
+	// [ {ball: <ball obj>, newType: <int>} ...]
+	
+	this.changeBehaviourList = [];
+	// change beahviour types!
+	// [ {ball: <ball obj>, newBehaviour: <int>} ...]
 	
 	// list of pairs of ball object and newtype integers
 	// [ {ball object, newType} ...]
@@ -475,6 +481,11 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 	{
 		this.killList.push(a);
 	}		
+	
+	this.pushToChangeBehavbiourList = function(a)
+	{
+		this.changeBehaviourList.push(a);
+	}			
 	
 	
 	
@@ -852,6 +863,7 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 		}
 		(options.perceptionRange === undefined) ? perceptionRange = this.perceptionRange : perceptionRange = options.perceptionRange;
 		(options.type === undefined) ? type = 2*Math.ceil(Math.random()*2) : type = options.type;
+		(options.behaviour === undefined) ? behaviour = 0 : behaviour = options.behaviour;
 				
 		
 
@@ -1024,7 +1036,7 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 			var boidX = bi.x;
 			var boidY = bi.y;
 			
-			if (bi.type==2)
+			if (bi.type==2 || bi.type==5 || bi.type==6 || bi.type ==7)
 			{
 			
 			
@@ -1448,7 +1460,7 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 		
 		
 		
-		// changeType processing
+		// change percept type processing
 		if (this.changeList.length>0)
 		{
 			for (var i = this.changeList.length-1; i>=0; i--)
@@ -1462,6 +1474,21 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 			
 		}
 
+		// change percept type processing
+		if (this.changeBehaviourList.length>0)
+		{
+			for (var i = this.changeBehaviourList.length-1; i>=0; i--)
+			{
+		
+				this.changeBehaviourList[i].ball.behaviour = this.changeBehaviourList[i].newBehaviour;
+
+			}
+		
+			this.changeBehaviourList.length = 0;
+			
+		}		
+		
+		
 		// if (this.theBalls.length>0 && Math.random()>.9)
 		// {
 		
