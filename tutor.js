@@ -1033,7 +1033,7 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 				theContext.strokeStyle = 'rgba(255,0,0,0.1)';
 				theContext.lineWidth = 5;
 				theContext.beginPath();
-				theContext.arc((bi.x)<<0,(bi.y)<<0, this.perceptionRange-2.5,0, this.circ,true); // decrement radius by half of line width
+				theContext.arc((bi.x)<<0,(bi.y)<<0, bi.perceptionRange-2.5,0, this.circ,true); // decrement radius by half of line width
 				theContext.closePath();
 				theContext.stroke();
 				theContext.lineWidth = 1;									
