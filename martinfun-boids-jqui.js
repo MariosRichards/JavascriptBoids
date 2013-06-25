@@ -1414,6 +1414,7 @@ function executePower(e) {
 				for(i=0;i<selectedboids.length;i++)
 				{
 					c.pushToChangeBehaviourList( {ball:selectedboids[i],  newBehaviour: 2 });
+					c.changePerceptionRange(selectedboids[i],25);
 				}
 					
 			}

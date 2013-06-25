@@ -189,7 +189,7 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 	// Marios: This is where I'm dumping any new parameters
 
 
-	this.perceptionRange = 20;
+	this.perceptionRange = 50;
 	this.initialPopulation = 100;	
 	this.simulationSpeed = 1;	
 	
@@ -260,32 +260,32 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 	this.ruleCoeffs[0][1] = [0, 0, 0, 1000, 0,    0]; // wall     					PERCEPT TYPE 1
 	this.ruleCoeffs[0][2] = [0.4, 1, 0, 0,  0,    0]; // NORMAL boid       			PERCEPT TYPE 2
 	this.ruleCoeffs[0][3] = [0, 0, 0, 0,    1000, 0]; // repulsor 					PERCEPT TYPE 3
-	this.ruleCoeffs[0][4] = [1, 1, 0, 0,    0,    0]; // FRIEND BOID    			PERCEPT TYPE 4
-	this.ruleCoeffs[0][5] = [0, 0, 0, 0,    0,    1000]; // black hole gravitation     PERCEPT TYPE 5
+	this.ruleCoeffs[0][4] = [0.4, 1, 0, 0,    0,   0]; // FRIEND BOID    			PERCEPT TYPE 4
+	this.ruleCoeffs[0][5] = [0, 0, 0, 0,    0,    0]; // black hole gravitation     PERCEPT TYPE 5
 	this.ruleCoeffs[0][6] = [1, 0, 1, 0,    0,    0]; // MESSIAH BOID               PERCEPT TYPE 6
-	this.ruleCoeffs[0][7] = [1, 0, 1, 0,    0,    0]; // PARIAH BOID                PERCEPT TYPE 7	
+	this.ruleCoeffs[0][7] = [0, 100, 0, 0,    0,    0]; // PARIAH BOID                PERCEPT TYPE 7	
 	
 	// Friend behaviour type
 	this.ruleCoeffs[1] = [];							// list of objects a boid can perceive and react to
 	this.ruleCoeffs[1][0] = [0, 0, 0, 0,    1000, 0]; // obstacle 					PERCEPT TYPE 0
 	this.ruleCoeffs[1][1] = [0, 0, 0, 1000, 0,    0]; // wall     					PERCEPT TYPE 1
-	this.ruleCoeffs[1][2] = [0.4, 1, 0, 0,  0,    0]; // NORMAL boid 				PERCEPT TYPE 2
+	this.ruleCoeffs[1][2] = [1, 1, 0.5, 0,  0,    0]; // NORMAL boid 				PERCEPT TYPE 2
 	this.ruleCoeffs[1][3] = [0, 0, 0, 0,    1000, 0]; // repulsor 					PERCEPT TYPE 3
-	this.ruleCoeffs[1][4] = [1, 1, 0, 0,    0,    0]; // FRIEND BOID				PERCEPT TYPE 4
-	this.ruleCoeffs[1][5] = [0, 0, 0, 0,    0,    1]; // black hole gravitation     PERCEPT TYPE 5
+	this.ruleCoeffs[1][4] = [1, 1, 0.5, 0,    0,  0]; // FRIEND BOID				PERCEPT TYPE 4
+	this.ruleCoeffs[1][5] = [0, 0, 0, 0,    0,    0]; // black hole gravitation     PERCEPT TYPE 5
 	this.ruleCoeffs[1][6] = [1, 0, 1, 0,    0,    0]; // MESSIAH BOID               PERCEPT TYPE 6
-	this.ruleCoeffs[1][7] = [1, 0, 1, 0,    0,    0]; // PARIAH BOID                PERCEPT TYPE 7
+	this.ruleCoeffs[1][7] = [0, 10, 0, 0,    0,    0]; // PARIAH BOID                PERCEPT TYPE 7
 
 	// Pariah behaviour type
 	this.ruleCoeffs[2] = [];							// list of objects a boid can perceive and react to
 	this.ruleCoeffs[2][0] = [0, 0, 0, 0,    1000, 0]; // obstacle 					PERCEPT TYPE 0
 	this.ruleCoeffs[2][1] = [0, 0, 0, 1000, 0,    0]; // wall     					PERCEPT TYPE 1
-	this.ruleCoeffs[2][2] = [0.4, 1, 0, 0,  0,    0]; // boid       				PERCEPT TYPE 2
+	this.ruleCoeffs[2][2] = [0, 0, 0, 0,  0,    1000]; // boid       				PERCEPT TYPE 2
 	this.ruleCoeffs[2][3] = [0, 0, 0, 0,    1000, 0]; // repulsor 					PERCEPT TYPE 3
-	this.ruleCoeffs[2][4] = [1, 1, 0, 0,    0,    0]; // boid2    					PERCEPT TYPE 4
-	this.ruleCoeffs[2][5] = [0, 0, 0, 0,    0,    1]; // black hole gravitation    PERCEPT TYPE 5
-	this.ruleCoeffs[2][6] = [1, 0, 1, 0,    0,    0]; // messiah                   PERCEPT TYPE 6
-	this.ruleCoeffs[2][7] = [1, 0, 1, 0,    0,    0]; // PARIAH BOID                PERCEPT TYPE 7
+	this.ruleCoeffs[2][4] = [0, 0, 0, 0,    0,    0]; // FRIEND BOID				PERCEPT TYPE 4
+	this.ruleCoeffs[2][5] = [0, 0, 0, 0,    0,    0]; // black hole gravitation    PERCEPT TYPE 5
+	this.ruleCoeffs[2][6] = [0, 0, 0, 0,    0,    0]; // messiah                   PERCEPT TYPE 6
+	this.ruleCoeffs[2][7] = [1, 0, 0.5, 0,    0,  0]; // PARIAH BOID                PERCEPT TYPE 7
 
 	
 	// Messiah behaviour type
@@ -294,10 +294,10 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 	this.ruleCoeffs[3][1] = [0, 0, 0, 1000, 0,    0]; // wall     					PERCEPT TYPE 1
 	this.ruleCoeffs[3][2] = [0.4, 1, 0, 0,  0,    0]; // boid       				PERCEPT TYPE 2
 	this.ruleCoeffs[3][3] = [0, 0, 0, 0,    1000, 0]; // repulsor 					PERCEPT TYPE 3
-	this.ruleCoeffs[3][4] = [1, 1, 0, 0,    0,    0]; // boid2    					PERCEPT TYPE 4
-	this.ruleCoeffs[3][5] = [0, 0, 0, 0,    0,    1]; // black hole gravitation    PERCEPT TYPE 5
+	this.ruleCoeffs[3][4] = [1, 1, 0, 0,    0,    0]; // FRIEND BOID    			PERCEPT TYPE 4
+	this.ruleCoeffs[3][5] = [0, 0, 0, 0,    0,    10]; // black hole gravitation    PERCEPT TYPE 5
 	this.ruleCoeffs[3][6] = [1, 0, 1, 0,    0,    0]; // messiah                   PERCEPT TYPE 6	
-	this.ruleCoeffs[3][7] = [1, 0, 1, 0,    0,    0]; // PARIAH BOID                PERCEPT TYPE 7	
+	this.ruleCoeffs[3][7] = [0, 10, 0, 0,    0,    0]; // PARIAH BOID                PERCEPT TYPE 7	
 
 
 
