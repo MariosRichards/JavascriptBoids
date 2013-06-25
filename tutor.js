@@ -482,7 +482,7 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 		this.killList.push(a);
 	}		
 	
-	this.pushToChangeBehavbiourList = function(a)
+	this.pushToChangeBehaviourList = function(a)
 	{
 		this.changeBehaviourList.push(a);
 	}			
