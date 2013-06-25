@@ -487,6 +487,14 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 		this.changeBehaviourList.push(a);
 	}			
 	
+	this.changePerceptionRange = function(blindThisBoid,newPerceptionRange)
+	{
+	
+		blindThisBoid.perceptionRange = newPerceptionRange;
+		blindThisBoid.perceptionRangeSquared = newPerceptionRange*newPerceptionRange;
+	}
+	
+	
 	
 	
 
