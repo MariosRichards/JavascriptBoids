@@ -466,6 +466,7 @@ $(document).ready(function(){
 		
 	initializeViewToFalse();
 
+		
 	
 	
 	controlmySliders();
@@ -1405,7 +1406,7 @@ function executePower(e) {
 			selectedboids = c.selectBoids(1,e.clientX - c.theCanvas.offsetLeft, e.clientY - c.theCanvas.offsetTop, 30);
 			if(selectedboids.length>0)
 			{	
-				c.pushToAddList({type:4,x: e.clientX - c.theCanvas.offsetLeft, y: e.clientY - c.theCanvas.offsetTop });
+				c.pushToAddList({type:2,x: e.clientX - c.theCanvas.offsetLeft, y: e.clientY - c.theCanvas.offsetTop });
 							
 			}
 		break;
@@ -1417,7 +1418,7 @@ function executePower(e) {
 				//c.pushToAddList({type:4,x: e.clientX - c.theCanvas.offsetLeft, y: e.clientY - c.theCanvas.offsetTop });
 				for(i=0;i<selectedboids.length;i++)
 				{
-					c.changePerceptionRange(selectedboids[i],50);
+					c.changePerceptionRange(selectedboids[i],30);
 				}
 					
 			}
@@ -1546,7 +1547,7 @@ function initializeViewToFalse() {
 	c.displayBoidIDs = false;
 	c.perceptionRangeVisible = false;
 	c.ruleVectorVisible = [false, false, false, false, false, false];
-
+	c.setVisibiliyInteractionList(false);	
 
 }
 	

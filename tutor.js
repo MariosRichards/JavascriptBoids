@@ -294,7 +294,7 @@ Boid.Agent = function(canvasWidth, canvasHeight, imageArray)
 	this.ruleCoeffs[2][4] = [0, 0, 0, 0,    0,    0]; // FRIEND BOID				PERCEPT TYPE 4
 	this.ruleCoeffs[2][5] = [0, 0, 0, 0,    0,    0]; // black hole gravitation    PERCEPT TYPE 5
 	this.ruleCoeffs[2][6] = [0, 0, 0, 0,    0,    0]; // messiah                   PERCEPT TYPE 6
-	this.ruleCoeffs[2][7] = [1, 0, 0.5, 0,    0,  0]; // PARIAH BOID                PERCEPT TYPE 7
+	this.ruleCoeffs[2][7] = [1, 0.5, 0, 0,    0,  0]; // PARIAH BOID                PERCEPT TYPE 7
 
 	
 	// Messiah behaviour type
@@ -305,7 +305,7 @@ Boid.Agent = function(canvasWidth, canvasHeight, imageArray)
 	this.ruleCoeffs[3][3] = [0, 0, 0, 0,    1000, 0]; // repulsor 					PERCEPT TYPE 3
 	this.ruleCoeffs[3][4] = [1, 1, 0, 0,    0,    0]; // FRIEND BOID    			PERCEPT TYPE 4
 	this.ruleCoeffs[3][5] = [0, 0, 0, 0,    0,    10]; // black hole gravitation    PERCEPT TYPE 5
-	this.ruleCoeffs[3][6] = [1, 0, 1, 0,    0,    0]; // messiah                   PERCEPT TYPE 6	
+	this.ruleCoeffs[3][6] = [1, 1, 0, 0,    0,    0]; // messiah                   PERCEPT TYPE 6	
 	this.ruleCoeffs[3][7] = [0, 10, 0, 0,    0,    0]; // PARIAH BOID                PERCEPT TYPE 7	
 
 
