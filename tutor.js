@@ -62,7 +62,14 @@ Boid.Agent = function(canvasWidth, canvasHeight, imageArray)
 	// this.thePlayers = [];
 	
 	
-	this.eagleSprite = imageArray[0];
+	this.normalSprite = imageArray[0]; // image 0 for type 2
+	this.messiahSprite = imageArray[1]; // image 1 for type 6
+	this.friendSprite = imageArray[2]; // image 2 for type 4	
+	this.pariahSprite = imageArray[3]; // image 3 for type 7
+	
+	
+	
+	
 
 
 	// shim layer with setTimeout fallback
@@ -1046,51 +1053,99 @@ Boid.Agent = function(canvasWidth, canvasHeight, imageArray)
 			var boidX = bi.x;
 			var boidY = bi.y;
 			
-			if (bi.type==2 || bi.type==5 || bi.type==6 || bi.type ==7)
-			{
+	// this.normalSprite = imageArray[0]; // image 0 for type 2
+	// this.messiahSprite = imageArray[1]; // image 1 for type 6
+	// this.friendSprite = imageArray[2]; // image 2 for type 4	
+	// this.pariahSprite = imageArray[3]; // image 3 for type 7			
 			
 			
-				// draw boid triangle
-				theContext.strokeStyle = 'rgba(0,255,0,1)';
+	// // draw boid triangle
+				// theContext.strokeStyle = 'rgba(0,255,0,1)';
 	
-				theContext.beginPath();			
+				// theContext.beginPath();			
 
 				
 
-				var normVx = bi.vX*ratio;
-				var normVy = bi.vY*ratio;
+				// var normVx = bi.vX*ratio;
+				// var normVy = bi.vY*ratio;
 				
-				theContext.moveTo( ( boidX+normVx )<<0
-								 , ( boidY+normVy )<<0 );
+				// theContext.moveTo( ( boidX+normVx )<<0
+								 // , ( boidY+normVy )<<0 );
 
-				theContext.lineTo( ( boidX + normVx*this.cos140 - normVy*this.sin140 )<<0 
-								 , ( boidY + normVx*this.sin140 + normVy*this.cos140 )<<0 );
+				// theContext.lineTo( ( boidX + normVx*this.cos140 - normVy*this.sin140 )<<0 
+								 // , ( boidY + normVx*this.sin140 + normVy*this.cos140 )<<0 );
 		
-				theContext.lineTo( ( boidX + normVx*this.cos220 - normVy*this.sin220 )<<0
-								 , ( boidY + normVx*this.sin220 + normVy*this.cos220 )<<0 );
+				// theContext.lineTo( ( boidX + normVx*this.cos220 - normVy*this.sin220 )<<0
+								 // , ( boidY + normVx*this.sin220 + normVy*this.cos220 )<<0 );
 								 
-				theContext.lineTo( ( boidX + normVx )<<0 
-								 , ( boidY + normVy )<<0 ) ;
+				// theContext.lineTo( ( boidX + normVx )<<0 
+								 // , ( boidY + normVy )<<0 ) ;
 						
-				theContext.closePath();
-				theContext.stroke();
+				// theContext.closePath();
+				// theContext.stroke();			
 			
-			}
-			else if (bi.type==4)
+
+
+			var centredX = boidX<<0;
+			var centredY = boidY<<0;
+			var angle = Math.atan2(bi.vY, bi.vX) - Math.PI/2;
+		
+		
+			theContext.translate(centredX,centredY);
+			theContext.rotate(angle);
+			
+			switch(bi.type)
 			{
-				var centredX = boidX<<0;
-				var centredY = boidY<<0;
-				var angle = Math.atan2(bi.vY, bi.vX) - Math.PI/2;
+				case 2:
+				theContext.drawImage(this.normalSprite, -this.normalSpriteHalfWidth
+				                                     , -this.normalSpriteHalfHeight );
+				break;
+
+				case 4:
+				theContext.drawImage(this.friendSprite, -this.friendSpriteHalfWidth
+				                                     , -this.friendSpriteHalfHeight );
+				break;					
+
+				case 6:
+				theContext.drawImage(this.messiahSprite, -this.messiahSpriteHalfWidth
+				                                     , -this.messiahSpriteHalfHeight );
+				break;					
+
+				case 7:
+				theContext.drawImage(this.pariahSprite, -this.pariahSpriteHalfWidth
+				                                     , -this.pariahSpriteHalfHeight );
+				break;					
+
+				default:
+					debugger;
+
+			}
 			
 			
-				theContext.translate(centredX,centredY);
-				theContext.rotate(angle);
+			theContext.rotate(-angle);
+			theContext.translate(-centredX, -centredY); 				
+			
+
+			
+			
+			
+			
+			// }
+			// else if (bi.type==4)
+			// {
+				// var centredX = boidX<<0;
+				// var centredY = boidY<<0;
+				// var angle = Math.atan2(bi.vY, bi.vX) - Math.PI/2;
+			
+			
+				// theContext.translate(centredX,centredY);
+				// theContext.rotate(angle);
 	
-				theContext.drawImage(this.eagleSprite, -(this.eagleSpriteHalfWidth<<0)
-				                                     , -(this.eagleSpriteHalfWidth<<0) )
+				// theContext.drawImage(this.eagleSprite, -this.eagleSpriteHalfWidth
+				                                     // , -this.eagleSpriteHalfWidth )
 													 
-				theContext.rotate(-angle);
-				theContext.translate(-centredX, -centredY); 			
+				// theContext.rotate(-angle);
+				// theContext.translate(-centredX, -centredY); 			
 			
 
 
@@ -1121,7 +1176,7 @@ Boid.Agent = function(canvasWidth, canvasHeight, imageArray)
 				// theContext.stroke();			
 			
 			
-			}
+			//}
 			
 			// HARCODED INTERACTION LIST STUFF
 			// iterate through interaction list drawing lines
@@ -1776,8 +1831,26 @@ Boid.Agent = function(canvasWidth, canvasHeight, imageArray)
 			}		
 		}
 		
-		this.eagleSpriteHalfWidth = this.eagleSprite.width/2;
-		this.eagleSpriteHalfHeight = this.eagleSprite.height/2;			
+	// this.normalSprite = imageArray[0]; // image 0 for type 2
+	// this.messiahSprite = imageArray[1]; // image 1 for type 6
+	// this.friendSprite = imageArray[2]; // image 2 for type 4	
+	// this.pariahSprite = imageArray[3]; // image 3 for type 7				
+		
+		
+		
+		
+		
+		this.normalSpriteHalfWidth = this.normalSprite.width>>1;
+		this.normalSpriteHalfHeight = this.normalSprite.height>>1;	
+
+		this.messiahSpriteHalfWidth = this.messiahSprite.width>>1;
+		this.messiahSpriteHalfHeight = this.messiahSprite.height>>1;			
+		
+		this.friendSpriteHalfWidth = this.friendSprite.width>>1;
+		this.friendSpriteHalfHeight = this.friendSprite.height>>1;			
+
+		this.pariahSpriteHalfWidth = this.pariahSprite.width>>1;
+		this.pariahSpriteHalfHeight = this.pariahSprite.height>>1;			
 		
 		// this.theCanvas.addEventListener("click",this.doClick.bind(this),false);
 		this.running = 1;
@@ -1864,4 +1937,5 @@ Boid.Agent = function(canvasWidth, canvasHeight, imageArray)
 
 
 
+	
 	
