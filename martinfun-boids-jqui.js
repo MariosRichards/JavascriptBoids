@@ -467,7 +467,7 @@ $(document).ready(function(){
 	
 	
 	
-	$("#restartbutton").click(checkbutton);	
+	//$("#restartbutton").click(checkbutton);	
 	
 	
 		
