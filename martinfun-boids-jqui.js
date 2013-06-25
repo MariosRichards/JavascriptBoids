@@ -428,7 +428,7 @@ $(document).ready(function(){
 	
 	//scaleAndDrawPaths(w,h);	
 	var eagleSprite = new Image();
-	eagleSprite.src = "eagletop.png";
+	eagleSprite.src = "img/fattest.png";
 	
 	
 	c = new Boid.Agent(w, h, eagleSprite);
