@@ -428,7 +428,7 @@ $(document).ready(function(){
 	
 	//scaleAndDrawPaths(w,h);	
 	var eagleSprite = new Image();
-	eagleSprite.src = "img/fattest.png";
+	eagleSprite.src = "img/normaltype.png";
 	
 	
 	c = new Boid.Agent(w, h, eagleSprite);
@@ -1356,13 +1356,13 @@ function executePower(e) {
 		case "messiah":
 			
 			
-			selectedboids = c.selectBoids(10,e.clientX - c.theCanvas.offsetLeft, e.clientY - c.theCanvas.offsetTop, 30);
+			selectedboids = c.selectBoids(1,e.clientX - c.theCanvas.offsetLeft, e.clientY - c.theCanvas.offsetTop, 30);
 			if(selectedboids.length>0)
 			{	
 				//c.pushToAddList({type:4,x: e.clientX - c.theCanvas.offsetLeft, y: e.clientY - c.theCanvas.offsetTop });
 				for(i=0;i<selectedboids.length;i++)
 				{
-					c.pushToChangeList( {ball:selectedboids[i],  newType: 4 });
+					c.pushToChangeBehaviourList( {ball:selectedboids[i],  newBehaviour: 3 });
 				}
 					
 			}
@@ -1372,13 +1372,13 @@ function executePower(e) {
 		break;
 		
 		case "friendship":
-			selectedboids = c.selectBoids(10,e.clientX - c.theCanvas.offsetLeft, e.clientY - c.theCanvas.offsetTop, 30);
+			selectedboids = c.selectBoids(10,e.clientX - c.theCanvas.offsetLeft, e.clientY - c.theCanvas.offsetTop, 200);
 			if(selectedboids.length>0)
 			{	
 				//c.pushToAddList({type:4,x: e.clientX - c.theCanvas.offsetLeft, y: e.clientY - c.theCanvas.offsetTop });
 				for(i=0;i<selectedboids.length;i++)
 				{
-					c.pushToChangeList( {ball:selectedboids[i],  newType: 4 });
+					c.pushToChangeBehaviourList( {ball:selectedboids[i],  newBehaviour: 1 });
 				}
 					
 			}
@@ -1413,7 +1413,7 @@ function executePower(e) {
 				//c.pushToAddList({type:4,x: e.clientX - c.theCanvas.offsetLeft, y: e.clientY - c.theCanvas.offsetTop });
 				for(i=0;i<selectedboids.length;i++)
 				{
-					c.pushToChangeList( {ball:selectedboids[i],  newType: 4 });
+					c.pushToChangeBehaviourList( {ball:selectedboids[i],  newBehaviour: 2 });
 				}
 					
 			}
