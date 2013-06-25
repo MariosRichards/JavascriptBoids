@@ -427,11 +427,26 @@ $(document).ready(function(){
 	//Maybe use maybe not//
 	
 	//scaleAndDrawPaths(w,h);	
-	var eagleSprite = new Image();
-	eagleSprite.src = "img/normaltype.png";
+	
+	var imageArray=[];
+	
+	var normalSprite = new Image();
+	var messiahSprite = new Image();
+	var friendSprite = new Image();
+	var outcastSprite = new Image();
+	
+	normalSprite.src = "img/normaltype.png";
+	messiahSprite.src = "img/messiahtype.png";		
+	friendSprite.src = "img/friendtype.png";
+	outcastSprite.src = "img/outcasttype.png";
+	
+	imageArray.push(normalSprite);
+	imageArray.push(messiahSprite);
+	imageArray.push(friendSprite);
+	imageArray.push(outcastSprite);
 	
 	
-	c = new Boid.Agent(w, h, eagleSprite);
+	c = new Boid.Agent(w, h, imageArray);
 	
 	eagleSprite.onload = function() {
 	    c.start(); 
