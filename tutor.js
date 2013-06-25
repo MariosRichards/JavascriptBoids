@@ -54,7 +54,7 @@ var BoidAgents       = [];
 // }
 
 
-Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
+Boid.Agent = function(canvasWidth, canvasHeight, imageArray)
 {
 
 // PLAYER STUFF
@@ -62,7 +62,7 @@ Boid.Agent = function(canvasWidth, canvasHeight, eagleSprite)
 	// this.thePlayers = [];
 	
 	
-	this.eagleSprite = eagleSprite;
+	this.eagleSprite = imageArray[0];
 
 
 	// shim layer with setTimeout fallback
