@@ -448,7 +448,7 @@ $(document).ready(function(){
 	
 	c = new Boid.Agent(w, h, imageArray);
 	
-	eagleSprite.onload = function() {
+	outcastSprite.onload = function() {
 	    c.start(); 
 	};
 	
