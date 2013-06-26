@@ -516,8 +516,15 @@ Boid.Agent = function(canvasWidth, canvasHeight, imageArray)
 	
 	this.changeAgentSpeed = function(speedThisBoid, speedRatio)
 	{
-	
-		speedThisBoid.speed = speedThisBoid.speed*speedRatio;
+		if(speedThisBoid.speed*speedRatio > 3.2)
+		{
+			speedThisBoid.speed = 3.2;
+		}
+		else if(speedThisBoid.speed*speedRatio < 0.2)
+		{
+			speedThisBoid.speed = 0.2;
+		}
+		else speedThisBoid.speed = speedThisBoid.speed*speedRatio;
 	
 	}
 	
