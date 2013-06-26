@@ -455,8 +455,7 @@ $(document).ready(function(){
 	imageArray.push(messiahSpriteSheet);
 	imageArray.push(friendSpriteSheet);
 	imageArray.push(outcastSpriteSheet);
-	imageArray.push(testSprite);
-	
+		
 	
 	c = new Boid.Agent(w, h, imageArray);
 	
@@ -486,6 +485,7 @@ $(document).ready(function(){
 	//$('#shrine').css("left",h/10);
 		
 	
+		
 	
 	controlmySliders();
 	changeWallCollisionState(0);
@@ -1159,11 +1159,11 @@ function toggleGodlyOmni3 () {
 	$godlyomni = $(this);
 	
 	if (!$godlyomni.hasClass("imagehighlight")) {
-		alert("Godly Omni 3 Activated!");
+		c.showBlindness = true;	
 		$godlyomni.addClass("imagehighlight");
 	}
 	else{
-		alert("Godly Omni 3 Deactivated!");
+		c.showBlindness = false;	
 		$godlyomni.removeClass("imagehighlight");
 	}
 	
@@ -1398,7 +1398,7 @@ function executePower(e) {
 				{
 					c.pushToChangeList( {ball:selectedboids[i],  newType: 6 });
 					c.pushToChangeBehaviourList( {ball:selectedboids[i],  newBehaviour: 3 });
-					c.changeAgentSpeed(selectedboids[i],2);
+					c.changeAgentSpeed(selectedboids[i],0.8);
 				}
 					
 			}
@@ -1416,7 +1416,7 @@ function executePower(e) {
 				{
 					c.pushToChangeList( {ball:selectedboids[i],  newType: 4 });
 					c.pushToChangeBehaviourList( {ball:selectedboids[i],  newBehaviour: 1 });
-					c.changeAgentSpeed(selectedboids[i],4);
+					c.changeAgentSpeed(selectedboids[i],1.1);
 				}
 					
 			}
@@ -1439,7 +1439,7 @@ function executePower(e) {
 				for(i=0;i<selectedboids.length;i++)
 				{
 					c.changePerceptionRange(selectedboids[i],30);
-					c.changeAgentSpeed(selectedboids[i],6);
+					c.changeAgentSpeed(selectedboids[i],1.4);
 				}
 					
 			}
@@ -1455,7 +1455,7 @@ function executePower(e) {
 					c.pushToChangeList( {ball:selectedboids[i],  newType: 7 });
 					c.pushToChangeBehaviourList( {ball:selectedboids[i],  newBehaviour: 2 });
 					c.changePerceptionRange(selectedboids[i],25);
-					c.changeAgentSpeed(selectedboids[i],8);
+					c.changeAgentSpeed(selectedboids[i],0.9);
 				}
 					
 			}
@@ -1468,8 +1468,8 @@ function executePower(e) {
 				//c.pushToAddList({type:4,x: e.clientX - c.theCanvas.offsetLeft, y: e.clientY - c.theCanvas.offsetTop });
 				for(i=0;i<selectedboids.length;i++)
 				{
-					c.changePerceptionRange(selectedboids[i],20);
-					c.changeAgentSpeed(selectedboids[i],10);
+					c.changePerceptionRange(selectedboids[i],3);
+					c.changeAgentSpeed(selectedboids[i],0.4);
 				}
 					
 			}
@@ -1571,6 +1571,7 @@ function initializeViewToFalse() {
 	c.perceptionRangeVisible = false;
 	c.ruleVectorVisible = [false, false, false, false, false, false];
 	c.setVisibiliyInteractionList(false);	
+	c.showBlindness = false;	
 
 }
 	
