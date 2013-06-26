@@ -443,16 +443,19 @@ $(document).ready(function(){
 	var messiahSprite = new Image();
 	var friendSprite = new Image();
 	var outcastSprite = new Image();
+	var testSprite = new Image();
 	
 	normalSprite.src = "img/normaltype.png";
 	messiahSprite.src = "img/messiahtype.png";		
 	friendSprite.src = "img/friendtype.png";
 	outcastSprite.src = "img/outcasttype.png";
+	testSprite.src = "img/normaltype_spritesheet.png";
 	
 	imageArray.push(normalSprite);
 	imageArray.push(messiahSprite);
 	imageArray.push(friendSprite);
 	imageArray.push(outcastSprite);
+	imageArray.push(testSprite);
 	
 	
 	c = new Boid.Agent(w, h, imageArray);
