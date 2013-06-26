@@ -510,6 +510,14 @@ Boid.Agent = function(canvasWidth, canvasHeight, imageArray)
 	
 		blindThisBoid.perceptionRange = newPerceptionRange;
 		blindThisBoid.perceptionRangeSquared = newPerceptionRange*newPerceptionRange;
+		
+	}
+	
+	this.changeAgentSpeed = function(speedThisBoid, speedRatio)
+	{
+	
+		speedThisBoid.speed = speedThisBoid.speed*speedRatio;
+	
 	}
 	
 	
@@ -924,6 +932,31 @@ Boid.Agent = function(canvasWidth, canvasHeight, imageArray)
 		ball.perceptionRangeSquared = perceptionRange*perceptionRange;
         // ball.stroke = stroke;
 		ball.speed = speed;
+		switch(behaviour)
+		{
+			case 0:
+				ball.speed = speed;
+				break;
+			case 1:
+				ball.speed *= 1.2;
+				break;
+			case 2:
+				ball.speed *= .8;
+				break;
+			case 3:
+				ball.speed = speed;
+				break;
+		
+		
+		
+		}
+		
+		
+		
+		
+		
+		
+		
 		ball.vXrule = [0,0,0,0,0,0];
 		ball.vYrule = [0,0,0,0,0,0];
 		ball.interactions = [0,0,0,0,0,0];
@@ -1589,8 +1622,31 @@ Boid.Agent = function(canvasWidth, canvasHeight, imageArray)
 			{
 		
 				this.changeBehaviourList[i].ball.behaviour = this.changeBehaviourList[i].newBehaviour;
+				
+				switch(this.changeBehaviourList[i].newBehaviour)
+				{
+					case 0:
+						this.changeBehaviourList[i].ball.speed = this.changeBehaviourList[i].ball.speed;
+						break;
+					case 1:
+						this.changeBehaviourList[i].ball.speed *= 1.2;
+						break;
+					case 2:
+						this.changeBehaviourList[i].ball.speed *= .8;
+						break;
+					case 3:
+						this.changeBehaviourList[i].ball.speed = this.changeBehaviourList[i].ball.speed;
+						break;
+				
+				
+				
+				}							
 
 			}
+			
+
+			
+			
 		
 			this.changeBehaviourList.length = 0;
 			
