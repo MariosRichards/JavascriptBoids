@@ -392,8 +392,17 @@ $(document).ready(function(){
 	
 	var w = $("#dummy_pane").width();	
 	var h = $("#dummy_pane").height();
+	
 
-		
+	$('#shrine').css("width",w/10);
+	$('#shrine').css("height",h/8);
+	
+	//$('#shrine').css("top",$("#dummy_pane").width());
+	//$('#shrine').css("left",$("#dummy_pane").height());
+	
+	
+	
+	
 	/*var elem = document.getElementById("control");
 	var bBox = elem.getBBox();
 	var scaleX = 2;
@@ -466,6 +475,12 @@ $(document).ready(function(){
 		
 	initializeViewToFalse();
 
+	var centerx = parseInt($('#mycanvas').css('top'))+ h/2 -32;
+	var centery = parseInt($('#mycanvas').css('left'))+ w/2 -32;
+	
+	$('#shrine').css("top",centerx);
+	$('#shrine').css("left",centery);
+	//$('#shrine').css("left",h/10);
 		
 	
 	
