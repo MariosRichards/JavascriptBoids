@@ -346,6 +346,7 @@ Boid.Agent = function(canvasWidth, canvasHeight, imageArray)
 	
 	this.showBlindness = true;
 	this.animationRate = 1/7; // rate at which animation changes sprite
+	this.degradingVision = true;
 	
 	
 	// HARDCODED INTERACTION LIST
@@ -1116,92 +1117,78 @@ Boid.Agent = function(canvasWidth, canvasHeight, imageArray)
 			var boidX = bi.x;
 			var boidY = bi.y;
 			
-	// this.normalSprite = imageArray[0]; // image 0 for type 2
-	// this.messiahSprite = imageArray[1]; // image 1 for type 6
-	// this.friendSprite = imageArray[2]; // image 2 for type 4	
-	// this.pariahSprite = imageArray[3]; // image 3 for type 7			
-			
-			
-	// // draw boid triangle
-				// theContext.strokeStyle = 'rgba(0,255,0,1)';
-	
-				// theContext.beginPath();			
-
-				
-
-				// var normVx = bi.vX*ratio;
-				// var normVy = bi.vY*ratio;
-				
-				// theContext.moveTo( ( boidX+normVx )<<0
-								 // , ( boidY+normVy )<<0 );
-
-				// theContext.lineTo( ( boidX + normVx*this.cos140 - normVy*this.sin140 )<<0 
-								 // , ( boidY + normVx*this.sin140 + normVy*this.cos140 )<<0 );
-		
-				// theContext.lineTo( ( boidX + normVx*this.cos220 - normVy*this.sin220 )<<0
-								 // , ( boidY + normVx*this.sin220 + normVy*this.cos220 )<<0 );
-								 
-				// theContext.lineTo( ( boidX + normVx )<<0 
-								 // , ( boidY + normVy )<<0 ) ;
-						
-				// theContext.closePath();
-				// theContext.stroke();			
 			
 
-
-			var centredX = boidX<<0;
-			var centredY = boidY<<0;
-			var angle = Math.atan2(bi.vY, bi.vX) - Math.PI/2;
-		
-		
-			theContext.translate(centredX,centredY);
-			theContext.rotate(angle);
-			
-			
-			//this.fourSpriteSheet
-			// spriteAnimGlobal
-			
-			
-			bi.animationCycle+=this.animationRate;			
-			switch(bi.type)
+			if (this.degradingVision) // non-sprite agent display
 			{
-				case 2:
-		
-					// &3 is a cheap modulo 4 - this lets us cycle through sprite positions displace by 0, 32, 64, 96 pixels
-					theContext.drawImage(this.normalSpriteSheet,(bi.animationCycle&3)<<5,0,32,32, -16, -16, 32, 32 );			
-					break;
+			
+				theContext.strokeStyle = 'rgba(0,255,0,1)';
+	
+				theContext.beginPath();			
 
-				case 4:
-		
-					// &3 is a cheap modulo 4 - this lets us cycle through sprite positions displace by 0, 32, 64, 96 pixels
-					theContext.drawImage(this.friendSpriteSheet,(bi.animationCycle&3)<<5,0,32,32, -16, -16, 32, 32 );													 
-													 												 
-				break;					
+				var normVx = bi.vX*ratio;
+				var normVy = bi.vY*ratio;
+				
+				theContext.moveTo( ( boidX+normVx )<<0
+								 , ( boidY+normVy )<<0 );
 
-				case 6:
+				theContext.lineTo( ( boidX + normVx*this.cos140 - normVy*this.sin140 )<<0 
+								 , ( boidY + normVx*this.sin140 + normVy*this.cos140 )<<0 );
 		
-					// &3 is a cheap modulo 4 - this lets us cycle through sprite positions displace by 0, 32, 64, 96 pixels
-					theContext.drawImage(this.messiahSpriteSheet,(bi.animationCycle&3)<<5,0,32,32, -16, -16, 32, 32 );														 
-					break;					
+				theContext.lineTo( ( boidX + normVx*this.cos220 - normVy*this.sin220 )<<0
+								 , ( boidY + normVx*this.sin220 + normVy*this.cos220 )<<0 );
+								 
+				theContext.lineTo( ( boidX + normVx )<<0 
+								 , ( boidY + normVy )<<0 ) ;
+						
+				theContext.closePath();
+				theContext.stroke();					
+			
+			}
+			else // sprite display
+			{
 
-				case 7:
-		
-					// &3 is a cheap modulo 4 - this lets us cycle through sprite positions displace by 0, 32, 64, 96 pixels
-					theContext.drawImage(this.pariahSpriteSheet,(bi.animationCycle&3)<<5,0,32,32, -16, -16, 32, 32 );														 													 
-					break;					
+				var centredX = boidX<<0;
+				var centredY = boidY<<0;
+				var angle = Math.atan2(bi.vY, bi.vX) - Math.PI/2;
+			
+				theContext.translate(centredX,centredY);
+				theContext.rotate(angle);
 
-				default:
-					debugger;
+				bi.animationCycle+=this.animationRate;			
+				// &3 is a cheap modulo 4 - this lets us cycle through sprite positions displace by 0, 32, 64, 96 pixels				
+				switch(bi.type)
+				{
+					case 2:
+			
+
+						theContext.drawImage(this.normalSpriteSheet,(bi.animationCycle&3)<<5,0,32,32, -16, -16, 32, 32 );			
+						break;
+
+					case 4:
+						theContext.drawImage(this.friendSpriteSheet,(bi.animationCycle&3)<<5,0,32,32, -16, -16, 32, 32 );													 																			 
+						break;					
+
+					case 6:
+
+						theContext.drawImage(this.messiahSpriteSheet,(bi.animationCycle&3)<<5,0,32,32, -16, -16, 32, 32 );														 
+						break;					
+
+					case 7:
+			
+						theContext.drawImage(this.pariahSpriteSheet,(bi.animationCycle&3)<<5,0,32,32, -16, -16, 32, 32 );														 													 
+						break;					
+
+					default:
+						debugger;
+
+				}
+					
+				theContext.rotate(-angle);
+				theContext.translate(-centredX, -centredY); 				
 
 			}
-			
-			// spriteAnimGlobal++;		
-			theContext.rotate(-angle);
-			theContext.translate(-centredX, -centredY); 				
-			
-
-			
-			
+						
 			
 			
 			// }
