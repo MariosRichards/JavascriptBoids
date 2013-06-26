@@ -445,16 +445,16 @@ $(document).ready(function(){
 	var outcastSpriteSheet = new Image();
 	var testSprite = new Image();
 	
-	normalSprite.src = "img/normaltype_spritesheet.png";
-	messiahSprite.src = "img/messiahtype_spritesheet.png";		
-	friendSprite.src = "img/friendtype_spritesheet.png";
-	outcastSprite.src = "img/outcasttype_spritesheet.png";
+	normalSpriteSheet.src = "img/normaltype_spritesheet.png";
+	messiahSpriteSheet.src = "img/messiahtype_spritesheet.png";		
+	friendSpriteSheet.src = "img/friendtype_spritesheet.png";
+	outcastSpriteSheet.src = "img/outcasttype_spritesheet.png";
 	testSprite.src = "img/normaltype_spritesheet.png";
 	
-	imageArray.push(normalSprite);
-	imageArray.push(messiahSprite);
-	imageArray.push(friendSprite);
-	imageArray.push(outcastSprite);
+	imageArray.push(normalSpriteSheet);
+	imageArray.push(messiahSpriteSheet);
+	imageArray.push(friendSpriteSheet);
+	imageArray.push(outcastSpriteSheet);
 	imageArray.push(testSprite);
 	
 	
