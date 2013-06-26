@@ -1398,6 +1398,7 @@ function executePower(e) {
 				{
 					c.pushToChangeList( {ball:selectedboids[i],  newType: 6 });
 					c.pushToChangeBehaviourList( {ball:selectedboids[i],  newBehaviour: 3 });
+					c.changeAgentSpeed(selectedboids[i],2);
 				}
 					
 			}
@@ -1415,6 +1416,7 @@ function executePower(e) {
 				{
 					c.pushToChangeList( {ball:selectedboids[i],  newType: 4 });
 					c.pushToChangeBehaviourList( {ball:selectedboids[i],  newBehaviour: 1 });
+					c.changeAgentSpeed(selectedboids[i],4);
 				}
 					
 			}
@@ -1437,6 +1439,7 @@ function executePower(e) {
 				for(i=0;i<selectedboids.length;i++)
 				{
 					c.changePerceptionRange(selectedboids[i],30);
+					c.changeAgentSpeed(selectedboids[i],6);
 				}
 					
 			}
@@ -1452,6 +1455,7 @@ function executePower(e) {
 					c.pushToChangeList( {ball:selectedboids[i],  newType: 7 });
 					c.pushToChangeBehaviourList( {ball:selectedboids[i],  newBehaviour: 2 });
 					c.changePerceptionRange(selectedboids[i],25);
+					c.changeAgentSpeed(selectedboids[i],8);
 				}
 					
 			}
@@ -1465,6 +1469,7 @@ function executePower(e) {
 				for(i=0;i<selectedboids.length;i++)
 				{
 					c.changePerceptionRange(selectedboids[i],20);
+					c.changeAgentSpeed(selectedboids[i],10);
 				}
 					
 			}
