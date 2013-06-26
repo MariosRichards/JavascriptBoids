@@ -1464,7 +1464,7 @@ function executePower(e) {
 				//c.pushToAddList({type:4,x: e.clientX - c.theCanvas.offsetLeft, y: e.clientY - c.theCanvas.offsetTop });
 				for(i=0;i<selectedboids.length;i++)
 				{
-					c.changePerceptionRange(selectedboids[i],3);
+					c.changePerceptionRange(selectedboids[i],20);
 				}
 					
 			}
