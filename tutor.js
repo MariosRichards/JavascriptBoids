@@ -62,14 +62,14 @@ Boid.Agent = function(canvasWidth, canvasHeight, imageArray)
 	// this.thePlayers = [];
 	
 	
-	this.normalSprite = imageArray[0]; // image 0 for type 2
-	this.messiahSprite = imageArray[1]; // image 1 for type 6
-	this.friendSprite = imageArray[2]; // image 2 for type 4	
-	this.pariahSprite = imageArray[3]; // image 3 for type 7
+	this.normalSpriteSheet = imageArray[0]; // image 0 for type 2
+	this.messiahSpriteSheet = imageArray[1]; // image 1 for type 6
+	this.friendSpriteSheet = imageArray[2]; // image 2 for type 4	
+	this.pariahSpriteSheet = imageArray[3]; // image 3 for type 7
 	
-	this.fourSpriteSheet = imageArray[4]; // image 4 for spritesheet experimentation (32*4)x32
+	//this.fourSpriteSheet = imageArray[4]; // image 4 for spritesheet experimentation (32*4)x32
 	
-	var spriteAnimGlobal = 0;
+	//var spriteAnimGlobal = 0;
 	
 	
 
@@ -1166,31 +1166,29 @@ Boid.Agent = function(canvasWidth, canvasHeight, imageArray)
 			switch(bi.type)
 			{
 				case 2:
-				bi.animationCycle+=this.animationRate;
-				
-				var spritePos = (bi.animationCycle&3)<<5; // &3 is a cheap modulo 4 - this lets us cycle through sprite positions displace by 0, 32, 64, 96 pixels
-				theContext.drawImage(this.fourSpriteSheet,spritePos,0,32,32, -this.normalSpriteHalfWidth
-				                                     , -this.normalSpriteHalfHeight, 32, 32 );
-
-																
-				
-													 
-				break;
+					bi.animationCycle+=this.animationRate;			
+					// &3 is a cheap modulo 4 - this lets us cycle through sprite positions displace by 0, 32, 64, 96 pixels
+					theContext.drawImage(this.normalSpriteSheet,(bi.animationCycle&3)<<5,0,32,32, -16, -16, 32, 32 );			
+					break;
 
 				case 4:
-				theContext.drawImage(this.friendSprite, -this.friendSpriteHalfWidth
-				                                     , -this.friendSpriteHalfHeight );
+					bi.animationCycle+=this.animationRate;			
+					// &3 is a cheap modulo 4 - this lets us cycle through sprite positions displace by 0, 32, 64, 96 pixels
+					theContext.drawImage(this.friendSpriteSheet,(bi.animationCycle&3)<<5,0,32,32, -16, -16, 32, 32 );													 
+													 												 
 				break;					
 
 				case 6:
-				theContext.drawImage(this.messiahSprite, -this.messiahSpriteHalfWidth
-				                                     , -this.messiahSpriteHalfHeight );
-				break;					
+					bi.animationCycle+=this.animationRate;			
+					// &3 is a cheap modulo 4 - this lets us cycle through sprite positions displace by 0, 32, 64, 96 pixels
+					theContext.drawImage(this.messiahSpriteSheet,(bi.animationCycle&3)<<5,0,32,32, -16, -16, 32, 32 );														 
+					break;					
 
 				case 7:
-				theContext.drawImage(this.pariahSprite, -this.pariahSpriteHalfWidth
-				                                     , -this.pariahSpriteHalfHeight );
-				break;					
+					bi.animationCycle+=this.animationRate;			
+					// &3 is a cheap modulo 4 - this lets us cycle through sprite positions displace by 0, 32, 64, 96 pixels
+					theContext.drawImage(this.pariahSpriteSheet,(bi.animationCycle&3)<<5,0,32,32, -16, -16, 32, 32 );														 													 
+					break;					
 
 				default:
 					debugger;
