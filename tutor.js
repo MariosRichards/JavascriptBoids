@@ -304,7 +304,7 @@ Boid.Agent = function(canvasWidth, canvasHeight, imageArray)
 	this.ruleCoeffs[3][2] = [0, 0.5, 0, 0,  0,    0]; // boid       				PERCEPT TYPE 2
 	this.ruleCoeffs[3][3] = [0, 0, 0, 0,    0, 0]; // repulsor 					PERCEPT TYPE 3
 	this.ruleCoeffs[3][4] = [0, 0.5, 0, 0,    0,    0]; // FRIEND BOID    			PERCEPT TYPE 4
-	this.ruleCoeffs[3][5] = [0, 0, 0, 0,    0,    0]; // black hole gravitation    PERCEPT TYPE 5
+	this.ruleCoeffs[3][5] = [0, 0, 0, 0,    0,    10]; // black hole gravitation    PERCEPT TYPE 5
 	this.ruleCoeffs[3][6] = [0, 0, 0, 0,    0,    0]; // messiah                   PERCEPT TYPE 6	
 	this.ruleCoeffs[3][7] = [0, 10, 0, 0,    0,    0]; // PARIAH BOID                PERCEPT TYPE 7	
 
@@ -313,7 +313,7 @@ Boid.Agent = function(canvasWidth, canvasHeight, imageArray)
 
 	
 //	this.numRules = this.ruleCoeffs[0].length;
-	// THERE ARE 5 RULES
+	// THERE ARE 6 RULES
 	this.numRules = 6;
 	this.numBehaviours = 4;
 	this.numPercepts = 8;
@@ -322,6 +322,12 @@ Boid.Agent = function(canvasWidth, canvasHeight, imageArray)
 	// this.ruleCoeffs[0] = 1; // alignment coefficient
 	// this.ruleCoeffs[1] = 1; // repulsion coefficient
 	// this.ruleCoeffs[2] = 0; // cohesion coefficient
+	// this.ruleCoeffs[3] = 1; // wall coefficient
+	// this.ruleCoeffs[4] = 1; // object coefficient
+	// this.ruleCoeffs[5] = 0; // black hole coefficient	
+	
+	
+	
 	this.ruleColours = ['rgb(0,  0,  255)',
 					    'rgb(0,  255,255)',
 					    'rgb(255,0  ,255)',
@@ -1270,7 +1276,7 @@ Boid.Agent = function(canvasWidth, canvasHeight, imageArray)
 			
 			// GRAVITATIONAL HARDCODE
 			
-			if (this.blackHole == 1 && bi.type==2)
+			if (this.blackHole == 1 && bi.behaviour == 3)
 			{
 				this.applyRulesNow(bi, 5, this.blackHoleX - bix, this.blackHoleY - biy);
 			}
