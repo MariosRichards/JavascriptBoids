@@ -267,9 +267,9 @@ Boid.Agent = function(canvasWidth, canvasHeight, imageArray)
 	this.ruleCoeffs[0] = [];
 	this.ruleCoeffs[0][0] = [0, 0, 0, 0,    1000, 0]; // obstacle 					PERCEPT TYPE 0
 	this.ruleCoeffs[0][1] = [0, 0, 0, 1000, 0,    0]; // wall     					PERCEPT TYPE 1
-	this.ruleCoeffs[0][2] = [0.4, 1, 0, 0,  0,    0]; // NORMAL boid       			PERCEPT TYPE 2
+	this.ruleCoeffs[0][2] = [0.8, 0.5, 0, 0,  0,    0]; // NORMAL boid       			PERCEPT TYPE 2
 	this.ruleCoeffs[0][3] = [0, 0, 0, 0,    1000, 0]; // repulsor 					PERCEPT TYPE 3
-	this.ruleCoeffs[0][4] = [0.4, 1, 0, 0,    0,   0]; // FRIEND BOID    			PERCEPT TYPE 4
+	this.ruleCoeffs[0][4] = [0.8, 0.5, 0, 0,    0,   0]; // FRIEND BOID    			PERCEPT TYPE 4
 	this.ruleCoeffs[0][5] = [0, 0, 0, 0,    0,    0]; // black hole gravitation     PERCEPT TYPE 5
 	this.ruleCoeffs[0][6] = [1, 1, 0.1, 0,    0,    0]; // MESSIAH BOID               PERCEPT TYPE 6
 	this.ruleCoeffs[0][7] = [0, 100, 0, 0,    0,    0]; // PARIAH BOID                PERCEPT TYPE 7	
@@ -289,11 +289,11 @@ Boid.Agent = function(canvasWidth, canvasHeight, imageArray)
 	this.ruleCoeffs[2] = [];							// list of objects a boid can perceive and react to
 	this.ruleCoeffs[2][0] = [0, 0, 0, 0,    1000, 0]; // obstacle 					PERCEPT TYPE 0
 	this.ruleCoeffs[2][1] = [0, 0, 0, 1000, 0,    0]; // wall     					PERCEPT TYPE 1
-	this.ruleCoeffs[2][2] = [0, 0, 0, 0,  0,    1000]; // boid       				PERCEPT TYPE 2
+	this.ruleCoeffs[2][2] = [0, 0.5, 0, 0,  0,    1000]; // boid       				PERCEPT TYPE 2
 	this.ruleCoeffs[2][3] = [0, 0, 0, 0,    1000, 0]; // repulsor 					PERCEPT TYPE 3
-	this.ruleCoeffs[2][4] = [0, 0, 0, 0,    0,    0]; // FRIEND BOID				PERCEPT TYPE 4
+	this.ruleCoeffs[2][4] = [0, 0.5, 0, 0,    0,    0]; // FRIEND BOID				PERCEPT TYPE 4
 	this.ruleCoeffs[2][5] = [0, 0, 0, 0,    0,    0]; // black hole gravitation    PERCEPT TYPE 5
-	this.ruleCoeffs[2][6] = [0, 0, 0, 0,    0,    0]; // messiah                   PERCEPT TYPE 6
+	this.ruleCoeffs[2][6] = [0, 0.5, 0, 0,    0,    0]; // messiah                   PERCEPT TYPE 6
 	this.ruleCoeffs[2][7] = [1, 0.5, 0, 0,    0,  0]; // PARIAH BOID                PERCEPT TYPE 7
 
 	

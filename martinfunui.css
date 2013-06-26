@@ -151,7 +151,7 @@ html {
 	
 	
 	background-repeat: repeat;
-	background-image: url('img/sand128png.png')
+	background-image: url('img/sand128png.png');
 	
 	}
 	
@@ -425,7 +425,7 @@ body {
 		
 		background-repeat:repeat;
 		
-		/*background-image: url("img/tile.png");*/
+		background-image: url("img/tile2.png");
 	
 	}
 	
