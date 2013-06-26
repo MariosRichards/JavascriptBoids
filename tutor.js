@@ -67,7 +67,9 @@ Boid.Agent = function(canvasWidth, canvasHeight, imageArray)
 	this.friendSprite = imageArray[2]; // image 2 for type 4	
 	this.pariahSprite = imageArray[3]; // image 3 for type 7
 	
+	this.fourSpriteSheet = imageArray[4]; // image 4 for spritesheet experimentation (32*4)x32
 	
+	var spriteAnimGlobal = 0;
 	
 	
 
@@ -342,7 +344,8 @@ Boid.Agent = function(canvasWidth, canvasHeight, imageArray)
 	this.ruleVectorVisible = [true, true, true, true, true, true];	
 	this.displayBoidIDs = true;	
 	
-	
+	this.showBlindness = true;
+	this.animationRate = 1/5; // rate at which animation changes sprite
 	
 	
 	// HARDCODED INTERACTION LIST
@@ -587,6 +590,7 @@ Boid.Agent = function(canvasWidth, canvasHeight, imageArray)
 		prev: null,
 		type: 2,
 		behaviour: 0,
+		animationCycle: (Math.random()*4)<<0,
 
         // draw : function() {
 
@@ -926,6 +930,8 @@ Boid.Agent = function(canvasWidth, canvasHeight, imageArray)
 		ball.type = type; // Boid Type
 		ball.behaviour = 0;
 		
+		ball.animationCycle = (Math.random())*4<<0;
+		
 
         // make Ball note which pigeonhole it is in
         ball.pigeon = Math.floor(x/ this.perceptionRange) + (Math.floor(y/this.perceptionRange)) * this.pigeonholeWidth;
@@ -1038,13 +1044,31 @@ Boid.Agent = function(canvasWidth, canvasHeight, imageArray)
 
 		// draw Boids
 
+		// spriteAnimGlobal =0;
 		for (var i=this.theBalls.length-1; i>=0; i--)  // cycle through Boid list
 		{
+		
+		
 			var bi = this.theBalls[i];
 			// show perception Range
 			
+			if (this.showBlindness && bi.perceptionRange <= 5)
+			{
+				theContext.strokeStyle = 'rgba(0,0,255,0.1)';
+				theContext.lineWidth = 5;
+				theContext.beginPath();
+				theContext.arc((bi.x)<<0,(bi.y)<<0, 20-2.5,0, this.circ,true); // decrement radius by half of line width
+				theContext.closePath();
+				theContext.stroke();
+				theContext.lineWidth = 1;									
+			
+			
+			
+			}
+			
 			if (this.perceptionRangeVisible)
 			{
+
 				theContext.strokeStyle = 'rgba(255,0,0,0.1)';
 				theContext.lineWidth = 5;
 				theContext.beginPath();
@@ -1100,11 +1124,24 @@ Boid.Agent = function(canvasWidth, canvasHeight, imageArray)
 			theContext.translate(centredX,centredY);
 			theContext.rotate(angle);
 			
+			
+			//this.fourSpriteSheet
+			// spriteAnimGlobal
+			
+			
+			
 			switch(bi.type)
 			{
 				case 2:
-				theContext.drawImage(this.normalSprite, -this.normalSpriteHalfWidth
-				                                     , -this.normalSpriteHalfHeight );
+				bi.animationCycle+=this.animationRate;
+				
+				var spritePos = (bi.animationCycle&3)<<5; // &3 is a cheap modulo 4 - this lets us cycle through sprite positions displace by 0, 32, 64, 96 pixels
+				theContext.drawImage(this.fourSpriteSheet,spritePos,0,32,32, -this.normalSpriteHalfWidth
+				                                     , -this.normalSpriteHalfHeight, 32, 32 );
+
+																
+				
+													 
 				break;
 
 				case 4:
@@ -1127,7 +1164,7 @@ Boid.Agent = function(canvasWidth, canvasHeight, imageArray)
 
 			}
 			
-			
+			// spriteAnimGlobal++;		
 			theContext.rotate(-angle);
 			theContext.translate(-centredX, -centredY); 				
 			
