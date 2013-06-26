@@ -460,7 +460,7 @@ $(document).ready(function(){
 	
 	c = new Boid.Agent(w, h, imageArray);
 	
-	outcastSprite.onload = function() {
+	outcastSpriteSheet.onload = function() {
 	    c.start(); 
 	};
 	
