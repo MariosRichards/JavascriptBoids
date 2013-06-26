@@ -265,10 +265,10 @@ Boid.Agent = function(canvasWidth, canvasHeight, imageArray)
 	// Normal behaviour type
 
 	this.ruleCoeffs[0] = [];
-	this.ruleCoeffs[0][0] = [0, 0, 0, 0,    1000, 0]; // obstacle 					PERCEPT TYPE 0
+	this.ruleCoeffs[0][0] = [0, 0, 0, 0,    0, 0]; // obstacle 					PERCEPT TYPE 0
 	this.ruleCoeffs[0][1] = [0, 0, 0, 1000, 0,    0]; // wall     					PERCEPT TYPE 1
 	this.ruleCoeffs[0][2] = [0.8, 0.5, 0, 0,  0,    0]; // NORMAL boid       			PERCEPT TYPE 2
-	this.ruleCoeffs[0][3] = [0, 0, 0, 0,    1000, 0]; // repulsor 					PERCEPT TYPE 3
+	this.ruleCoeffs[0][3] = [0, 0, 0, 0,    0, 0]; // repulsor 					PERCEPT TYPE 3
 	this.ruleCoeffs[0][4] = [0.8, 0.5, 0, 0,    0,   0]; // FRIEND BOID    			PERCEPT TYPE 4
 	this.ruleCoeffs[0][5] = [0, 0, 0, 0,    0,    0]; // black hole gravitation     PERCEPT TYPE 5
 	this.ruleCoeffs[0][6] = [1, 1, 0.1, 0,    0,    0]; // MESSIAH BOID               PERCEPT TYPE 6
@@ -299,12 +299,12 @@ Boid.Agent = function(canvasWidth, canvasHeight, imageArray)
 	
 	// Messiah behaviour type
 	this.ruleCoeffs[3] = [];							// list of objects a boid can perceive and react to
-	this.ruleCoeffs[3][0] = [0, 0, 0, 0,    1000, 0]; // obstacle 					PERCEPT TYPE 0
+	this.ruleCoeffs[3][0] = [0, 0, 0, 0,    0, 0]; // obstacle 					PERCEPT TYPE 0
 	this.ruleCoeffs[3][1] = [0, 0, 0, 1000, 0,    0]; // wall     					PERCEPT TYPE 1
-	this.ruleCoeffs[3][2] = [0, 1, 0, 0,  0,    0]; // boid       				PERCEPT TYPE 2
-	this.ruleCoeffs[3][3] = [0, 0, 0, 0,    1000, 0]; // repulsor 					PERCEPT TYPE 3
-	this.ruleCoeffs[3][4] = [1, 1, 0, 0,    0,    0]; // FRIEND BOID    			PERCEPT TYPE 4
-	this.ruleCoeffs[3][5] = [0, 0, 0, 0,    0,    10]; // black hole gravitation    PERCEPT TYPE 5
+	this.ruleCoeffs[3][2] = [0, 0.5, 0, 0,  0,    0]; // boid       				PERCEPT TYPE 2
+	this.ruleCoeffs[3][3] = [0, 0, 0, 0,    0, 0]; // repulsor 					PERCEPT TYPE 3
+	this.ruleCoeffs[3][4] = [0, 0.5, 0, 0,    0,    0]; // FRIEND BOID    			PERCEPT TYPE 4
+	this.ruleCoeffs[3][5] = [0, 0, 0, 0,    0,    0]; // black hole gravitation    PERCEPT TYPE 5
 	this.ruleCoeffs[3][6] = [1, 1, 0, 0,    0,    0]; // messiah                   PERCEPT TYPE 6	
 	this.ruleCoeffs[3][7] = [0, 10, 0, 0,    0,    0]; // PARIAH BOID                PERCEPT TYPE 7	
 
@@ -1688,6 +1688,13 @@ Boid.Agent = function(canvasWidth, canvasHeight, imageArray)
 								          newType: 4 });
 					
 				}
+				if ((x*x + y*y) < this.shrineRadiusSquared && theBalls[i].type == 6)
+				{
+				
+					this.pushToKillList(theBalls[i]);
+					
+				}
+				
 			}
 			
 			
