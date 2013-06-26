@@ -345,7 +345,7 @@ Boid.Agent = function(canvasWidth, canvasHeight, imageArray)
 	this.displayBoidIDs = true;	
 	
 	this.showBlindness = true;
-	this.animationRate = 1/5; // rate at which animation changes sprite
+	this.animationRate = 1/7; // rate at which animation changes sprite
 	
 	
 	// HARDCODED INTERACTION LIST
