@@ -181,7 +181,7 @@ Boid.Agent = function(canvasWidth, canvasHeight, imageArray)
 	this.blackHoleY = this.canvasHeight/2
 
 
-	this.Obstacles = 1; // turn obstacle interaction on(1)/off(0)
+	this.Obstacles = 0; // turn obstacle interaction on(1)/off(0)
 	// obstacle is a circle
 	this.obstacleRadius = 20;
 	this.obstacleX = this.canvasWidth/2;
@@ -354,7 +354,7 @@ Boid.Agent = function(canvasWidth, canvasHeight, imageArray)
 	
 	// 
 	this.shrineON = true;
-	this.shrineRadiusSquared = 900;
+	this.shrineRadiusSquared = 900; // 30*30 = 900
 	this.shrineX = this.canvasWidth/2;
 	this.shrineY = this.canvasHeight/2;
 	
