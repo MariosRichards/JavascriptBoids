@@ -1133,8 +1133,8 @@ Boid.Agent = function(canvasWidth, canvasHeight, imageArray)
 	
 				theContext.beginPath();			
 
-				var normVx = bi.vX*ratio;
-				var normVy = bi.vY*ratio;
+				var normVx = bi.vX*ratio*0.5; //0.5 Added by Xanto for Size Purposes
+				var normVy = bi.vY*ratio*0.5;
 				
 				theContext.moveTo( ( boidX+normVx )<<0
 								 , ( boidY+normVy )<<0 );

@@ -1191,12 +1191,12 @@ function toggleDemonOmni2 () {
 	$demonomni = $(this);
 	
 	if (!$demonomni.hasClass("imagehighlight-1")) {
-		c.displayBoidIDs = true;
+		c.degradingVision = true;	
 		$demonomni.addClass("imagehighlight-1");
 		
 	}
 	else{
-		c.displayBoidIDs = false;
+		c.degradingVision = false;	
 		$demonomni.removeClass("imagehighlight-1");
 	}
 	
@@ -1571,7 +1571,8 @@ function initializeViewToFalse() {
 	c.perceptionRangeVisible = false;
 	c.ruleVectorVisible = [false, false, false, false, false, false];
 	c.setVisibiliyInteractionList(false);	
-	c.showBlindness = false;	
+	c.showBlindness = false;
+	c.degradingVision = false;	
 
 }
 	
