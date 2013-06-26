@@ -1162,30 +1162,30 @@ Boid.Agent = function(canvasWidth, canvasHeight, imageArray)
 			// spriteAnimGlobal
 			
 			
-			
+			bi.animationCycle+=this.animationRate;			
 			switch(bi.type)
 			{
 				case 2:
-					bi.animationCycle+=this.animationRate;			
+		
 					// &3 is a cheap modulo 4 - this lets us cycle through sprite positions displace by 0, 32, 64, 96 pixels
 					theContext.drawImage(this.normalSpriteSheet,(bi.animationCycle&3)<<5,0,32,32, -16, -16, 32, 32 );			
 					break;
 
 				case 4:
-					bi.animationCycle+=this.animationRate;			
+		
 					// &3 is a cheap modulo 4 - this lets us cycle through sprite positions displace by 0, 32, 64, 96 pixels
 					theContext.drawImage(this.friendSpriteSheet,(bi.animationCycle&3)<<5,0,32,32, -16, -16, 32, 32 );													 
 													 												 
 				break;					
 
 				case 6:
-					bi.animationCycle+=this.animationRate;			
+		
 					// &3 is a cheap modulo 4 - this lets us cycle through sprite positions displace by 0, 32, 64, 96 pixels
 					theContext.drawImage(this.messiahSpriteSheet,(bi.animationCycle&3)<<5,0,32,32, -16, -16, 32, 32 );														 
 					break;					
 
 				case 7:
-					bi.animationCycle+=this.animationRate;			
+		
 					// &3 is a cheap modulo 4 - this lets us cycle through sprite positions displace by 0, 32, 64, 96 pixels
 					theContext.drawImage(this.pariahSpriteSheet,(bi.animationCycle&3)<<5,0,32,32, -16, -16, 32, 32 );														 													 
 					break;					
@@ -1946,17 +1946,17 @@ Boid.Agent = function(canvasWidth, canvasHeight, imageArray)
 		
 		
 		
-		this.normalSpriteHalfWidth = this.normalSprite.width>>1;
-		this.normalSpriteHalfHeight = this.normalSprite.height>>1;	
+		// this.normalSpriteHalfWidth = this.normalSprite.width>>1;
+		// this.normalSpriteHalfHeight = this.normalSprite.height>>1;	
 
-		this.messiahSpriteHalfWidth = this.messiahSprite.width>>1;
-		this.messiahSpriteHalfHeight = this.messiahSprite.height>>1;			
+		// this.messiahSpriteHalfWidth = this.messiahSprite.width>>1;
+		// this.messiahSpriteHalfHeight = this.messiahSprite.height>>1;			
 		
-		this.friendSpriteHalfWidth = this.friendSprite.width>>1;
-		this.friendSpriteHalfHeight = this.friendSprite.height>>1;			
+		// this.friendSpriteHalfWidth = this.friendSprite.width>>1;
+		// this.friendSpriteHalfHeight = this.friendSprite.height>>1;			
 
-		this.pariahSpriteHalfWidth = this.pariahSprite.width>>1;
-		this.pariahSpriteHalfHeight = this.pariahSprite.height>>1;			
+		// this.pariahSpriteHalfWidth = this.pariahSprite.width>>1;
+		// this.pariahSpriteHalfHeight = this.pariahSprite.height>>1;			
 		
 		// this.theCanvas.addEventListener("click",this.doClick.bind(this),false);
 		this.running = 1;
