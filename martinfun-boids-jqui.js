@@ -486,7 +486,7 @@ $(document).ready(function(){
 		
 	
 		
-	
+	togglePanel1Show();
 	controlmySliders();
 	changeWallCollisionState(0);
 	changeObstacleState(1);
